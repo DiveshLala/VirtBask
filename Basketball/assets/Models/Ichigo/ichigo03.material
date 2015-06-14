@@ -1,0 +1,70 @@
+material 04-shoes
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.000000 0.000000 0.000000 1.000000
+			diffuse 0.000000 0.000000 0.000000 1.000000
+			specular 0.449020 0.449020 0.449020 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material 05-hair
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.082353 0.082353 0.082353 1.000000
+			diffuse 0.125490 0.062745 0.009412 1.000000
+			specular 0.449020 0.449020 0.449020 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material 02-shirt
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.847059 0.847059 0.847059 1.000000
+			diffuse 0.677647 0.677647 0.677647 1.000000
+			specular 0.449020 0.449020 0.449020 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material 01 - skin
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.766013 0.766013 0.766013 1.000000
+			diffuse 0.740392 0.649412 0.448627 1.000000
+			specular 0.449020 0.449020 0.449020 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material 03- pant
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.223529 0.223529 0.223529 1.000000
+			diffuse 0.178824 0.178824 0.178824 1.000000
+			specular 0.449020 0.449020 0.449020 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}

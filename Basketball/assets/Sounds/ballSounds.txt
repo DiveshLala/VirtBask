@@ -1,0 +1,4 @@
+bounce0mono.wav,0.3,bounce
+bounce1mono.wav,0.3,bounce
+bounce2mono.wav,0.3,bounce
+ballwood.wav,0.5,ballwood

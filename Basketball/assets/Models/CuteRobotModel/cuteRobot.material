@@ -1,0 +1,28 @@
+material TrimMat
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.245752 0.245752 0.245752 1.000000
+			diffuse 0.778039 0.784314 0.495686 1.000000
+			specular 0.000000 0.000000 0.000000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material bodyMat
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.243137 0.243137 0.243137 1.000000
+			diffuse 0.730980 0.549020 0.721569 1.000000
+			specular 0.000000 0.000000 0.000000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}

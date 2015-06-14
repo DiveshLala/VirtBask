@@ -1,0 +1,15 @@
+P0, D, shirtyellowalan.jpg, skinAlan.jpg, shortsblue.jpg, shoesgreen.jpg, Alan.jpg
+P1, D, templateshirt.JPG, skinAlan.jpg, shortsblue.jpg, shoesgreen.jpg, Alan.jpg
+
+NP01, D, shirtyellowbob.jpg, skinBob.jpg, shortsblue.jpg, shoesgreen.jpg, Bob.jpg
+NP02, D, shirtyellowcarl.jpg, skinCarl.jpg, shortsblue.jpg, shoesgreen.jpg, Carl.jpg
+
+NP11, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, Bob.jpg
+NP12, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, Carl.jpg
+
+//defending team
+0, Carl, 0.4
+0, Bob, 0.4
+
+//attacking team
+1, Alan, 0.48

@@ -1,0 +1,54 @@
+#86 basketball dribble, shoot
+#40 basketball signals
+#41 basketball signals
+#6 dribble
+#15 shoot, pass
+
+#38 walk (2)
+#69 turn in place (right), walk backward
+#83 sidestep
+
+DONE:
+run - 9 (9)
+walk/step back - 39 (14)
+shoot - 124 (4)
+dribbleLoop - 6 (5)
+step right - 83 (66)
+step left - 83 (18)
+pass/initiate/receive - 15 (12)
+receive pass - 143 (20)
+turn right - 69 (19)
+turn left - 69 (17)
+call for pass - 143 (25)
+block - 132 (12)
+celebration - 79 (69)
+
+
+sidestep left    OK
+pre block	OK
+shoot           OK
+pass            OK
+initiate pass   OK
+accept pass     OK
+pre dribble      OK
+run              OK
+dribbleloop      OK 
+step right       OK
+jump
+standing pose    OK
+post receive pass  OK
+post dribble      OK
+call for pass    OK
+block loop 	OK
+walk              OK
+step back        OK
+post block	OK
+celebration OK
+apology
+
+
+
+
+
+
+

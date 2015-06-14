@@ -1,0 +1,6 @@
+footsteps0.wav,0.05,footsteps
+footsteps1.wav,0.05,footsteps
+footsteps2.wav,0.05,footsteps
+passswish.wav,3,pass
+shootswish.wav,3,shoot
+catchball.wav,1,catch

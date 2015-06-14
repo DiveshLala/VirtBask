@@ -1,0 +1,42 @@
+material TrimMaterial
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.326797 0.326797 0.326797 1.000000
+			diffuse 0.561569 0.106667 0.040784 1.000000
+			specular 0.000000 0.000000 0.000000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material EyeMaterial
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.603922 0.603922 0.603922 1.000000
+			diffuse 0.740392 0.705882 0.047059 1.000000
+			specular 0.000000 0.000000 0.000000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
+material MainBody
+{
+	receive_shadows on
+	technique
+	{
+		pass
+		{
+			ambient 0.227451 0.227451 0.227451 1.000000
+			diffuse 0.260392 0.285490 0.332549 1.000000
+			specular 0.000000 0.000000 0.000000 1.000000 12.500000
+			emissive 0.000000 0.000000 0.000000 1.000000
+		}
+	}
+}
