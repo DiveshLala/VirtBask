@@ -107,6 +107,7 @@ public class Ball{
     public void updateBallInPossession(){
          BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterByID(playerInPossession);              
 //         Vector3f vec = bc.getBallHandVector().subtract(0, radius, 0);
+         ballPhysicsNode.setLinearVelocity(Vector3f.ZERO);
          Vector3f vec = bc.getBallHandVector();
          this.setBallPosition(vec);
     }
@@ -394,8 +395,7 @@ public class Ball{
     
     public boolean isBallInSpace(Vector3f pos){
         Vector3f ballPos = this.getBallPosition();
-        boolean x = ((Math.pow(ballPos.x - pos.x, 2) + Math.pow(ballPos.y - pos.y, 2) + Math.pow(ballPos.z - pos.z, 2)) <= radius);
-        return x;
+        return ballPos.distance(pos) < radius;
     }
     
     public void removeSpin(){

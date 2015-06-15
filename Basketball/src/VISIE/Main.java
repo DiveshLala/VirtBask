@@ -299,8 +299,6 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
                 if(game.areClientsReady()){
                     game.updateGame(tpf);
                 } 
-                
-                System.out.println("hello");
           }
       }
       

@@ -298,7 +298,7 @@ public class Player extends BasketballCharacter{
                     BPNewModel bm = (BPNewModel)characterModel;
                     String s = bm.isDribbleBounce();
                     
-           //         System.out.println(s);
+               //     System.out.println(s);
                                        
                 //    ball.dribbleInHand(this.getHandPosition(1));
                     
@@ -308,6 +308,7 @@ public class Player extends BasketballCharacter{
                             ball.updateBallInPossession();
                         }
                         ball.dribbleInHand(this.getBallHandVector());
+////                        System.out.println("bounce  " +  ball.getBallPosition());
               //          ballBounce = false;
                                                
                     }
@@ -317,6 +318,7 @@ public class Player extends BasketballCharacter{
                     }
                     else if(s.equals("let go") && ball.isBallInSpace(this.getBallHandVector())){
                             ball.bounceBall(mainNode.getViewDirection().normalize().mult(this.getSpeed())); 
+//                             System.out.println("let go  " +  ball.getBallPosition());
 //                            ballBounce = true;
   //                      }
                     }

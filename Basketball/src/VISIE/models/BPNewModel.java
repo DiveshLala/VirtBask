@@ -412,20 +412,23 @@ public class BPNewModel extends AnimatedModel{
         if(armChannel.getAnimationName().equals("dribbleLoop")){
         
             float f = getCurrentAnimationTimePercentage(1);
-
-            if(f < 0.02){
-                return "let go";
-            }
-            else if(f < 0.15){
-                return "bounce";
-            }
-            else if(f < 0.23){
+            
+            if(f < 0.03){
                 return "hand";
             }
-            else if(f < 0.25){
+            else if(f < 0.05){
                 return "let go";
             }
-            else if(f < 0.43){
+            else if(f < 0.10){
+                return "bounce";
+            }
+            else if(f < 0.28){
+                return "hand";
+            }
+            else if(f < 0.30){
+                return "let go";
+            }
+            else if(f < 0.35){
                 return "bounce";
             }
             else if(f < 0.54){
@@ -434,16 +437,16 @@ public class BPNewModel extends AnimatedModel{
             else if(f < 0.56){
                 return "let go";
             }
-            else if(f < 0.72){
+            else if(f < 0.6){
                 return "bounce";
             }
-            else if(f < 0.83){
+            else if(f < 0.79){
                 return "hand";
             }
-            else if(f < 0.85){
+            else if(f < 0.81){
                 return "let go";
             }
-            else if(f < 0.94){
+            else if(f < 0.9){
                 return "bounce";
             }
 
