@@ -41,6 +41,8 @@ public class AgentBodyOperations {
     private float shootPenalty = 1;
     private float stealingCapability = 0.5f;
     private int turnCode = 0;
+    
+    private float modelHeadRotation = 0;
 
    // private float mutualGazeAngle;
     
@@ -70,17 +72,29 @@ public class AgentBodyOperations {
     }
     
     public void turnHeadToTarget(Vector3f target){
-
-        float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
-        float angleOffset = Conversions.minDistanceBetweenAngles(targetAngle, torsoRotationAngle);
         
-    //    if(angleOffset > 1 && angleOffset < 10){
-         agentModel.turnHead(targetAngle + angleOffset);
-    //    }
+//        float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
+//        float angleOffset = Conversions.minDistanceBetweenAngles(targetAngle, this.getFacingDirection());
+//        float orientation = Conversions.calculateSpinDirection(targetAngle, this.getFacingDirection());
+//        
+//        if(angleOffset < 45 && parentCharacter.getLegAnimationName().startsWith("standing")){
+//            modelHeadRotation = angleOffset * orientation;
+//            agentModel.turnHead(modelHeadRotation);
+//        }
+//        else{
+//            this.resetHeadPosition();
+//        }
+
+        agentModel.turnHead(runSpeed);
     }
     
     public void resetHeadPosition(){
-        agentModel.turnHead(parentCharacter.getFacingDirection());
+                
+        if(modelHeadRotation != 0){
+                    System.out.println("resetting...");
+            agentModel.turnHead(-modelHeadRotation);
+            modelHeadRotation = 0;
+        }
     }
     
     
@@ -104,12 +118,11 @@ public class AgentBodyOperations {
 
         if(parentCharacter.getSpeed() == 0){
             this.doTurningAnimation();
-        }
-        
+        }        
     }
     
     private void doTurningAnimation(){
-                                
+                                        
         if(turnCode == 1){
             if(!parentCharacter.isInPossession()){
                 parentCharacter.playAnimation(1, "turnLeft", 1, LoopMode.DontLoop);
@@ -186,7 +199,7 @@ public class AgentBodyOperations {
         }
         //agent is looking straight at target
         else if(parentCharacter.perception.isLookingAtTarget(target)){
-
+            
             this.turnBodyToTarget(target);
             Vector3f dir = Conversions.degreesToNormalizedCoordinates(Conversions.originToTargetAngle(parentCharacter.getPosition(), target)); 
             float speed;
@@ -274,45 +287,6 @@ public class AgentBodyOperations {
             }
         }
     }
-    
-//    public void dribbleTowardsTarget(Vector3f target, boolean ignoreCollision, boolean speedBurst){
-//        
-//        Vector3f realTarget = target; 
-//
-//        if(!ignoreCollision && parentCharacter.perception.isCollisionPredicted(target)){
-//            realTarget = parentCharacter.perception.avoidCollision(target);
-//        }
-//        
-//        if(target.setY(0).distance(Court.getPoleLocation()) < 2f && parentCharacter.get2DPosition().distance(Court.getPoleLocation()) < 2f){
-//            parentCharacter.setSpeed(0);
-//        }        
-//        else if(parentCharacter.perception.isLookingAtTarget(realTarget)){
-//            
-//            this.turnBodyToTarget(realTarget);
-//            Vector3f dir = Conversions.degreesToNormalizedCoordinates(Conversions.originToTargetAngle(parentCharacter.getPosition(), realTarget)); 
-//            
-//            if(!speedBurst){
-//                parentCharacter.setSpeed(dribbleSpeed);
-//                parentCharacter.move(dir, parentCharacter.getSpeed());
-//            }
-//            else{
-//                parentCharacter.setSpeed(runSpeed);
-//                parentCharacter.move(dir, parentCharacter.getSpeed());
-//            }
-//            this.doMovingAnimations();
-//        }
-//        else if(parentCharacter.get2DPosition().distance(target.setY(0)) < 5){
-//            parentCharacter.setSpeed(shuffleSpeed);
-//            Vector3f dir = Conversions.degreesToNormalizedCoordinates(Conversions.originToTargetAngle(parentCharacter.getPosition(), realTarget)); 
-//            parentCharacter.move(dir, parentCharacter.getSpeed());
-//        }
-//        else{
-//            parentCharacter.setSpeed(0);
-//            this.turnBodyToTarget(realTarget);
-//        }
-//                
-//     //   this.doDribblingAnimations();
-//    }
         
     public void doBlocking(){
         

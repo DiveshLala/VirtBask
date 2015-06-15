@@ -50,9 +50,34 @@ public class DefenseDecision {
                 markedCharacter = null;
             }
             
+    //        this.setDefensiveHeadPosition();
             this.setDefensiveBehaviorState();
+        }        
+    }
+    
+    private void setDefensiveHeadPosition(){
+        
+        BasketballCharacter posCharacter = SceneCharacterManager.getCharacterInPossession();
+        
+        if(markedCharacter.equals(posCharacter)){
+            if(parentCharacter.planner.isTargetReached(1)){
+                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
+            }
+//            else{
+//                parentCharacter.abo.resetHeadPosition();
+//            }
+        }
+        else{//turn head to possessor if target reached
+//            if(parentCharacter.planner.isTargetReached(1)){
+//                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
+//            }
+//            else{
+//                System.out.println("reset no target");
+//                parentCharacter.abo.resetHeadPosition();
+//            }
         }
     }
+    
     
     private int getCharacterToMark(int[][] pairs){
         

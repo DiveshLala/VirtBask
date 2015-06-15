@@ -10,6 +10,7 @@ import com.jme3.animation.Bone;
 import com.jme3.animation.LoopMode;
 import com.jme3.animation.Skeleton;
 import com.jme3.animation.SkeletonControl;
+import com.jme3.animation.Track;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.material.MatParam;
@@ -232,8 +233,8 @@ public class BPNewModel extends AnimatedModel{
     
     public void playLegAnimation(String newAnimation, float speed, LoopMode l){
         
-//        if(modelRoot.getName().contains("carl")){
-//            System.out.println(legChannel.getAnimationName() + " " + newAnimation + " " + modelRoot.getName() + " " + legChannel.getTime());
+//        if(modelRoot.getName().contains("alan")){
+//            System.out.println(legChannel.getAnimationName() + " " + newAnimation + " " + modelRoot.getName() + " " + this.getCurrentAnimationTimePercentage(2));
 //        }
 //        
         if(legChannel.getAnimationName() == null){
@@ -344,7 +345,7 @@ public class BPNewModel extends AnimatedModel{
         if(cpoints[0] != -1){
                         
             float f = this.getCurrentAnimationTimePercentage(2);
-                        
+                                    
             for(float cpoint:cpoints){
                 if(Math.abs(f - cpoint) < threshold){
                     return true;
@@ -373,7 +374,7 @@ public class BPNewModel extends AnimatedModel{
             return new float[]{0.5f, 0.95f};
         }
         else if(animation.startsWith("turn")){
-            return new float[]{0.5f, 0.8f};
+            return new float[]{0.1f, 0.5f, 0.8f};
         }
         
         return new float[]{-1f};
@@ -642,13 +643,20 @@ public class BPNewModel extends AnimatedModel{
     }
     
     public void turnHead(float angle){
-        
+                
         System.out.println("head turn " + angle);
         Quaternion q = new Quaternion();
         q.fromAngles(0, 0, (float)Math.toRadians(angle));
-        this.animateBoneAngle("head", q);
+        Bone b = control.getSkeleton().getBone("neck");
+        System.out.println(b.getLocalRotation());
+        this.animateBoneAngle("neck", b.getLocalRotation().inverse());
     }
     
-    public void resetHead(){}
+    public void resetHead(){
+//     //   System.out.println(this.getCurrentAnimation(1));
+//        Bone b = control.getSkeleton().getBone("neck");
+//   //     System.out.println(b.getLocalRotation() + " " + b.getModelSpaceRotation() + " " + b.getWorldBindRotation() + " " + b.getWorldBindInverseRotation());
+//        this.animateBoneAngle("neck", new Quaternion(0, 0, 0, 1));
+    }
     
 }

@@ -626,9 +626,9 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             sceneCharacterManager.updateCharacterSounds();
             
        //     sceneCharacterManager.showCollisionLines();
-//            sceneCharacterManager.showAgentTargetPositions(1);
-//            sceneCharacterManager.showAgentTargetPositions(2);
-//            sceneCharacterManager.showAgentTargetPositions(3);
+            sceneCharacterManager.showAgentTargetPositions(1);
+            sceneCharacterManager.showAgentTargetPositions(2);
+            sceneCharacterManager.showAgentTargetPositions(3);
 
             //needed to set update ball position
             if(broadcastServer != null){

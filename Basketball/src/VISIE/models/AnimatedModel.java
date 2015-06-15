@@ -145,7 +145,6 @@ public abstract class AnimatedModel implements AnimEventListener{
    
      public void animateBoneAngle(String boneName, Quaternion rotQuat){
         Skeleton s = control.getSkeleton();
-        //channel.setLoopMode(LoopMode.DontLoop);
         Bone b = s.getBone(boneName);       
         b.setUserControl(true);      
         b.setUserTransforms(Vector3f.ZERO, rotQuat, Vector3f.UNIT_XYZ);

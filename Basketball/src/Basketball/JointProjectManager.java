@@ -197,12 +197,15 @@ public class JointProjectManager {
         
         if(interactionCharacter.canDoClearPass(parentCharacter, 4.5f)){ //if can pass signal for pass
 
-                parentCharacter.setSpeed(0);
+                parentCharacter.setSpeed(0);  
                 parentCharacter.abo.turnBodyToTarget(interactionCharacter.get2DPosition());
                 
                 if(parentCharacter.perception.isWithinGaze(interactionCharacter.get2DPosition(), 10)){
                     parentCharacter.playAnimation(1, "receivePass", 1, LoopMode.DontLoop);
                 }
+//                else{
+//                    parentCharacter.abo.turnBodyToTarget(interactionCharacter.get2DPosition());
+//                }
                 
                 //focus changed
                 if(!focus.startsWith("char") || Integer.parseInt(focus.replace("char", "")) != parentCharacter.getID()){
@@ -218,7 +221,7 @@ public class JointProjectManager {
             }
             else{ //if cant pass, move into passing position
                 //simulate pass by moving 45 degrees
-                 
+            
                 Vector3f bestVec = this.getOpenSpace(false, 45);
                 
                 if(bestVec != null){
@@ -332,7 +335,7 @@ public class JointProjectManager {
         if(testVecs.isEmpty()){
             testVecs.add(lDir);
             testVecs.add(rDir);
-            bestVec = parentCharacter.planner.positionFurthestFromOpponents(testVecs);
+            bestVec = parentCharacter.getPosition();
         }
         
         return bestVec;

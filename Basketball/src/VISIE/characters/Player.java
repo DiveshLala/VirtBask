@@ -69,7 +69,7 @@ public class Player extends BasketballCharacter{
         characterModel = model;
         characterModel.initialize();
         torsoTurnSpeed = 1;
- //       characterModel.setTransparency(0.2f);
+        characterModel.setTransparency(0.2f);
         isPlayer = true;
     }
     

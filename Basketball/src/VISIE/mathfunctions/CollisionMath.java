@@ -8,6 +8,7 @@ import VISIE.characters.BasketballCharacter;
 import VISIE.scenemanager.SceneCreator;
 import VISIE.scenemanager.Scene;
 import VISIE.characters.Character;
+import VISIE.scenemanager.Court;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Ray;
@@ -277,7 +278,7 @@ public class CollisionMath {
                         }
                     }
                 }
-            }        
+            }  
         }
 
         return true;

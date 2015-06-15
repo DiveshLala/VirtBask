@@ -216,7 +216,7 @@ public class BasketballAgent extends BasketballCharacter{
                                 
                 if(!planner.isTargetReached(0.5f)){ //target reached
                     abo.moveTowardsTarget(planner.getTargetPosition(), false, false);
-          //          System.out.println("target reached " + this.getCurrentAnimations() + " " + this.getID());
+     //               System.out.println("moving " + getCurrentGestureName());
                 }
                 else{                           //stop
                //     agentModel.standStill();
