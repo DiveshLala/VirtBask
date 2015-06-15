@@ -146,6 +146,8 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
   public  GameStateManagement gsm;
   private Game game;
   
+  private boolean waitFlag = false;
+  
   public static void main(String[] args) {
         Main gameApp = new Main();   
         AppSettings settings = new AppSettings(true);
@@ -286,19 +288,25 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
               this.cleanUpLoadingScreen();
               game.loadGame();
               loadingState = false;
+              waitFlag = true;
         }
       }
       
       if(startScreenCompleted){    
-        //createLoading();
-              if(isRunning){                                  
+          
+        if(isRunning){ 
+
                 timePerFrame = tpf;
                
                 game.updateSceneObjects();
                 
-                if(game.areClientsReady()){
+                if(game.areClientsReady()){ 
+                    waitFlag = false;
                     game.updateGame(tpf);
                 } 
+                if(!waitFlag && !viewPort.isEnabled()){
+                    game.enableViewPorts();
+                }
           }
       }
       

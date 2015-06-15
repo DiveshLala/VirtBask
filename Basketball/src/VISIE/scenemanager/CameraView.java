@@ -11,6 +11,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.RenderManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,6 +21,7 @@ public class CameraView {
     
     private Camera cam;
     private Camera[] cameraArray;
+    private ArrayList<ViewPort> viewPorts;
     private float cameraFOV;
     private int mainScreen;
     private int numberOfDisplays;
@@ -87,40 +89,7 @@ public class CameraView {
     public void setCameraFacingDirection(float dir){
         cameraFacingDirection = dir;
     }
-    
-    public void setupImmersiveCameras(RenderManager renderManager, Node rootNode, int numDis, int dh, int dw){
-      
-      cameraFOV = 73; // for 6-display view where 5 displays gives 180-degree field of view (240 degree total)
-      mainScreen = 3;
-      numberOfDisplays = numDis;
-      displayHeight = dh;
-      displayWidth = dw;
-    
-      cam.setViewPort((float)(mainScreen)/numberOfDisplays, (float)(mainScreen + 1)/numberOfDisplays, 0f, 1.0f);
-      cam.setFrustumPerspective(cameraFOV, (float)displayWidth/displayHeight, 0.1f, 1000);
-         
-      cameraArray = new Camera[numberOfDisplays];
-      
-      cameraArray[mainScreen] = cam;
-      
-      for(int i = 0; i < cameraArray.length; i++){
-          if(i != mainScreen){
-              Camera newCam = cam.clone();
-              newCam.setViewPort((float)(i)/numberOfDisplays, (float)(i + 1)/numberOfDisplays, 0, 1.0f);                    
-              newCam.setFrustumPerspective(cameraFOV, (float)displayWidth/displayHeight, 0.1f, 1000);
-
-              ViewPort view = renderManager.createMainView("View of Cam " + i, newCam);
-              view.setClearFlags(true, true, true);
-              view.attachScene(rootNode);
-              view.setBackgroundColor(new ColorRGBA(0.7f,0.8f,1f,1f));
-              cameraArray[i] = newCam;
-          }
-       }
-      
-        angleOffset = 360/numberOfDisplays; // 
-
-  }
-    
+        
   public void setupImmersiveCameras(RenderManager renderManager, Node rootNode, int numDis, int dh, int dw, float fov, int ms){
       
       cameraFOV = fov; // for 6-display view where 5 displays gives 180-degree field of view (240 degree total)
@@ -132,15 +101,15 @@ public class CameraView {
       cam.setViewPort((float)(mainScreen)/numberOfDisplays, (float)(mainScreen + 1)/numberOfDisplays, 0f, 1.0f);
       cam.setFrustumPerspective(cameraFOV, (float)displayWidth/displayHeight, 0.1f, 1000);
       cameraArray = new Camera[numberOfDisplays];
-      
       cameraArray[mainScreen] = cam;
-      
+      viewPorts = new ArrayList<ViewPort>();
+            
       for(int i = 0; i < cameraArray.length; i++){
           if(i != mainScreen){
               Camera newCam = cam.clone();
               newCam.setViewPort((float)(i)/numberOfDisplays, (float)(i + 1)/numberOfDisplays, 0, 1.0f);
              
-              System.out.println(cameraFOV + " " + displayWidth + " " + displayHeight);
+//              System.out.println(cameraFOV + " " + displayWidth + " " + displayHeight);
               newCam.setFrustumPerspective(cameraFOV, (float)displayWidth/displayHeight, 0.1f, 1000);
 
               ViewPort view = renderManager.createMainView("View of Cam " + i, newCam);
@@ -148,6 +117,7 @@ public class CameraView {
               view.attachScene(rootNode);
               view.setBackgroundColor(new ColorRGBA(0.7f,0.8f,1f,1f));
               cameraArray[i] = newCam;
+              viewPorts.add(view);
           }
        }
       
@@ -167,6 +137,18 @@ public class CameraView {
   
   public float getCameraFOV(){
       return cameraFOV;
+  }
+  
+  public void blackoutViewPorts(){
+      for(ViewPort vp:viewPorts){
+          vp.setEnabled(false);
+      }
+  }
+  
+    public void enableViewPorts(){
+      for(ViewPort vp:viewPorts){
+          vp.setEnabled(true);
+      }
   }
     
     

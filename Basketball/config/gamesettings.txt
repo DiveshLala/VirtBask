@@ -1,6 +1,6 @@
 numPlayers,2
 isOffense,true
-isMultiPlayer,false
+isMultiPlayer,true
 hasKinect,false
 hasPressureSensor,false
 TCPPort,1235
@@ -10,9 +10,9 @@ kinectPort,1240
 pressureSensorAddress,10.229.54.173
 pressureSensorPort,1234
 gameType,Team
-immersiveHeight,1366
-immersiveWidth,768
-isImmersive,false
+immersiveHeight,100
+immersiveWidth,100
+isImmersive,true
 FOV,73
-activityScreen,4
-mainScreen,4
+activityScreen,1
+mainScreen,1

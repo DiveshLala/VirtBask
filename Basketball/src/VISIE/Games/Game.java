@@ -72,6 +72,8 @@ import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.debug.SkeletonDebugger;
+import com.jme3.scene.shape.Box;
+import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
@@ -246,11 +248,32 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
        }
         textManager.setScoreText(guiNode);
        
+       if(initialSettings.getMultiPlayer()){
+            this.loadBlack();
+       }
        loadingComplete = true;    
        timeGameStarted = System.nanoTime();
        bulletAppState.getPhysicsSpace().addCollisionListener(this);
  //      bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
+    }
+    
+    private void loadBlack(){
+                
+        viewPort.setEnabled(false);
+        
+        if(initialSettings.getMultiPlayer()){
+            camView.blackoutViewPorts();
+        }
+    }
+    
+    public void enableViewPorts(){
+        
+        viewPort.setEnabled(true);
+        
+        if(initialSettings.getMultiPlayer()){
+            camView.enableViewPorts();
+        }
     }
     
     public void loadSounds(){
@@ -603,9 +626,9 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             sceneCharacterManager.updateCharacterSounds();
             
        //     sceneCharacterManager.showCollisionLines();
-            sceneCharacterManager.showAgentTargetPositions(1);
-            sceneCharacterManager.showAgentTargetPositions(2);
-            sceneCharacterManager.showAgentTargetPositions(3);
+//            sceneCharacterManager.showAgentTargetPositions(1);
+//            sceneCharacterManager.showAgentTargetPositions(2);
+//            sceneCharacterManager.showAgentTargetPositions(3);
 
             //needed to set update ball position
             if(broadcastServer != null){
