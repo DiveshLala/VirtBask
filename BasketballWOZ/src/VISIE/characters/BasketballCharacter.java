@@ -4,6 +4,7 @@
  */
 package VISIE.characters;
 import Basketball.Ball;
+import VISIE.Sound.CharacterSoundNode;
 import VISIE.mathfunctions.Conversions;
 import VISIE.models.AnimatedModel;
 import VISIE.scenemanager.Court;
@@ -18,6 +19,7 @@ public abstract class BasketballCharacter extends Character{
     public Ball ball;
     public boolean hasPossession;
     private BasketballTeam team;
+    private CharacterSoundNode characterSoundNode;
 
     public boolean isInPossession(){
         return hasPossession;
@@ -90,5 +92,13 @@ public abstract class BasketballCharacter extends Character{
         float threshold = 50;
         float angleToGoal = Conversions.originToTargetAngle(this.getPosition().setY(0), Court.getHoopLocation().setY(0));
         return Conversions.minDistanceBetweenAngles(this.getFacingDirection(), angleToGoal) < threshold;
+    }
+    
+    public void setSoundNodes(){
+        characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt");
+    }
+    
+    public void playUtterance(String s){
+        characterSoundNode.playUtterance(s);
     }
 }

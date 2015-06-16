@@ -506,6 +506,9 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
 //    inputManager.addListener(this, "Point to goal");
      inputManager.addMapping("Celebration", new KeyTrigger(KeyInput.KEY_J));
      inputManager.addListener(this, "Celebration");
+     
+     inputManager.addMapping("UtteranceYes", new KeyTrigger(KeyInput.KEY_5));
+     inputManager.addListener(this, "UtteranceYes");
   }
 
     public void onAction(String binding, boolean value, float tpf) {
@@ -565,7 +568,7 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
          else{
              p.playAnimation(1, "callForPass3", 0.75f, LoopMode.DontLoop);
          }
-         mainClient.sendSoundInfo("pass");
+         this.playMyVoice("callforpass");
      }
      else if(binding.equals("Accept Pass") && !p.isInPossession() && !value){
          
@@ -588,7 +591,15 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
       else if(binding.equals("Celebration") && !p.isInPossession() && !value){     
             p.playAnimation(1, "celebration", 1f, LoopMode.DontLoop);
      }
+     else if(binding.equals("UtteranceYes") && !value){  
+         this.playMyVoice("yes");
+     }
   }
+    
+    public void playMyVoice(String s){
+         p.playUtterance(s);
+         mainClient.sendSoundInfo(s);
+    }
 
     public void collision(PhysicsCollisionEvent event){
 

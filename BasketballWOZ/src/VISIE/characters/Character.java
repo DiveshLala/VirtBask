@@ -12,6 +12,7 @@ import com.jme3.math.Vector3f;
 import java.util.ArrayList;
 import com.jme3.scene.Spatial;
 import VISIE.mathfunctions.CollisionMath;
+import com.jme3.scene.Node;
 
 /**
  *
@@ -25,6 +26,7 @@ public abstract class Character{
     protected float currentSpeed;
     protected int characterID;
     protected String characterType;
+    protected Node existenceNode;
     
     public abstract String getCharacterType();
     
@@ -54,6 +56,10 @@ public abstract class Character{
     
     public int getID(){
         return characterID;
+    }
+    
+    public void setExistenceNode(Node n){
+        existenceNode = n;
     }
     
     

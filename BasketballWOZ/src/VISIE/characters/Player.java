@@ -6,6 +6,7 @@
 package VISIE.characters;
 import Basketball.Ball;
 import Basketball.PlayerGesture;
+import VISIE.Sound.CharacterSoundNode;
 import VISIE.models.AnimatedModel;
 import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;

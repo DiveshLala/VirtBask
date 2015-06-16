@@ -67,8 +67,10 @@ public class CharacterCreator{
         n.attachChild(model);
         n.addControl(playerNode);
         root.attachChild(n);
+        p.setExistenceNode(n);
         p.setPosition(startPosition);
         bulletAppState.getPhysicsSpace().add(playerNode);
+        p.setSoundNodes();
         System.out.println("player created"); 
         return p;
     }
@@ -95,6 +97,7 @@ public class CharacterCreator{
         n.addControl(playerNode);
         root.attachChild(n);
         nup.setPosition(startPosition);
+        nup.setExistenceNode(n);
         bulletAppState.getPhysicsSpace().add(playerNode);
         nup.setExistenceNode(n);
         System.out.println("non-user player created"); 
@@ -129,6 +132,7 @@ public class CharacterCreator{
         n.setLocalTranslation(startPosition);
         n.attachChild(model);
         n.addControl(character);
+        ba.setExistenceNode(n);
         bulletAppState.getPhysicsSpace().add(character);
         root.attachChild(n); 
         return ba;
