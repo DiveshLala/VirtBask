@@ -99,6 +99,7 @@ public class UserNavigation {
                     this.sensorNavigation(sensorClient, tpf);
                 }
             }
+            System.out.println(walkDirection);
             player.walk(walkDirection, turnCode);
             player.setActionState(up);
             return cameraRot;
@@ -331,14 +332,14 @@ public class UserNavigation {
             player.setSpeed(10f);
         }
         else if(down){
-            walkDirection.addLocal(Conversions.degreesToNormalizedCoordinates(player.getFacingDirection()).negate().multLocal(player.getSpeed() * 0.75f)); 
+            walkDirection.addLocal(Conversions.degreesToNormalizedCoordinates(player.getFacingDirection()).negate().multLocal(player.getSpeed() * 0.5f)); 
             if(player.hasPossession){
                 player.doNavigationStateChange(1);
             }
             else{
                 player.doNavigationStateChange(0);
             }
-            player.setSpeed(10f);
+            player.setSpeed(5f);
             turnCode = 3;
         }
         else{

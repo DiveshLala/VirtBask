@@ -240,23 +240,10 @@ public class Player extends BasketballCharacter{
     public CharacterControl getPhysicsNode(){
         return mainNode;
     }
-    
-//    public void walk(Vector3f vec){
-//        mainNode.setWalkDirection(vec.mult(2));
-//        
-//        if(!vec.equals(Vector3f.ZERO)){
-//             characterModel.playAnimation(2, "walk", 1, LoopMode.Loop);
-//        }
-//        else{
-//            characterModel.playAnimation(2, "standingPose", 1, LoopMode.Loop);
-//        }
-//    }
-    
+        
     public void walk(Vector3f vec, int turnCode){
-
-        mainNode.setWalkDirection(vec.mult(2));
+        mainNode.setWalkDirection(vec);
         this.doWalkingAnimations(turnCode, vec);
-
     }
     
     protected void doWalkingAnimations(int turnCode, Vector3f vec){
@@ -328,22 +315,34 @@ public class Player extends BasketballCharacter{
      
      public void doNonPossessionGesture(){
          
-         BPNewModel bm = (BPNewModel)characterModel;
+         BPNewModel bm = (BPNewModel) characterModel;
          String currentGest = characterModel.getCurrentAnimation(1);
-         
-         if((currentGest.contains("shoot") || 
-            currentGest.startsWith("pass") ||
-            currentGest.contains("callForPass")) &&
-             bm.hasAnimationFinished(1)){
-             this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
-         }
-         else if(this.getSpeed() > 0){
-             this.playAnimation(1, "walk", 1, LoopMode.Loop);
-         }
-         else if(!currentGest.contains("shoot")){
-             String legGesture = this.getCurrentGesture(2);
-             this.playAnimation(1, legGesture, 1, LoopMode.Loop);
-         }
+        
+        if(currentGest.contains("shoot") && bm.hasAnimationFinished(1)){
+            this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+        }
+        else if(currentGest.startsWith("pass") && bm.hasAnimationFinished(1)){
+            this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+        }
+        else if(currentGest.contains("callForPass")){
+            if(bm.hasAnimationFinished(1)){
+               this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+            }
+        }   
+        else if(this.getSpeed() > 0){
+            if(!currentGest.toLowerCase().contains("block")){
+                this.playAnimation(1, "walk", 1, LoopMode.Loop);
+            }
+        }
+        else{
+            if(!currentGest.contains("shoot") && 
+               !currentGest.startsWith("pass") &&
+               !currentGest.startsWith("receivePass") &&
+               !currentGest.toLowerCase().contains("block")){
+               String legGesture = this.getCurrentGesture(2);
+               this.playAnimation(1, legGesture, 1, LoopMode.Loop);
+            }
+        }
      }
      
      public void playAnimation(int channel, String animationName, float speed, LoopMode l){
@@ -386,38 +385,4 @@ public class Player extends BasketballCharacter{
             }
         }
     }
-     
-//     public String getModelBones(){
-//         return characterModel.getModelBones();
-//     }
-     
-//     public void playActionState(int actionState){
-//     
-//         if(actionState == 0){
-//             this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
-//         }
-//         else if(actionState == 1){
-//             this.playAnimation(1, "dribbleLoop", 0.5f, LoopMode.Loop);
-//         }
-//         else if(actionState == 2){
-//             this.playAnimation(1, "shootAction", 2, LoopMode.DontLoop);
-//         }     
-//     }
-     
-//     public int getActionState(){
-//         
-//         String anim = this.getCurrentGesture(1);
-//         if(anim.equals("standingPose")){
-//             return 0;
-//         }
-//         else if(anim.equals("dribbleLoop")){
-//             return 1;
-//         }
-//         else if(anim.equals("shootAction")){
-//             return 2;
-//         }
-//         else{
-//             return 0;
-//         }
-//     }
 }

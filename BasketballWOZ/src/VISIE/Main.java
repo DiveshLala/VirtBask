@@ -466,42 +466,44 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
     inputManager.addMapping("Rights", new KeyTrigger(KeyInput.KEY_RIGHT));
     inputManager.addMapping("Ups",    new KeyTrigger(KeyInput.KEY_UP));
     inputManager.addMapping("Downs",  new KeyTrigger(KeyInput.KEY_DOWN));
-    inputManager.addMapping("Jumps",  new KeyTrigger(KeyInput.KEY_SPACE));
-    inputManager.addMapping("Pause",  new KeyTrigger(KeyInput.KEY_P));
+  //  inputManager.addMapping("Jumps",  new KeyTrigger(KeyInput.KEY_SPACE));
     inputManager.addMapping("A Type Camera", new KeyTrigger(KeyInput.KEY_A));
     inputManager.addMapping("B Type Camera", new KeyTrigger(KeyInput.KEY_B));
     inputManager.addMapping("Top Camera", new KeyTrigger(KeyInput.KEY_T));
-    inputManager.addMapping("Aspect Ratio", new KeyTrigger(KeyInput.KEY_O));
     inputManager.addListener(this, "Lefts");
     inputManager.addListener(this, "Rights");
     inputManager.addListener(this, "Ups");
     inputManager.addListener(this, "Downs");
-    inputManager.addListener(this, "Jumps");
-    inputManager.addListener(this, "Pause");
+//    inputManager.addListener(this, "Jumps");
     inputManager.addMapping("CamState0", new KeyTrigger(KeyInput.KEY_0));
-    inputManager.addMapping("CamState1", new KeyTrigger(KeyInput.KEY_1));
-    inputManager.addMapping("CamState2", new KeyTrigger(KeyInput.KEY_2));
+//    inputManager.addMapping("CamState1", new KeyTrigger(KeyInput.KEY_1));
+//    inputManager.addMapping("CamState2", new KeyTrigger(KeyInput.KEY_2));
     inputManager.addListener(this, "A Type Camera");
     inputManager.addListener(this, "B Type Camera");
     inputManager.addListener(this, "Top Camera");
-    inputManager.addListener(this, "Aspect Ratio");
     inputManager.addListener(this, "CamState0");
-    inputManager.addListener(this, "CamState1");
-    inputManager.addListener(this, "CamState2");
+//    inputManager.addListener(this, "CamState1");
+//    inputManager.addListener(this, "CamState2");
     
     //player animations
-    inputManager.addMapping("Accept Pass", new KeyTrigger(KeyInput.KEY_H));
-    inputManager.addListener(this, "Accept Pass");
-    inputManager.addMapping("Shoot Ball", new KeyTrigger(KeyInput.KEY_K));
+
+    inputManager.addMapping("Shoot Ball", new KeyTrigger(KeyInput.KEY_LSHIFT));
     inputManager.addListener(this, "Shoot Ball");
-    inputManager.addMapping("Propose Pass", new KeyTrigger(KeyInput.KEY_L));
+    inputManager.addMapping("Propose Pass", new KeyTrigger(KeyInput.KEY_C));
     inputManager.addListener(this, "Propose Pass");
-    inputManager.addMapping("Pass Ball", new KeyTrigger(KeyInput.KEY_SEMICOLON));
+    inputManager.addMapping("Pass Ball", new KeyTrigger(KeyInput.KEY_SPACE));
     inputManager.addListener(this, "Pass Ball");
-    inputManager.addMapping("Call for pass", new KeyTrigger(KeyInput.KEY_S));
+    
+    
+    inputManager.addMapping("Call for pass", new KeyTrigger(KeyInput.KEY_1));
     inputManager.addListener(this, "Call for pass");
-    inputManager.addMapping("Point to goal", new KeyTrigger(KeyInput.KEY_V));
-    inputManager.addListener(this, "Point to goal");
+    inputManager.addMapping("Accept Pass", new KeyTrigger(KeyInput.KEY_2));
+    inputManager.addListener(this, "Accept Pass");
+    
+    inputManager.addMapping("Block", new KeyTrigger(KeyInput.KEY_W));
+    inputManager.addListener(this, "Block");
+//    inputManager.addMapping("Point to goal", new KeyTrigger(KeyInput.KEY_V));
+//    inputManager.addListener(this, "Point to goal");
   }
 
     public void onAction(String binding, boolean value, float tpf) {
@@ -516,8 +518,6 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
       userNavigation.setDirectionKeys(value, 1);}
      else if (binding.equals("Jumps")) {
 //      playerNode.jump();
-    } else if (binding.equals("Pause") && !value) {
-   //     pauseGame();
     } else if (binding.equals("A Type Camera") && !value) {
       ATypeCamera = !ATypeCamera;
       BTypeCamera = false;
@@ -553,7 +553,16 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
          p.playAnimation(1, "pass", 1f, LoopMode.DontLoop);
      }
      else if(binding.equals("Call for pass") && !p.isInPossession()){
-         p.playAnimation(1, "callForPass3", 0.75f, LoopMode.DontLoop);
+         double d = Math.random() * 3;
+         if(d < 1){
+            p.playAnimation(1, "callForPass", 0.75f, LoopMode.DontLoop);
+         }
+         else if(d < 2){
+            p.playAnimation(1, "callForPass2", 0.75f, LoopMode.DontLoop);
+         }
+         else{
+             p.playAnimation(1, "callForPass3", 0.75f, LoopMode.DontLoop);
+         }
      }
      else if(binding.equals("Accept Pass") && !p.isInPossession() && !value){
          
@@ -562,6 +571,18 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
          }
          else{
              p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
+         }
+     }
+     else if(binding.equals("Block") && !p.isInPossession() && !value){
+         
+         if(!p.isInPossession()){
+             
+            if(p.getCurrentGesture(1).toLowerCase().contains("block")){
+                 p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
+            }
+            else{
+                p.playAnimation(1, "blockLoop", 0.75f, LoopMode.DontLoop);
+            }
          }
      }
   }
