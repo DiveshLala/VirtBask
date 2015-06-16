@@ -1,0 +1,13 @@
+hasKinect,false
+hasPressureSensor,false
+serverAddress,localhost
+TCPPort,1235
+UDPPort,1237
+kinectAddress,host
+kinectPort,1240
+pressureSensorAddress,10.229.54.66
+pressureSensorPort,1234
+immersiveHeight,1368
+immersiveWidth,768
+isImmersive,false
+FOV,75

@@ -1,0 +1,14 @@
+0,standingPose
+1,dribbleLoop
+2,shootAction
+3,initiatePass
+4,passAction
+5,acceptPass
+6,postReceivePass
+7,preDribble
+8,postDribble
+9,callForPass
+10,run
+11,preBlock
+12,blockLoop
+13,postBlock

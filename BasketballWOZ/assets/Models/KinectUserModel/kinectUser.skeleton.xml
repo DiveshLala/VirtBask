@@ -1,0 +1,145 @@
+<skeleton>
+	<bones>
+		<bone id="13" name="rootJoint">
+			<position x="-8.644061" y="0.000000" z="-26.843676"/>
+			<rotation angle="1.570796">
+				<axis x="-1.000000" y="0.000000" z="0.000000"/>
+			</rotation>
+		</bone>
+		<bone id="6" name="leftHipJoint">
+			<position x="6.770656" y="-5.894588" z="0.000000"/>
+			<rotation angle="2.077954">
+				<axis x="0.571764" y="0.588363" z="-0.571764"/>
+			</rotation>
+		</bone>
+		<bone id="5" name="rightHipJoint">
+			<position x="-6.029344" y="-5.894590" z="0.000000"/>
+			<rotation angle="2.105023">
+				<axis x="0.580937" y="0.570200" z="-0.580848"/>
+			</rotation>
+		</bone>
+		<bone id="4" name="torsoJoint">
+			<position x="0.028486" y="5.488089" z="0.000000"/>
+			<rotation angle="2.098012">
+				<axis x="-0.578682" y="0.574811" z="0.578550"/>
+			</rotation>
+		</bone>
+		<bone id="2" name="leftKneeJoint">
+			<position x="0.000000" y="0.000000" z="21.008574"/>
+			<rotation angle="0.045409">
+				<axis x="0.999971" y="0.007601" z="-0.000172"/>
+			</rotation>
+		</bone>
+		<bone id="16" name="rightKneeJoint">
+			<position x="0.000000" y="0.000000" z="21.603703"/>
+			<rotation angle="3.141593">
+				<axis x="-0.000000" y="-0.003815" z="0.999993"/>
+			</rotation>
+		</bone>
+		<bone id="17" name="shoulderCentreJoint">
+			<position x="-0.000000" y="-0.000001" z="30.600655"/>
+			<rotation angle="0.000000">
+				<axis x="-0.002057" y="-0.999998" z="-0.000181"/>
+			</rotation>
+		</bone>
+		<bone id="15" name="leftAnkleJoint">
+			<position x="0.000000" y="-0.000000" z="23.853359"/>
+			<rotation angle="3.138335">
+				<axis x="0.447200" y="0.003166" z="-0.894428"/>
+			</rotation>
+		</bone>
+		<bone id="10" name="rightAnkleJoint">
+			<position x="0.000000" y="-0.000000" z="23.107582"/>
+			<rotation angle="0.916162">
+				<axis x="0.028603" y="0.999491" z="-0.014130"/>
+			</rotation>
+		</bone>
+		<bone id="0" name="leftShoulderJoint">
+			<position x="0.001013" y="-16.000473" z="0.095753"/>
+			<rotation angle="3.141593">
+				<axis x="-0.000000" y="0.979501" z="-0.201441"/>
+			</rotation>
+		</bone>
+		<bone id="12" name="rightShoulderJoint">
+			<position x="-0.000975" y="15.402653" z="-0.299664"/>
+			<rotation angle="3.141253">
+				<axis x="-0.000030" y="0.985078" z="0.172110"/>
+			</rotation>
+		</bone>
+		<bone id="11" name="headJoint">
+			<position x="-0.011763" y="0.089256" z="17.000935"/>
+			<rotation angle="0.000000">
+				<axis x="1.000000" y="-0.000171" z="0.000244"/>
+			</rotation>
+		</bone>
+		<bone id="1" name="leftFootJoint">
+			<position x="-0.000001" y="-0.000000" z="5.771219"/>
+			<rotation angle="0.000000">
+				<axis x="0.003630" y="-0.999991" z="0.002019"/>
+			</rotation>
+		</bone>
+		<bone id="3" name="rightFootJoint">
+			<position x="0.000001" y="0.000001" z="5.823844"/>
+			<rotation angle="0.000000">
+				<axis x="-0.000012" y="0.852648" z="0.522485"/>
+			</rotation>
+		</bone>
+		<bone id="9" name="leftElbowJoint">
+			<position x="-0.000000" y="0.000000" z="25.973043"/>
+			<rotation angle="3.141603">
+				<axis x="-0.001245" y="0.004578" z="0.999989"/>
+			</rotation>
+		</bone>
+		<bone id="18" name="rightElbowJoint">
+			<position x="0.000000" y="0.000005" z="25.238924"/>
+			<rotation angle="3.141595">
+				<axis x="-0.000598" y="0.002670" z="0.999996"/>
+			</rotation>
+		</bone>
+		<bone id="14" name="leftWristJoint">
+			<position x="0.000000" y="-0.000001" z="18.324530"/>
+			<rotation angle="3.141445">
+				<axis x="-0.001422" y="-0.051950" z="0.998649"/>
+			</rotation>
+		</bone>
+		<bone id="7" name="rightWristJoint">
+			<position x="0.000000" y="-0.000000" z="19.220528"/>
+			<rotation angle="3.141515">
+				<axis x="-0.000929" y="-0.041229" z="0.999149"/>
+			</rotation>
+		</bone>
+		<bone id="19" name="leftHandJoint">
+			<position x="-0.000000" y="0.000001" z="7.037476"/>
+			<rotation angle="0.000000">
+				<axis x="0.019155" y="-0.999817" z="0.000024"/>
+			</rotation>
+		</bone>
+		<bone id="8" name="rightHandJoint">
+			<position x="0.000000" y="-0.000002" z="10.023494"/>
+			<rotation angle="0.000000">
+				<axis x="0.022817" y="-0.999740" z="-0.000023"/>
+			</rotation>
+		</bone>
+	</bones>
+	<bonehierarchy>
+		<boneparent bone="leftHipJoint" parent="rootJoint" />
+		<boneparent bone="rightHipJoint" parent="rootJoint" />
+		<boneparent bone="torsoJoint" parent="rootJoint" />
+		<boneparent bone="leftKneeJoint" parent="leftHipJoint" />
+		<boneparent bone="rightKneeJoint" parent="rightHipJoint" />
+		<boneparent bone="shoulderCentreJoint" parent="torsoJoint" />
+		<boneparent bone="leftAnkleJoint" parent="leftKneeJoint" />
+		<boneparent bone="rightAnkleJoint" parent="rightKneeJoint" />
+		<boneparent bone="leftShoulderJoint" parent="shoulderCentreJoint" />
+		<boneparent bone="rightShoulderJoint" parent="shoulderCentreJoint" />
+		<boneparent bone="headJoint" parent="shoulderCentreJoint" />
+		<boneparent bone="leftFootJoint" parent="leftAnkleJoint" />
+		<boneparent bone="rightFootJoint" parent="rightAnkleJoint" />
+		<boneparent bone="leftElbowJoint" parent="leftShoulderJoint" />
+		<boneparent bone="rightElbowJoint" parent="rightShoulderJoint" />
+		<boneparent bone="leftWristJoint" parent="leftElbowJoint" />
+		<boneparent bone="rightWristJoint" parent="rightElbowJoint" />
+		<boneparent bone="leftHandJoint" parent="leftWristJoint" />
+		<boneparent bone="rightHandJoint" parent="rightWristJoint" />
+	</bonehierarchy>
+</skeleton>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+  <!-- start screen -->
+  <!-- +++++++++++++++++++++++++++++++++++++++ -->
+    <useStyles filename="nifty-default-styles.xml" />
+   <useControls filename="nifty-default-controls.xml" />
+  
+    <screen id="start" controller="VISIE.StartInterface">
+        <layer id="mainLayer" backgroundColor="#ffff" childLayout="vertical"> 
+        
+        
+          <interact onClick = ""/>  <!-- ensures clicks dont freeze GUI - does nothing-->
+          
+          <panel id="title" height="15%" width="75%" align="center" childLayout="center"
+                 backgroundColor="#000f">  
+                 <text text="Welcome to Virtual Basketball!&#10;Please choose your settings" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
+          </panel>
+          
+          <panel id="activityPanel" height="65%" width="75%" align="center" childLayout="overlay">  
+                 
+                <control id= "offDefGroup" name="radioButtonGroup" />
+                <control id = "soloTeamGroup" name = "radioButtonGroup" />
+                <control id = "flatImmersiveGroup" name = "radioButtonGroup" />
+                 
+                 <panel id="networkSettingPanel" height="100%" width = "100%" align = "center" childLayout = "vertical"
+                 backgroundColor = "#e0ffffff" visible = "true"> 
+                     <panel id="gameSettingTitle" height="15%" width = "100%" align = "center" childLayout = "center" > 
+                              <text text="NETWORK SETTINGS" font="Interface/Fonts/Moire.fnt" width="100%" height="100%" color = "#ff0000ff" size = "60pt"/>
+                     </panel>
+                        <panel childLayout = "horizontal">
+                           <panel width = "30%"/>
+                                <control name = "label" width = "200px" text="Multiplayer Server Settings" valign = "center" color = "#000000ff"/>
+                           <panel width = "30"/> 
+                        </panel>
+                        <panel height = "5%"/>
+                        <panel id = "portPanel" childLayout = "horizontal">
+                            <panel width = "1%"/>
+                                <control id = "AddressLabel" name = "label" text="Server address" width = "100px" valign = "center" color = "#000000ff"/>
+                                <control id = "AddressText" name = "textfield" visible = "true" width = "130px" valign = "center"/>
+                           <panel width = "3%"/>
+                                <control id = "TCPLabel" name = "label" width = "60px" text="TCP Port" valign = "center" color = "#000000ff"/>
+                                <control id = "TCPPortText" name = "textfield" visible = "true" width = "40px" valign = "center"/>
+                            <panel width = "3%"/>
+                                <control id = "TCP label" name = "label" width = "60px" text="UDP Port" valign = "center" color = "#000000ff"/>
+                                <control id = "UDPPortText" name = "textfield" visible = "true" width = "40px" valign = "center"/>
+                           <panel width = "*"/> 
+                        </panel>
+                      
+                        <panel height = "10%"></panel>
+                        
+                        <panel childLayout = "horizontal">
+                           <panel width = "27%"/>
+                                <control name = "label" width = "200px" text="Connect To Kinect?" valign = "center" color = "#000000ff"/>
+                                <control id = "kinectCheck" name = "checkbox" visible = "true" valign = "center">
+                                    <interact onClick = "selectKinect()"/>
+                                </control>
+                           <panel width = "*"/> 
+                        </panel>
+                        <panel height = "5%"/>
+                        <panel id = "kinectPanel" childLayout = "horizontal">
+                           <panel width = "5%"/>
+                                <control name = "label"  text="Kinect Server Address"  align = "left" valign = "center" color = "#000000ff"/>
+                                <panel width = "10px"/>
+                                <control id = "kinectAddress" name = "textfield" visible = "true" align = "right" valign = "center" width = "120px"/>
+                           <panel width = "5%"/>
+                                <control id = "TCP label" name = "label" text="Port" valign = "center" color = "#000000ff"/>
+                                <panel width = "10px"/>
+                                <control id = "kinectPort" name = "textfield" visible = "true" valign = "center"/>
+                           <panel width = "*"/> 
+                        </panel>
+                        
+                        <panel height = "10%"></panel>
+                        
+                        
+                       <panel childLayout = "horizontal">
+                           <panel width = "27%"/>
+                                <control name = "label" width = "200px" text="Connect to Pressure Sensor?" valign = "center" color = "#000000ff"/>
+                                <control id = "psCheck" name = "checkbox" visible = "true" valign = "center">
+                                    <interact onClick = "selectPS()"/>
+                                </control>
+                           <panel width = "*"/> 
+                       </panel>
+                       <panel height = "5%"/>
+                           <panel id = "psPanel" childLayout = "horizontal">
+                               <panel width = "5%"/>
+                                    <control name = "label"  text="Pressur Sensor Address"  align = "left" valign = "center" color = "#000000ff"/>
+                                    <panel width = "10px"/>
+                                    <control id = "psAddress" name = "textfield" visible = "true" align = "right" valign = "center" width = "120px"/>
+                               <panel width = "5%"/>
+                                    <control name = "label" text="Port" valign = "center" color = "#000000ff"/>
+                                    <panel width = "10px"/>
+                                    <control id = "psPort" name = "textfield" visible = "true" valign = "center"/>
+                               <panel width = "*"/> 
+                            </panel>
+                        <panel height = "*"/>         
+                 </panel>   
+                 <panel id = "displaySettingsPanel" backgroundColor = "#98fb98ff" visible = "false" childLayout = "vertical">
+                      <panel height="15%" width = "100%" align = "center" childLayout = "center" > 
+                              <text text="DISPLAY SETTINGS" font="Interface/Fonts/Moire.fnt" width="100%" height="100%" color = "#ff0000ff" size = "60pt"/>
+                     </panel>   
+                      <control name = "label"  text="Display Type:"  align = "center" valign = "center" color = "#000000ff"/> 
+                      <panel childLayout = "horizontal">
+                          <panel width = "10%"/>
+                          <control name = "label"  text="Flat"  align = "right" valign = "center" color = "#000000ff"/>
+                          <panel width = "3%"/>
+                          <control name="radioButton" id="flatButton" align = "left" valign = "center" visibleToMouse = "true" group = "flatImmersiveGroup">
+                                    <interact  onClick = "selectFlatDisplay()"/>
+                          </control>
+                          <panel width = "5%"/>
+                          <panel id = "flatPanel" childLayout = "horizontal">
+                              <control name = "label"  text="Resolution"  align = "center" valign = "center" color = "#000000ff"/> 
+                              <panel width = "5%"/>
+                              <control name="dropDown" id="flatRes" align="center" valign="center" width = "60%" color = "#ff0000ff" visibleToMouse = "true"> 
+                                    <interact/>
+                              </control>
+                          </panel>
+                          <panel width = "3%"/>
+                          <panel id = "customResPanel" childLayout = "horizontal">
+                              <control name = "label"  text="W"  align = "center" valign = "center" color = "#000000ff"/> 
+                              <panel width = "3%"/>
+                              <control id = "flatWidth" width = "40px" name = "textfield" visibleToMouse = "true" valign = "center"/>
+                              <panel width = "3%"/>
+                              <control name = "label"  text="H"  align = "center" valign = "center" color = "#000000ff"/> 
+                              <panel width = "3%"/>
+                              <control id = "flatHeight" width = "40px" name = "textfield" visibleToMouse = "true" valign = "center"/>
+                          </panel>
+                      </panel>
+                      <panel childLayout = "horizontal">
+                          <panel width = "3%"/>
+                                <control name = "label"  text="Immersive"  align = "right" valign = "center" color = "#000000ff"/>
+                          <panel width = "2.5%"/>
+                                <control name="radioButton" id="immersiveButton" align = "left" valign = "center" visibleToMouse = "true" group = "flatImmersiveGroup">
+                                    <interact onClick = "selectImmersiveDisplay()"/>
+                                </control>   
+                          <panel width = "5%"/>
+                          <panel id = "immersivePanel" childLayout = "horizontal" >
+                              <control name = "label"  text="Resolution of one display"  align = "right" valign = "center" color = "#000000ff"/>
+                              <panel width = "12.5%"/>
+                              <panel id = "immersiveResPanel" childLayout = "horizontal">
+                                  <control name = "label"  text="W"  align = "center" valign = "center" color = "#000000ff"/> 
+                                  <panel width = "3%"/>
+                                  <control id = "immersiveWidth" width = "40px" name = "textfield" visibleToMouse = "true" valign = "center"/>
+                                  <panel width = "3%"/>
+                                  <control name = "label"  text="H"  align = "center" valign = "center" color = "#000000ff"/> 
+                                  <panel width = "3%"/>
+                                  <control id = "immersiveHeight" width = "40px" name = "textfield" visibleToMouse = "true" valign = "center"/>
+                              </panel>
+                          </panel>   
+                      </panel>
+                      <panel height = "5%"/>
+                      <panel id = "numDisplays" childLayout = "horizontal">
+                          <panel width = "25%"/>
+                          <control name = "label" valign = "center" text = "Number of displays (8 max)" color = "#000000ff"/>
+                          <panel width = "3%"/>
+                          <control id = "displayNum" text = "8" width = "25px" name = "textfield" visibleToMouse = "true" valign = "center"/>
+                      </panel>
+                      <panel height = "3%"/>
+                      <panel id = "displayDiagram" childLayout = "horizontal">
+                          <panel width = "15%"/>
+                           <panel id = "disp0" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(0)" onSecondaryClick = "selectMainScreen(0)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+               
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp1" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(1)" onSecondaryClick = "selectMainScreen(1)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp2" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(2)" onSecondaryClick = "selectMainScreen(2)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                    
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp3" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(3)" onSecondaryClick = "selectMainScreen(3)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                   
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp4" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(4)" onSecondaryClick = "selectMainScreen(4)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                       
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp5" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(5)" onSecondaryClick = "selectMainScreen(5)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                          
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp6" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(6)" onSecondaryClick = "selectMainScreen(6)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                           </panel>
+                           <panel width = "3%"/>
+                           <panel id = "disp7" height = "100%" width = "5%" backgroundColor = "#ffffffff" visibleToMouse = "true" childLayout = "center">
+                                 <interact onClick = "selectActivityDisplay(7)" onSecondaryClick = "selectMainScreen(7)"/>
+                                 <effect>
+                                    <onActive name="border" border="2px,2px,2px,2px" color="#000f,#000f,#000f,#000f" timeType="infinite"/>
+                                 </effect>
+                           </panel>
+                      </panel> 
+                      <panel id = "diagExplanation" childLayout = "vertical">
+                          <panel childLayout = "horizontal">
+                                <panel width = "25%"/>
+                                <control name = "label" valign = "top" align = "right" text = "Left click on a display to select the activity screen" color = "#ff0000ff"/>
+                                <panel width = "25%"/>
+                          </panel>
+                          <panel height = "100%"/>
+                          <control name = "label" valign = "bottom" text = "Right click on a display to designate the main screen in the game" color = "#0000ffff"/>
+     
+                      </panel>
+                      <panel height = "5%" />
+                      <panel id = "cameraInfo" childLayout = "horizontal">
+                           <panel width = "5%"/>
+                           <control name = "label" align = "right" text = "Camera FOV" color = "#000000ff"/> 
+                           <panel width = "10"/>
+                           <control id = "fov" name = "textfield" text = "73" width = "10%"/>
+                           <panel width = "20%"/>
+                           <control name = "label" align = "right" text = "Use fixed orientation?" color = "#000000ff"/> 
+                           <panel width = "10"/>
+                           <control id = "fixedOrientation" name = "checkbox"/>
+                      </panel>
+                 </panel>
+          </panel>
+          
+          <panel id="contextButtons" height="*" width="75%" align="center" childLayout="horizontal"
+                 backgroundColor="#000f">
+              
+                 <panel id="networkButtonPanel" height="100%" width = "50%" align = "center" childLayout = "center"
+                 backgroundColor = "#e0ffffff"> 
+                      <control name="button" label="Network Settings" id="networkButton" align="center" valign="center" visibleToMouse = "true"> 
+                                <interact onClick="networkButtonClick()"/>
+                      </control>
+                 </panel>
+                 
+                 <panel id="displayButtonPanel" height="100%" width = "50%" align = "center" childLayout = "center"
+                 backgroundColor = "#98fb98ff"> 
+                      <control name="button" label="Display Settings" id="displayButton" align="center" valign="center"> 
+                            <interact onClick = "displayButtonClick()"/>
+                      </control>
+                 </panel>         
+          </panel>
+          
+          <panel id = "startPanel" height = "10%" width = "100%" childLayout = "horizontal" backgroundColor = "#ffff">
+                  <panel width = "15%"/>
+                  <control name="button" label= "START GAME!" id="startButton" align="center" valign="center" visibleToMouse = "true"> 
+                        <interact onClick="startGame()"/>
+                  </control> 
+                  <control id ="errorMessage" align = "left" name = "label" width = "*" text = "" valign = "center" color = "#ff0000ff"/> 
+          </panel>
+        </layer>
+    </screen>
+</nifty>
