@@ -90,11 +90,11 @@ public class AgentBodyOperations {
     
     public void resetHeadPosition(){
                 
-        if(modelHeadRotation != 0){
-                    System.out.println("resetting...");
-            agentModel.turnHead(-modelHeadRotation);
-            modelHeadRotation = 0;
-        }
+//        if(modelHeadRotation != 0){
+//                    System.out.println("resetting...");
+//            agentModel.turnHead(-modelHeadRotation);
+//            modelHeadRotation = 0;
+//        }
     }
     
     

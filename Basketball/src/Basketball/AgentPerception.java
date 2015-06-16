@@ -35,11 +35,11 @@ public class AgentPerception {
     
     
     //returns mutual gaze
-    public void doGaze(Character c){
-        if(!this.isLookingAtTarget(c.getPosition())){
-            parentCharacter.abo.turnHeadToTarget(c.getPosition());
-        }
-    }
+//    public void doGaze(Character c){
+//        if(!this.isLookingAtTarget(c.getPosition())){
+//            parentCharacter.abo.turnHeadToTarget(c.getPosition());
+//        }
+//    }
     
     public boolean isMutualGaze(Character c){
         return this.isLookingAtTarget(c.getPosition()) && c.isLookingAtTarget(parentCharacter.getPosition());

@@ -66,13 +66,10 @@ public class ModelBone {
             axis.normalizeLocal();  
             Quaternion q2 = new Quaternion().fromAngleAxis(angle, axis);
             
-       //     if(parentJoint.getName().equals("02Lshoulder"))
-                currentQuat = q2;
+            currentQuat = q2;
             
             //apply rotation to model
             model.animateBoneAngle(parentJoint.getName(), q2); 
-            
-     //      System.out.println(currentQuat);
     }  
     
     public boolean checkKinectHeader(String s){

@@ -255,7 +255,6 @@ public class NetworkMessagingProcessor {
     }
     
     public static String createBallMessage(){
-        System.out.println(SceneObjectManager.getBall().getBallPosition().toString());
         return "BALL" + SceneObjectManager.getBall().getBallPosition().toString();    
     }
     

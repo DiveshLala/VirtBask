@@ -603,6 +603,7 @@ public class BPNewModel extends AnimatedModel{
          ModelBone b6 = new ModelBone(s.getBone("upper_arm.R"), s.getBone("forearm.R"), "ERSR", this);
          ModelBone b7 = new ModelBone(s.getBone("forearm.R"), s.getBone("hand.R"), "WRER", this);
          ModelBone b8 = new ModelBone(s.getBone("spine"), s.getBone("chest"), "SCSP", this);
+         ModelBone b9 = new ModelBone(s.getBone("neck"), s.getBone("head"), "HEAD", this);
    //       modelBones.add(b0);
 //      //   modelBones.add(b1);
 //  modelBones.add(b2);   
@@ -612,7 +613,7 @@ public class BPNewModel extends AnimatedModel{
          modelBones.add(b6);
          modelBones.add(b7);
          modelBones.add(b8);
-//         modelBones.add(b9);
+ //        modelBones.add(b9);
          
          for(ModelBone mb:modelBones){
              mb.setBoneIndex(s);
@@ -643,13 +644,17 @@ public class BPNewModel extends AnimatedModel{
     }
     
     public void turnHead(float angle){
-                
-        System.out.println("head turn " + angle);
-        Quaternion q = new Quaternion();
-        q.fromAngles(0, 0, (float)Math.toRadians(angle));
-        Bone b = control.getSkeleton().getBone("neck");
-        System.out.println(b.getLocalRotation());
-        this.animateBoneAngle("neck", b.getLocalRotation().inverse());
+        
+//        System.out.println("head turn " + angle);
+//        Quaternion q = new Quaternion();
+//        Bone b = control.getSkeleton().getBone("neck");
+//        float[] f = new float[3];
+//        b.getLocalRotation().toAngles(f);
+//        System.out.println(f[0] + " " + f[1] + " " + f[2]);
+//        f[1] = 45;
+//        q.fromAngles(f);
+//        this.animateBoneAngle("neck", q);
+        
     }
     
     public void resetHead(){

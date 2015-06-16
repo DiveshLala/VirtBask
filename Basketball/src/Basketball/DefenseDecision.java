@@ -50,7 +50,7 @@ public class DefenseDecision {
                 markedCharacter = null;
             }
             
-    //        this.setDefensiveHeadPosition();
+       //     this.setDefensiveHeadPosition();
             this.setDefensiveBehaviorState();
         }        
     }
