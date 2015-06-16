@@ -86,12 +86,15 @@ public class PlayerGesture {
             }
         }   
         else if(p.getSpeed() > 0){
-            p.playAnimation(1, "walk", 1, LoopMode.Loop);
+            if(!currentGest.toLowerCase().contains("block")){
+                p.playAnimation(1, "walk", 1, LoopMode.Loop);
+            }
         }
         else{
             if(!currentGest.contains("shoot") && 
                !currentGest.startsWith("pass") &&
-               !currentGest.startsWith("receivePass")){
+               !currentGest.startsWith("receivePass") &&
+               !currentGest.toLowerCase().contains("block")){
                String legGesture = p.getCurrentGesture(2);
                p.playAnimation(1, legGesture, 1, LoopMode.Loop);
             }

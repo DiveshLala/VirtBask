@@ -344,6 +344,7 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
   public void refresh(){
       sceneCharacterManager.updateSceneObjects();
   }
+
   
 //  public AssetManager getAssetManager(){
 //      return assetManager;

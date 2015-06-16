@@ -205,9 +205,8 @@ public class Player extends BasketballCharacter{
     
     
     
-    public void walk(Vector3f vec, int turnCode){
-        
-        mainNode.setWalkDirection(vec.mult(2));
+    public void walk(Vector3f vec, int turnCode){ 
+        mainNode.setWalkDirection(vec);
         this.doWalkingAnimations(vec, turnCode);
     }
     
@@ -345,6 +344,16 @@ public class Player extends BasketballCharacter{
                ca.recordShootContexts();
            }
        }
+     }
+     
+     public void doBlocking(){
+         if(this.getCurrentGestureName().toLowerCase().contains("block")){
+            this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+         }
+         else{
+             this.playAnimation(1, "blockLoop", 1, LoopMode.Loop);
+         }
+
      }
      
      public void shootBall(){

@@ -15,7 +15,9 @@ import java.util.ArrayList;
 public class CharacterSoundNode extends SoundNodes{
     
     public ArrayList<AudioNode> footStepsNodes;
+    public ArrayList<AudioNode> utteranceNodes;
     private long lastFootstepTime;
+    private String soundFlag = "";
     
     public CharacterSoundNode(Node n, String filePath){
         
@@ -24,6 +26,7 @@ public class CharacterSoundNode extends SoundNodes{
         ArrayList<String> soundFiles = readFiles(filePath);
         createNodes(soundFiles);
         this.groupFootstepSounds();
+        this.groupUtterances();
         
     }
     
@@ -35,7 +38,17 @@ public class CharacterSoundNode extends SoundNodes{
                 footStepsNodes.add(an);
             }
         }
+    }
     
+    
+    private void groupUtterances(){
+        
+        utteranceNodes = new ArrayList<AudioNode>();        
+        for(AudioNode an:utteranceNodes){
+            if(an.getName().contains("utterance")){
+                utteranceNodes.add(an);
+            }
+        }   
     }
     
     public void playFootstep(String footstepType){
@@ -81,6 +94,24 @@ public class CharacterSoundNode extends SoundNodes{
     public void playCatchSound(){
         AudioNode an = getNodeByName("catch");
         an.play();
+    }
+    
+    //only use for WOZ clients - threading problems
+    public void flagUtterance(String s){
+        soundFlag = s;
+    }
+    
+    public void playNUPUtterance(){
+        if(!soundFlag.isEmpty()){
+            System.out.println("playing " + soundFlag);
+            AudioNode an = getNodeByName("utterance " + soundFlag);
+            an.play();
+        }
+        soundFlag = "";
+    }
+    
+    public void playUtterance(String s){
+    
     }
     
     

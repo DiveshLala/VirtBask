@@ -65,7 +65,9 @@ public class NetworkMessagingProcessor {
       }
       catch(NumberFormatException e){System.out.println(e);}
       catch(NullPointerException e){System.out.println(e);}
-      catch(StringIndexOutOfBoundsException e){System.out.println(e);}            
+      catch(StringIndexOutOfBoundsException e){
+        //  System.out.println(e);
+      }            
     } 
     
     public static String createCharacterPositionsMessage(){

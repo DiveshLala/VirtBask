@@ -73,7 +73,6 @@ public class ClientThread extends Thread implements Runnable {
                 while(connectionState == 1){
                     
                     try{
-                        System.out.println("waiting");
                         inputLine = (String)in.readObject();
 
                         if(inputLine.startsWith("New")){      
@@ -118,6 +117,9 @@ public class ClientThread extends Thread implements Runnable {
                         else if(inputLine.equals("FIN")){
                             parentClass.clientsAreReady();
                         }
+                        else if(inputLine.startsWith("Sound")){
+                            parentClass.triggerClientUtterances(inputLine);
+                        }
                         out.flush();
                         Thread.sleep(5);
                 }
@@ -142,6 +144,7 @@ public class ClientThread extends Thread implements Runnable {
                 catch(IOException e){}
     
     }   
+    
     
     public void sendMessage(String str){
         try{

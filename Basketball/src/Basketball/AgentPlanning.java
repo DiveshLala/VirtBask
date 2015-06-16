@@ -415,6 +415,8 @@ public class AgentPlanning {
                 }
             }
         }
+        
+        this.updateCurrentTargetPosition();
      }
      
      public void swapRoleActivity(){
@@ -495,7 +497,8 @@ public class AgentPlanning {
                     this.setTargetPosition(Court.getRandomNonHoopSidePosition());
                  }
              }
-         }
+         }   
+         this.updateCurrentTargetPosition();
      }
      
      public boolean isClosestToBall(ArrayList<BasketballCharacter> group){

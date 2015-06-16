@@ -485,9 +485,7 @@ public class NonUserPlayer extends BasketballCharacter{
     
         BPNewModel bm = (BPNewModel) characterModel;
         String currentGest = characterModel.getCurrentAnimation(1);
-        
-        System.out.println(currentGest);
-         
+                 
          if(currentGest.contains("shoot") && bm.isBallShot()){
              this.doShooting();
          }
@@ -499,6 +497,14 @@ public class NonUserPlayer extends BasketballCharacter{
 //            ArrayList<Character> list = new ArrayList<Character>();
 //            list.add(c);
 //         }
+    }
+    
+    public void flagUtterance(String s){
+        characterSoundNode.flagUtterance(s);
+    }
+    
+    public void triggerClientSound(){
+        characterSoundNode.playNUPUtterance();
     }
     
     private void doPassGesture(){

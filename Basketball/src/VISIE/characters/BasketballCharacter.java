@@ -310,6 +310,10 @@ public abstract class BasketballCharacter extends Character{
     public void playCatchSound(){
         characterSoundNode.playCatchSound();
     }
+    
+    public void playUtterance(String s){
+        characterSoundNode.playUtterance(s);
+    }
             
     public Vector3f[] getArmVectors(){
         

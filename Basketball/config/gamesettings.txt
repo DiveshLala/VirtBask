@@ -1,6 +1,6 @@
 numPlayers,2
 isOffense,true
-isMultiPlayer,false
+isMultiPlayer,true
 hasKinect,false
 hasPressureSensor,false
 TCPPort,1235

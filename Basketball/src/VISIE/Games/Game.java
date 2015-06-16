@@ -39,7 +39,6 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.animation.LoopMode;
 import VISIE.characters.KinectPlayer;
 import VISIE.scenemanager.SceneObjectManager;
 import VISIE.VISIEFileReader;
@@ -56,6 +55,7 @@ import com.jme3.animation.AnimControl;
 import com.jme3.animation.AnimEventListener;
 import com.jme3.animation.Animation;
 import com.jme3.animation.Bone;
+import com.jme3.animation.LoopMode;
 import com.jme3.animation.Skeleton;
 import com.jme3.animation.Track;
 import com.jme3.asset.TextureKey;
@@ -262,7 +262,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
                 
         viewPort.setEnabled(false);
         
-        if(initialSettings.getMultiPlayer()){
+        if(initialSettings.getImmersive()){
             camView.blackoutViewPorts();
         }
     }
@@ -271,7 +271,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
         
         viewPort.setEnabled(true);
         
-        if(initialSettings.getMultiPlayer()){
+        if(initialSettings.getImmersive()){
             camView.enableViewPorts();
         }
     }
@@ -364,8 +364,8 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
     inputManager.addMapping("Top Camera", new KeyTrigger(KeyInput.KEY_T));
     inputManager.addMapping("Aspect Ratio", new KeyTrigger(KeyInput.KEY_O));
     inputManager.addMapping("CamState0", new KeyTrigger(KeyInput.KEY_0));
-    inputManager.addMapping("CamState1", new KeyTrigger(KeyInput.KEY_1));
-    inputManager.addMapping("CamState2", new KeyTrigger(KeyInput.KEY_2));
+//    inputManager.addMapping("CamState1", new KeyTrigger(KeyInput.KEY_1));
+//    inputManager.addMapping("CamState2", new KeyTrigger(KeyInput.KEY_2));
     inputManager.addMapping("Increase FOV", new KeyTrigger(KeyInput.KEY_HOME));
     inputManager.addMapping("Decrease FOV", new KeyTrigger(KeyInput.KEY_END));
     inputManager.addMapping("Get ball", new KeyTrigger(KeyInput.KEY_B));
@@ -381,8 +381,8 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
     inputManager.addListener(this, "Aspect Ratio");
     inputManager.addListener(this, "Transaction");
     inputManager.addListener(this, "CamState0");
-    inputManager.addListener(this, "CamState1");
-    inputManager.addListener(this, "CamState2");
+//    inputManager.addListener(this, "CamState1");
+//    inputManager.addListener(this, "CamState2");
     inputManager.addListener(this, "Increase FOV");
     inputManager.addListener(this, "Decrease FOV");
     inputManager.addListener(this, "Get ball");
@@ -390,7 +390,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
     //player animations
     inputManager.addMapping("Accept Pass", new KeyTrigger(KeyInput.KEY_H));
     inputManager.addListener(this, "Accept Pass");
-    inputManager.addMapping("Shoot Ball", new KeyTrigger(KeyInput.KEY_K));
+    inputManager.addMapping("Shoot Ball", new KeyTrigger(KeyInput.KEY_LSHIFT));
     inputManager.addListener(this, "Shoot Ball");
     inputManager.addMapping("Propose Pass", new KeyTrigger(KeyInput.KEY_L));
     inputManager.addListener(this, "Propose Pass");
@@ -400,6 +400,8 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
     inputManager.addListener(this, "Call for pass");
     inputManager.addMapping("Head turn", new KeyTrigger(KeyInput.KEY_V));
     inputManager.addListener(this, "Head turn");
+    inputManager.addMapping("Block", new KeyTrigger(KeyInput.KEY_U));
+    inputManager.addListener(this, "Block");
     
     //ball triggers
     inputManager.addMapping("BallTriggerShoot", new KeyTrigger(KeyInput.KEY_X));
@@ -518,12 +520,9 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
          Simulation sim = (Simulation)this;
          sim.resetAttack();
      }
-    else if(binding.equals("Sound") && !value){
-  //      ball.makeBounceSound();
-//        soundInitializor.play();
-////         kp.playKinectGesture("Pass");
+     else if(binding.equals("Block") && !value){
+        p.doBlocking();
      }
-    
   }
   
     protected void recordBatchData(){
@@ -626,9 +625,9 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             sceneCharacterManager.updateCharacterSounds();
             
        //     sceneCharacterManager.showCollisionLines();
-            sceneCharacterManager.showAgentTargetPositions(1);
-            sceneCharacterManager.showAgentTargetPositions(2);
-            sceneCharacterManager.showAgentTargetPositions(3);
+//            sceneCharacterManager.showAgentTargetPositions(1);
+//            sceneCharacterManager.showAgentTargetPositions(2);
+//            sceneCharacterManager.showAgentTargetPositions(3);
 
             //needed to set update ball position
             if(broadcastServer != null){
@@ -638,6 +637,10 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
                 } 
                 broadcastServer.setBallMessage(ball.getBallPosition().toString() + "!" + posChar);
                 broadcastServer.setGameStateMessage(NetworkMessagingProcessor.createGameStateMessage(timeRemaining)); 
+                
+                this.updateClientSounds();
+              
+
             }
 
           if(p.isKinectPlayer()){
@@ -646,15 +649,19 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
 
           if(isLogging){
               this.writeToFile();
-          }
-//          
-//          if(tester!= null){
-//              tester.rotate(0, (float)Math.toRadians(0.05), 0);
-//          
-//          }
-//                   
-          
-          
+          } 
+  }
+  
+  private void updateClientSounds(){
+      
+      for(int i = 0; i < SceneCharacterManager.getCharacterArray().size(); i++){
+          if(SceneCharacterManager.getCharacterArray().get(i) instanceof VISIE.characters.NonUserPlayer){
+             NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterArray().get(i);
+             nup.triggerClientSound();
+          }                    
+      }
+  
+      
   }
       
   
@@ -861,6 +868,16 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
         
         public void updateSceneObjects(){
             sceneCharacterManager.updateSceneObjects();
+        }
+        
+        public void triggerClientUtterances(String s){
+                        
+            String[] data = s.split("!");
+            int characterID = Integer.parseInt(data[1]);
+            String utterance = data[2];
+            NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterByID(characterID);
+            nup.flagUtterance(utterance);
+            
         }
         
 }
