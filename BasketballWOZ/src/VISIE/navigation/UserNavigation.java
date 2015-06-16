@@ -99,7 +99,6 @@ public class UserNavigation {
                     this.sensorNavigation(sensorClient, tpf);
                 }
             }
-            System.out.println(walkDirection);
             player.walk(walkDirection, turnCode);
             player.setActionState(up);
             return cameraRot;

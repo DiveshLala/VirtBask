@@ -108,13 +108,25 @@ public class Client extends Thread implements Runnable{
     
     public void confirmToServer(){
         try{
-            System.out.println("loaded!");
             out.writeObject("FIN");
         }
         catch(IOException e){
             System.out.println(e);
         }
     }
+    
+    public void sendSoundInfo(String s){
+        try{
+            int id = parentClass.getPlayer().getID();
+            out.writeObject("Sound!" + id + "!" + s);
+        }
+        catch(IOException e){
+            System.out.println(e);
+        }
+        
+    }
+    
+    
     
     private void receiveMapData(){
             //receive map

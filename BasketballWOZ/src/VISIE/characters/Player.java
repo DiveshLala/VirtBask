@@ -338,7 +338,8 @@ public class Player extends BasketballCharacter{
             if(!currentGest.contains("shoot") && 
                !currentGest.startsWith("pass") &&
                !currentGest.startsWith("receivePass") &&
-               !currentGest.toLowerCase().contains("block")){
+               !currentGest.toLowerCase().contains("block") &&
+               !currentGest.toLowerCase().contains("celebration")){
                String legGesture = this.getCurrentGesture(2);
                this.playAnimation(1, legGesture, 1, LoopMode.Loop);
             }

@@ -504,6 +504,8 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
     inputManager.addListener(this, "Block");
 //    inputManager.addMapping("Point to goal", new KeyTrigger(KeyInput.KEY_V));
 //    inputManager.addListener(this, "Point to goal");
+     inputManager.addMapping("Celebration", new KeyTrigger(KeyInput.KEY_J));
+     inputManager.addListener(this, "Celebration");
   }
 
     public void onAction(String binding, boolean value, float tpf) {
@@ -563,6 +565,7 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
          else{
              p.playAnimation(1, "callForPass3", 0.75f, LoopMode.DontLoop);
          }
+         mainClient.sendSoundInfo("pass");
      }
      else if(binding.equals("Accept Pass") && !p.isInPossession() && !value){
          
@@ -574,16 +577,16 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
          }
      }
      else if(binding.equals("Block") && !p.isInPossession() && !value){
-         
-         if(!p.isInPossession()){
-             
+                      
             if(p.getCurrentGesture(1).toLowerCase().contains("block")){
                  p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
             }
             else{
                 p.playAnimation(1, "blockLoop", 0.75f, LoopMode.DontLoop);
             }
-         }
+     }
+      else if(binding.equals("Celebration") && !p.isInPossession() && !value){     
+            p.playAnimation(1, "celebration", 1f, LoopMode.DontLoop);
      }
   }
 
