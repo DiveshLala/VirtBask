@@ -369,6 +369,7 @@ public class PossessionDecision {
             else{
                 //  check better areas while travelling to target
             }
+            this.updatePossessionTarget();
         }  
     }
     

@@ -50,7 +50,7 @@ public class DefenseDecision {
                 markedCharacter = null;
             }
             
-       //     this.setDefensiveHeadPosition();
+            this.setDefensiveHeadPosition();
             this.setDefensiveBehaviorState();
         }        
     }
@@ -60,21 +60,22 @@ public class DefenseDecision {
         BasketballCharacter posCharacter = SceneCharacterManager.getCharacterInPossession();
         
         if(markedCharacter.equals(posCharacter)){
-            if(parentCharacter.planner.isTargetReached(1)){
-                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
-            }
+//            if(parentCharacter.planner.isTargetReached(1)){
+//                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
+//            }
 //            else{
 //                parentCharacter.abo.resetHeadPosition();
 //            }
         }
         else{//turn head to possessor if target reached
-//            if(parentCharacter.planner.isTargetReached(1)){
-//                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
-//            }
-//            else{
-//                System.out.println("reset no target");
-//                parentCharacter.abo.resetHeadPosition();
-//            }
+            if(parentCharacter.planner.isTargetReached(1) && 
+               parentCharacter.getCurrentGestureName().startsWith("standingPose") &&
+               parentCharacter.getLegAnimationName().startsWith("standingPose")){
+                parentCharacter.abo.turnHeadToTarget(posCharacter.get2DPosition());
+            }
+            else{
+                parentCharacter.abo.resetHeadPosition();
+            }
         }
     }
     

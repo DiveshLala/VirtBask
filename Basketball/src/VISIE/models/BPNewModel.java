@@ -176,9 +176,9 @@ public class BPNewModel extends AnimatedModel{
     
     public void playArmAnimation(String newAnimation, float speed, LoopMode l){
         
-//        if(modelRoot.getName().contains("carl")){
-//            System.out.println("arm "+ armChannel.getAnimationName() + " " + newAnimation + " " + modelRoot.getName());
-//            System.out.println("leg " + legChannel.getAnimationName());
+//        if(modelRoot.getName().contains("carl") || modelRoot.getName().contains("bob")){
+//            System.out.println("arm "+ armChannel.getAnimationName() + " " + newAnimation + " " + modelRoot.getName() + this.getCurrentAnimationTimePercentage(1));
+//            System.out.println("leg "+ legChannel.getAnimationName() + " " + newAnimation + " " + modelRoot.getName() + this.getCurrentAnimationTimePercentage(2));
 //        }
         
         if(armChannel.getAnimationName() == null){
@@ -228,7 +228,7 @@ public class BPNewModel extends AnimatedModel{
                     this.executeAnimation(armChannel, newAnimation, 1, l);
                 }
             }
-        }
+        }        
     }
     
     public void playLegAnimation(String newAnimation, float speed, LoopMode l){
@@ -269,18 +269,10 @@ public class BPNewModel extends AnimatedModel{
         }
     }
     
-    public void synchronizeChannels(int channel){
-        if(channel == 1){
-            armChannel.setAnim(legChannel.getAnimationName());
+    public void synchronizeArmChannel(){
+        if(Math.abs(this.getCurrentAnimationTimePercentage(1) - this.getCurrentAnimationTimePercentage(2)) > 0.1){
             armChannel.setTime(legChannel.getTime());
-            armChannel.setLoopMode(legChannel.getLoopMode());
-            armChannel.setSpeed(legChannel.getSpeed());
-        }
-        else{
-            legChannel.setAnim(armChannel.getAnimationName());
-            legChannel.setTime(armChannel.getTime());
-            legChannel.setLoopMode(armChannel.getLoopMode());
-            legChannel.setSpeed(armChannel.getSpeed());
+            clothesUpper.setTime(legChannel.getTime());
         }
     }
     
@@ -517,6 +509,11 @@ public class BPNewModel extends AnimatedModel{
             this.playLegAnimation(animationType, speed, l);
         }
         
+        if((armChannel.getAnimationName().contains("walk") && legChannel.getAnimationName().contains("walk")) ||
+           (armChannel.getAnimationName().contains("run") && legChannel.getAnimationName().contains("run"))){
+            this.synchronizeArmChannel();
+        }
+        
     }
     
     //use for players
@@ -644,24 +641,17 @@ public class BPNewModel extends AnimatedModel{
     }
     
     public void turnHead(float angle){
-        
-//        System.out.println("head turn " + angle);
-//        Quaternion q = new Quaternion();
-//        Bone b = control.getSkeleton().getBone("neck");
-//        float[] f = new float[3];
-//        b.getLocalRotation().toAngles(f);
-//        System.out.println(f[0] + " " + f[1] + " " + f[2]);
-//        f[1] = 45;
-//        q.fromAngles(f);
-//        this.animateBoneAngle("neck", q);
+                        
+        Quaternion q = new Quaternion().fromAngles(0, 0, (float)Math.toRadians(angle));
+        this.animateBoneAngle("neck", q);
         
     }
     
     public void resetHead(){
-//     //   System.out.println(this.getCurrentAnimation(1));
-//        Bone b = control.getSkeleton().getBone("neck");
-//   //     System.out.println(b.getLocalRotation() + " " + b.getModelSpaceRotation() + " " + b.getWorldBindRotation() + " " + b.getWorldBindInverseRotation());
-//        this.animateBoneAngle("neck", new Quaternion(0, 0, 0, 1));
+        Bone b = control.getSkeleton().getBone("neck");
+        b.setUserControl(false);
+        b = clothesControl.getSkeleton().getBone("neck");
+        b.setUserControl(false);  
     }
     
 }

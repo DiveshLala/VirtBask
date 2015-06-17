@@ -206,7 +206,7 @@ public class Player extends BasketballCharacter{
     
     
     public void walk(Vector3f vec, int turnCode){ 
-        mainNode.setWalkDirection(vec);
+        mainNode.setWalkDirection(vec.mult(2));
         this.doWalkingAnimations(vec, turnCode);
     }
     

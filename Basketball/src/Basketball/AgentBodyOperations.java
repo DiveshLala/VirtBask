@@ -73,28 +73,25 @@ public class AgentBodyOperations {
     
     public void turnHeadToTarget(Vector3f target){
         
-//        float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
-//        float angleOffset = Conversions.minDistanceBetweenAngles(targetAngle, this.getFacingDirection());
-//        float orientation = Conversions.calculateSpinDirection(targetAngle, this.getFacingDirection());
-//        
-//        if(angleOffset < 45 && parentCharacter.getLegAnimationName().startsWith("standing")){
-//            modelHeadRotation = angleOffset * orientation;
-//            agentModel.turnHead(modelHeadRotation);
-//        }
-//        else{
-//            this.resetHeadPosition();
-//        }
-
-        agentModel.turnHead(runSpeed);
+        float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
+        float angleOffset = Conversions.minDistanceBetweenAngles(targetAngle, this.getFacingDirection());
+        float orientation = Conversions.calculateSpinDirection(targetAngle, this.getFacingDirection());
+                
+        if(angleOffset < 60 && parentCharacter.getLegAnimationName().startsWith("standing")){
+            modelHeadRotation = angleOffset * orientation;
+            agentModel.turnHead(modelHeadRotation);
+        }
+        else{
+            this.resetHeadPosition();
+        }
     }
     
     public void resetHeadPosition(){
-                
-//        if(modelHeadRotation != 0){
-//                    System.out.println("resetting...");
-//            agentModel.turnHead(-modelHeadRotation);
-//            modelHeadRotation = 0;
-//        }
+                        
+        if(modelHeadRotation != 0){
+            agentModel.resetHead();
+            modelHeadRotation = 0;
+        }
     }
     
     
