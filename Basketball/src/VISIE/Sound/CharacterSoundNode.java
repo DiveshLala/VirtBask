@@ -101,7 +101,7 @@ public class CharacterSoundNode extends SoundNodes{
         soundFlag = s;
     }
     
-    public void playNUPUtterance(){
+    public void playClientUtterance(){
         if(!soundFlag.isEmpty()){
             AudioNode an = getNodeByName(soundFlag);
             an.play();

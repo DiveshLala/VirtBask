@@ -498,15 +498,7 @@ public class NonUserPlayer extends BasketballCharacter{
 //            list.add(c);
 //         }
     }
-    
-    public void flagUtterance(String s){
-        characterSoundNode.flagUtterance(s);
-    }
-    
-    public void triggerClientSound(){
-        characterSoundNode.playNUPUtterance();
-    }
-    
+            
     private void doPassGesture(){
      
         BPNewModel bm = (BPNewModel)characterModel;     

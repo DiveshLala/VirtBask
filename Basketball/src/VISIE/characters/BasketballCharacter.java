@@ -111,20 +111,16 @@ public abstract class BasketballCharacter extends Character{
         return characterModel.getCurrentAnimation(1).contains("pass");
     } 
     
+    public void triggerClientSound(){
+        characterSoundNode.playClientUtterance();
+    }
+    
+    public void flagUtterance(String s){
+        characterSoundNode.flagUtterance(s);
+    }
+    
     public boolean canSeeCharacter(Character c){
         return false;
-//        if(this instanceof VISIE.characters.Player){
-//            Player p  = (Player)this;
-//            return p.isInPerceivedVision(c);
-//        }
-//        else if(this instanceof VISIE.characters.BasketballAgent){
-//            BasketballAgent ba = (BasketballAgent)this;
-//            return ba.perception.canSeeCharacter(c);
-//        }
-//        else{
-//            return false;
-//        }
-//        return false;
     }
     
     public void setTeam(BasketballTeam t){
@@ -207,6 +203,7 @@ public abstract class BasketballCharacter extends Character{
         bm.setTransparency(0.3f);
     }
     
+    @Override
     public void cleanUp(){
         if(this.hasPossession){
             this.removePossession();

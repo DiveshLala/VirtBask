@@ -649,9 +649,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
           if(isLogging){
               this.writeToFile();
           } 
-          
-          System.out.println(timeGameStarted);
-//          
+                    
           if(timeGameStarted == 0){
             timeGameStarted = System.nanoTime();
           }
@@ -660,10 +658,8 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
   private void updateClientSounds(){
       
       for(int i = 0; i < SceneCharacterManager.getCharacterArray().size(); i++){
-          if(SceneCharacterManager.getCharacterArray().get(i) instanceof VISIE.characters.NonUserPlayer){
-             NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterArray().get(i);
-             nup.triggerClientSound();
-          }                    
+          BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterArray().get(i);
+          bc.triggerClientSound();                  
       }
   }
       
@@ -874,13 +870,11 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
         }
         
         public void triggerClientUtterances(String s){
-                        
             String[] data = s.split("!");
             int characterID = Integer.parseInt(data[1]);
             String utterance = data[2];
-            NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterByID(characterID);
-            nup.flagUtterance(utterance);
-            
+            BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterByID(characterID);
+            bc.flagUtterance(utterance);
         }
         
 }
