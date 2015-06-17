@@ -44,7 +44,7 @@ public class CharacterSoundNode extends SoundNodes{
     private void groupUtterances(){
         
         utteranceNodes = new ArrayList<AudioNode>();        
-        for(AudioNode an:utteranceNodes){
+        for(AudioNode an:soundNodes){
             if(an.getName().contains("utterance")){
                 utteranceNodes.add(an);
             }
@@ -103,18 +103,40 @@ public class CharacterSoundNode extends SoundNodes{
     
     public void playNUPUtterance(){
         if(!soundFlag.isEmpty()){
-            System.out.println("playing " + soundFlag);
             AudioNode an = getNodeByName("utterance " + soundFlag);
             an.play();
         }
         soundFlag = "";
     }
     
-    public void playUtterance(String s){
-        AudioNode an = getNodeByName("utterance " + s);
-        an.play();
-    
+    public String getUtterance(String s){
+        
+        ArrayList<AudioNode> candidates = new ArrayList<AudioNode>();
+        
+        for(AudioNode an:utteranceNodes){
+            if(an.getName().contains(s)){
+                candidates.add(an);
+            }
+        }
+                 
+        if(candidates.isEmpty()){
+            return "";
+        }
+        else if(candidates.size() == 1){
+            return candidates.get(0).getName();
+        }
+        else{
+            int i = (int)Math.floor(Math.random() * candidates.size());
+            return candidates.get(i).getName();
+        }    
     }
+    
+    public void playUtterance(String s){
+        AudioNode an = getNodeByName(s);
+        an.play();
+    }
+    
+    
     
     
 }

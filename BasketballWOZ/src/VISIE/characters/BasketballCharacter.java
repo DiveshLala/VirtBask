@@ -98,6 +98,10 @@ public abstract class BasketballCharacter extends Character{
         characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt");
     }
     
+    public String getUtterance(String s){
+        return characterSoundNode.getUtterance(s);
+    }
+    
     public void playUtterance(String s){
         characterSoundNode.playUtterance(s);
     }
