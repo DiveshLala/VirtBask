@@ -4,5 +4,7 @@ footsteps2.wav,0.05,footsteps
 passswish.wav,3,pass
 shootswish.wav,3,shoot
 catchball.wav,1,catch
-utterance callforpass.wav,3,utterance callforpass
+utterance callforpass0.wav,3,utterance callforpass
+utterance callforpass1.wav,3,utterance callforpass
+utterance encourage0.wav,3,utterance encourage
 utterance yes.wav,3,utterance yes

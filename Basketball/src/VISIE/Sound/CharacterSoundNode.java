@@ -103,8 +103,7 @@ public class CharacterSoundNode extends SoundNodes{
     
     public void playNUPUtterance(){
         if(!soundFlag.isEmpty()){
-            System.out.println("playing " + soundFlag);
-            AudioNode an = getNodeByName("utterance " + soundFlag);
+            AudioNode an = getNodeByName(soundFlag);
             an.play();
         }
         soundFlag = "";
