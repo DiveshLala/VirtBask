@@ -28,10 +28,6 @@ public abstract class BasketballCharacter extends Character{
     public void setBall(Ball b){
         ball = b;
         
-        //sets ball for the agent planner
-        if(this instanceof VISIE.characters.BasketballAgent){
-            BasketballAgent ba = (BasketballAgent)this;
-        }
     }
     
     public void setPossession(){

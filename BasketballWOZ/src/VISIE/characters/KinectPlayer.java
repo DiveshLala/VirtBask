@@ -8,6 +8,8 @@ import Basketball.Ball;
 import Basketball.GameStateManagement;
 import Basketball.KinectGesture;
 import VISIE.models.AnimatedModel;
+import VISIE.network.KinectClient;
+import VISIE.network.UDPBroadcastClient;
 import VISIE.scenemanager.SceneObjectManager;
 import com.jme3.animation.LoopMode;
 import com.jme3.bullet.control.CharacterControl;
@@ -69,6 +71,11 @@ public class KinectPlayer extends Player{
          return super.getFacingDirection();
      }
      
+    @Override
+    public String getSkeletonMessage(){
+         return "SKEL" + this.getID() + "," + this.getSkeletonRotations();
+     }
+     
      //empty - do nothing
      public void playAnimation(int channel, String animationName, float speed, LoopMode l){
          
@@ -128,5 +135,34 @@ public class KinectPlayer extends Player{
      
      public boolean isTravelling(){
          return isTravelling;
+     }
+     
+     @Override
+     public void updateAndSendSkeleton(KinectClient kinectClient, UDPBroadcastClient broadcastClient){
+         
+          if(kinectClient.getCurrentGesture().equals("shoot") && this.canShoot()){
+             this.playKinectGesture("Shoot");
+          }
+          else if(kinectClient.getCurrentGesture().equals("dribbleRight")){
+             this.playKinectGesture("Dribble Right");
+          }
+          else if(kinectClient.getCurrentGesture().equals("pass")){
+              
+              if(this.getHandPosition(1).y - this.getElbowPosition(1).y > 1f){
+                  this.playKinectGesture("");
+              }
+              else{
+                  this.playKinectGesture("Pass");
+              }
+          }
+          
+          this.updateGestures();
+          String gest = this.getKinectGesture();
+          if(!gest.isEmpty()){
+            broadcastClient.sendMessage("GEST" + this.getID() + "," + gest);
+          }
+          else{
+            broadcastClient.sendMessage("GEST" + this.getID() + ",X");
+          }
      }
 }

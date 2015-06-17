@@ -12,6 +12,8 @@ import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;
 import VISIE.models.BPNewModel;
 import VISIE.models.BasketballPlayerModel;
+import VISIE.network.KinectClient;
+import VISIE.network.UDPBroadcastClient;
 import VISIE.scenemanager.SceneCharacterManager;
 import com.jme3.animation.LoopMode;
 import com.jme3.math.Vector3f;
@@ -387,4 +389,17 @@ public class Player extends BasketballCharacter{
             }
         }
     }
+     
+     public void updateAndSendSkeleton(KinectClient kc, UDPBroadcastClient ubc){
+          if(this.isInPossession()){
+              this.doDribblingAnimation();
+          }
+          else{
+             this.doNonPossessionGesture();
+          }
+     }
+     
+     public String getSkeletonMessage(){
+         return "SKEL";
+     }
 }

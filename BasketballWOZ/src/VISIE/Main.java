@@ -413,44 +413,45 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
    private void updateAndSendPlayerSkeleton(){
       NetworkMessagingProcessor.parseKinectJointMessage(p);
       broadcastClient.sendSkeletonInformation(NetworkMessagingProcessor.createPlayerSkeletonInfoMessage(p));
+      p.updateAndSendSkeleton(kinectClient, broadcastClient);
       
-      if(p instanceof VISIE.characters.KinectPlayer){
-                    
-          KinectPlayer kp = (KinectPlayer)p;
-
-          if(kinectClient.getCurrentGesture().equals("shoot") && p.canShoot()){
-             kp.playKinectGesture("Shoot");
-          }
-          else if(kinectClient.getCurrentGesture().equals("dribbleRight")){
-              kp.playKinectGesture("Dribble Right");
-          }
-          else if(kinectClient.getCurrentGesture().equals("pass")){
-              
-              if(p.getHandPosition(1).y - p.getElbowPosition(1).y > 1f){
-                  kp.playKinectGesture("");
-              }
-              else{
-                  kp.playKinectGesture("Pass");
-              }
-          }
-          
-          kp.updateGestures();
-          String gest = kp.getKinectGesture();
-          if(!gest.isEmpty()){
-            broadcastClient.sendMessage("GEST" + p.getID() + "," + gest);
-          }
-          else{
-            broadcastClient.sendMessage("GEST" + p.getID() + ",X");
-          }
-      }
-      else{
-          if(p.isInPossession()){
-              p.doDribblingAnimation();
-          }
-          else{
-             p.doNonPossessionGesture();
-          }
-      }
+//      if(p instanceof VISIE.characters.KinectPlayer){
+//                    
+//          KinectPlayer kp = (KinectPlayer)p;
+//
+//          if(kinectClient.getCurrentGesture().equals("shoot") && p.canShoot()){
+//             kp.playKinectGesture("Shoot");
+//          }
+//          else if(kinectClient.getCurrentGesture().equals("dribbleRight")){
+//              kp.playKinectGesture("Dribble Right");
+//          }
+//          else if(kinectClient.getCurrentGesture().equals("pass")){
+//              
+//              if(p.getHandPosition(1).y - p.getElbowPosition(1).y > 1f){
+//                  kp.playKinectGesture("");
+//              }
+//              else{
+//                  kp.playKinectGesture("Pass");
+//              }
+//          }
+//          
+//          kp.updateGestures();
+//          String gest = kp.getKinectGesture();
+//          if(!gest.isEmpty()){
+//            broadcastClient.sendMessage("GEST" + p.getID() + "," + gest);
+//          }
+//          else{
+//            broadcastClient.sendMessage("GEST" + p.getID() + ",X");
+//          }
+//      }
+//      else{
+//          if(p.isInPossession()){
+//              p.doDribblingAnimation();
+//          }
+//          else{
+//             p.doNonPossessionGesture();
+//          }
+//      }
   }
    
    private void sendPlayerPosition(){

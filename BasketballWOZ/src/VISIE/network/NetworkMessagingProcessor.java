@@ -327,12 +327,13 @@ public class NetworkMessagingProcessor {
     }
     
     public static String createPlayerSkeletonInfoMessage(Player p){
-        if(p instanceof KinectPlayer){
-            return "SKEL" + p.getID() + "," + p.getSkeletonRotations();
-        }
-        else{
-            return "SKEL";
-        }
+        return p.getSkeletonMessage();
+//        if(p instanceof KinectPlayer){
+//            return "SKEL" + p.getID() + "," + p.getSkeletonRotations();
+//        }
+//        else{
+//            return "SKEL";
+//        }
     }
     
     public static void parseServerJointData(String jointString, ArrayList<Character> characterArray, int playerID){
