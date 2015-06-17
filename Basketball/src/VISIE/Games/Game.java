@@ -638,8 +638,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
                 broadcastServer.setGameStateMessage(NetworkMessagingProcessor.createGameStateMessage(timeRemaining)); 
                 
                 this.updateClientSounds();
-              
-
             }
 
           if(p.isKinectPlayer()){
@@ -744,9 +742,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
 //            System.out.println(kp.getCurrentGestureName());
 //          }
   }
-  
-  
-  
       
     private void writeToFile(){
       ArrayList<Character> players = SceneCharacterManager.getCharacterArray();
