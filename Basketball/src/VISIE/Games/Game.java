@@ -252,7 +252,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             this.loadBlack();
        }
        loadingComplete = true;    
-       timeGameStarted = System.nanoTime();
        bulletAppState.getPhysicsSpace().addCollisionListener(this);
  //      bulletAppState.getPhysicsSpace().enableDebug(assetManager);
 
@@ -625,9 +624,9 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             sceneCharacterManager.updateCharacterSounds();
             
        //     sceneCharacterManager.showCollisionLines();
-            sceneCharacterManager.showAgentTargetPositions(1);
-            sceneCharacterManager.showAgentTargetPositions(2);
-            sceneCharacterManager.showAgentTargetPositions(3);
+//            sceneCharacterManager.showAgentTargetPositions(1);
+//            sceneCharacterManager.showAgentTargetPositions(2);
+//            sceneCharacterManager.showAgentTargetPositions(3);
 
             //needed to set update ball position
             if(broadcastServer != null){
@@ -650,6 +649,12 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
           if(isLogging){
               this.writeToFile();
           } 
+          
+          System.out.println(timeGameStarted);
+//          
+          if(timeGameStarted == 0){
+            timeGameStarted = System.nanoTime();
+          }
   }
   
   private void updateClientSounds(){
@@ -660,8 +665,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
              nup.triggerClientSound();
           }                    
       }
-  
-      
   }
       
   

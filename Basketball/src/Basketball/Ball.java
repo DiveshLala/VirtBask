@@ -125,14 +125,6 @@ public class Ball{
             if(opp.checkStealing(this)){
                 return opp;
             }
-//            if(opp instanceof Player && 
-//               (lHandPos.distance(this.getBallPosition()) < 1.5f || rHandPos.distance(this.getBallPosition()) < 1.5f)){
-//                return opp;
-//            }
-//            
-//            if(lHandPos.distance(this.getBallPosition()) < 0.5f || rHandPos.distance(this.getBallPosition()) < 0.5f){
-//                return opp;
-//            }
         }
         
         return null;

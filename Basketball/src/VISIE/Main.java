@@ -309,9 +309,9 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
                 }
           }
       }
-      
-
   }
+  
+  
   
   public static float getFrameRate(){
      // System.out.println
