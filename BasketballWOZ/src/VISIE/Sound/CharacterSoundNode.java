@@ -132,6 +132,7 @@ public class CharacterSoundNode extends SoundNodes{
     }
     
     public void playUtterance(String s){
+        System.out.println("playing " + s);
         AudioNode an = getNodeByName(s);
         an.play();
     }

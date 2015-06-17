@@ -507,8 +507,8 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
      inputManager.addMapping("Celebration", new KeyTrigger(KeyInput.KEY_J));
      inputManager.addListener(this, "Celebration");
      
-     inputManager.addMapping("UtteranceYes", new KeyTrigger(KeyInput.KEY_5));
-     inputManager.addListener(this, "UtteranceYes");
+     inputManager.addMapping("UtteranceAffirmation", new KeyTrigger(KeyInput.KEY_5));
+     inputManager.addListener(this, "UtteranceAffirmation");
      
      inputManager.addMapping("UtteranceEncourage", new KeyTrigger(KeyInput.KEY_6));
      inputManager.addListener(this, "UtteranceEncourage");
@@ -595,8 +595,8 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
       else if(binding.equals("Celebration") && !p.isInPossession() && !value){     
             p.playAnimation(1, "celebration", 1f, LoopMode.DontLoop);
      }
-     else if(binding.equals("UtteranceYes") && !value){  
-         this.playMyVoice("yes");
+     else if(binding.equals("UtteranceAffirmation") && !value){  
+         this.playMyVoice("affirmation");
      }
       else if(binding.equals("UtteranceEncourage") && !value){  
          this.playMyVoice("encourage");
