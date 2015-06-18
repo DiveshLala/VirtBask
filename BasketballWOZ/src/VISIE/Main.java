@@ -595,6 +595,7 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
      }
       else if(binding.equals("Celebration") && !p.isInPossession() && !value){     
             p.playAnimation(1, "celebration", 1f, LoopMode.DontLoop);
+            this.playMyVoice("celebration");
      }
      else if(binding.equals("UtteranceAffirmation") && !value){  
          this.playMyVoice("affirmation");
@@ -606,7 +607,7 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
     
     public void playMyVoice(String s){
          String utteranceToPlay = p.getUtterance(s); //ensure random play
-         p.playUtterance(utteranceToPlay);
+    //     p.playUtterance(utteranceToPlay);
          mainClient.sendSoundInfo(utteranceToPlay);
     }
 
