@@ -156,7 +156,7 @@ public abstract class Character{
     public abstract boolean isLookingAtTarget(Vector3f target);
     
     public abstract float getFacingDirection();
-    
+        
  //   public abstract void setHeadAngle(Vector3f vec);
     
     public abstract void setPosition(Vector3f vec);
