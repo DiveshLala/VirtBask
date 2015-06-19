@@ -6,7 +6,11 @@ shootswish.wav,3,shoot
 catchball.wav,1,catch
 utterance callforpass0.wav,1,utterance callforpass0
 utterance callforpass1.wav,1,utterance callforpass1
+utterance callforpass2.wav,1,utterance callforpass2
 utterance encourage0.wav,1,utterance encourage0
+utterance encourage1.wav,1,utterance encourage1
 utterance affirmation0.wav,1,utterance affirmation0
 utterance affirmation1.wav,1,utterance affirmation1
+utterance affirmation2.wav,1,utterance affirmation2
 utterance celebration0.wav,1,utterance celebration0
+utterance celebration1.wav,1,utterance celebration1
