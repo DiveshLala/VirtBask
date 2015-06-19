@@ -144,7 +144,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "20150619_144331.txt";
+  private String logFileName = "20150619_153932.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -666,6 +666,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       }
       
   }
+   
   
   public void setPlayerInfo(String[] data, int startIndex){
       
@@ -676,7 +677,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       int actionState;
       int walkingState;
       float speed;
-      
+            
       if(SceneCharacterManager.getCharacterByID(id) != null){
           Player p = (Player)SceneCharacterManager.getCharacterByID(id);
          
@@ -753,7 +754,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       int actionState;
       int walkingState;
       float speed;
-      
+            
       if(SceneCharacterManager.getCharacterByID(id) != null){
           BasketballAgent ba = (BasketballAgent)SceneCharacterManager.getCharacterByID(id);
          
@@ -768,10 +769,19 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           float animTime = Float.parseFloat(data[startIndex + 5]);
           ba.getModel().setFrame(1, s, animTime);
           
+          if(ba.getID() == 2){
+              System.out.println("arm " + ba.get2DPosition() + " " + s + " " + animTime);
+          }
+          
           walkingState = Integer.parseInt(data[startIndex + 4]);
           String t = ba.getModel().getLegAnimationName(walkingState);
           animTime = Float.parseFloat(data[startIndex + 6]);
-          ba.getModel().setFrame(2, t, animTime);    
+          ba.getModel().setFrame(2, t, animTime);  
+          
+         if(ba.getID() == 2){
+              System.out.println("leg " + ba.get2DPosition() + " " + t + " " + animTime);
+          }
+        
       }  
   }
   
@@ -810,12 +820,12 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
             else{
                 actionState = Integer.parseInt(data[startIndex + 3]);
                 String s = nup.getModel().getArmAnimationName(actionState);
-                nup.playAnimation(1, s, 1, LoopMode.Loop);
+                float animTime = Float.parseFloat(data[startIndex + 5]);
+                nup.getModel().setFrame(1, s, animTime);
             }
             
             walkingState = Integer.parseInt(data[startIndex + 4]);
             String t = nup.getModel().getLegAnimationName(walkingState);
-  //          nup.playAnimation(2, t, 1, LoopMode.Loop);
             float animTime = Float.parseFloat(data[startIndex + 6]);
             nup.getModel().setFrame(2, t, animTime);
             
@@ -887,10 +897,10 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
               Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
           }
-//          else if(characterType.startsWith("N")){  //NUP type
-//              NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, rootNode, startPos, textures);
-//              characterArray.add(nup);
-//          }   
+          else if(characterType.startsWith("N")){  //NUP type
+              NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, startPos, 0.48f);
+              characterArray.add(nup);
+          }   
           
       }
   }

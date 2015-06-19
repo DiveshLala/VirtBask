@@ -27,8 +27,6 @@ public class AnimationStates {
         
     }
     
-    
-    
     public int getAnimationState(String animationName){
         
         for(int i = 0; i < animations.length; i++){
