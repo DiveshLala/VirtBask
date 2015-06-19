@@ -54,7 +54,6 @@ public class UDPBroadcastClient extends Thread implements Runnable{
                 broadcastSocket = new MulticastSocket(portNumber);
             }
             
-             System.out.println("ggggg");
      //       broadcastSocket.setInterface(broadcastAddress);
       //      broadcastSocket.joinGroup(InetAddress.getByName("230.0.0.1"));
             broadcastSocket.setSoTimeout(100);

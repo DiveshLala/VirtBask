@@ -353,9 +353,6 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
     
     private void enableViewPorts(){
         viewPort.setEnabled(true);
-//        if(isImmersive){
-//            camView.enableViewPorts();
-//        }
     }
     
     

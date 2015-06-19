@@ -63,8 +63,6 @@ public class NetworkMessagingProcessor {
     
     public static void characterCreationMessageSplitting(String str){
        
-      int indexPointer = 0;
-
       System.out.println(str);
       
               
@@ -76,9 +74,8 @@ public class NetworkMessagingProcessor {
               System.out.println("agent");
               SceneCharacterManager.flagNewAgents(str);
           }
-
           else{
-              System.out.println("player");
+              System.out.println("nup");
               SceneCharacterManager.flagNewNUP(str);
           }
     }
@@ -189,7 +186,7 @@ public class NetworkMessagingProcessor {
                 if(characterArray.get(i).getID() == id){
                     
                     if(id != playerID){
-                        if(!characterType.contains("P")){
+                        if(!characterType.startsWith("N")){
                             BasketballAgent ba = (BasketballAgent)characterArray.get(i);
                             SceneCharacterManager.updateAgentState(ba, pos, facingDirection,actionState, animationSpeed, loopMode, walkState, walkSpeed);
                             break;
@@ -212,19 +209,19 @@ public class NetworkMessagingProcessor {
         catch(StringIndexOutOfBoundsException e){}
    }
     
-    public static String createCharacterPositionsMessage(){
-       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
-       StringBuilder s = new StringBuilder();
-       s.append("POS");
-       for(int i = 0; i < a.size(); i++){
-            s.append(a.get(i).getID()                       //1
-                    + a.get(i).getCharacterType() + ":"         //A:
-                    + a.get(i).getPosition() + ","              //(0,0,0), 
-                    + "FD" +(int)(a.get(i).getFacingDirection())  //FD75
-                    + "AS" + a.get(i).getActionState() + ";");  //AS1;
-       }
-       return s.toString();
-    }
+//    public static String createCharacterPositionsMessage(){
+//       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
+//       StringBuilder s = new StringBuilder();
+//       s.append("POS");
+//       for(int i = 0; i < a.size(); i++){
+//            s.append(a.get(i).getID()                       //1
+//                    + a.get(i).getCharacterType() + ":"         //A:
+//                    + a.get(i).getPosition() + ","              //(0,0,0), 
+//                    + "FD" +(int)(a.get(i).getFacingDirection())  //FD75
+//                    + "AS" + a.get(i).getActionState() + ";");  //AS1;
+//       }
+//       return s.toString();
+//    }
     
     public static String createPlayerInformationMessage(Player p){
       //  System.out.println(p.getCharacterRotation());
