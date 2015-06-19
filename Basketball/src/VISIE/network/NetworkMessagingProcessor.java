@@ -177,82 +177,82 @@ public class NetworkMessagingProcessor {
         return "SKEL" + s;
     }
     
-    public static String createCharacterInitializationMessage(){
-       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
-       StringBuilder s = new StringBuilder();
-       for(int i = 0; i < a.size(); i++){
-            s.append(a.get(i).getID() + "!"                       //1
-                    + a.get(i).getCharacterType() + "!"         //R:
-                    + a.get(i).getModelType() + "!"         //A:
-                    + a.get(i).getPosition() + "!"              //(0,0,0), 
-                    + "FD" +(int)(a.get(i).getFacingDirection()) + "!"  //FD75
-                    + "AS" + a.get(i).getActionState() + ";");  //AS1;
-       }
-       return s.toString();
-    }
+//    public static String createCharacterInitializationMessage(){
+//       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
+//       StringBuilder s = new StringBuilder();
+//       for(int i = 0; i < a.size(); i++){
+//            s.append(a.get(i).getID() + "!"                       //1
+//                    + a.get(i).getCharacterType() + "!"         //R:
+//                    + a.get(i).getModelType() + "!"         //A:
+//                    + a.get(i).getPosition() + "!"              //(0,0,0), 
+//                    + "FD" +(int)(a.get(i).getFacingDirection()) + "!"  //FD75
+//                    + "AS" + a.get(i).getActionState() + ";");  //AS1;
+//       }
+//       return s.toString();
+//    }
     
-    public static String createCharacterInformationMessage(int id){
-       Character c = SceneCharacterManager.getCharacterByID(id);
-       StringBuilder s = new StringBuilder();
-       s.append(c.getID()                       //1
-        + c.getModelType() + ":"         //A:
-        + c.getPosition() + ","              //(0,0,0), 
-        + "FD" +(int)(c.getFacingDirection())  //FD75
-        + "AS" + c.getActionState() + ";"   //AS1;
-        + "!" + createClientColoursString(id));
-       return s.toString();
-    }
+//    public static String createCharacterInformationMessage(int id){
+//       Character c = SceneCharacterManager.getCharacterByID(id);
+//       StringBuilder s = new StringBuilder();
+//       s.append(c.getID()                       //1
+//        + c.getModelType() + ":"         //A:
+//        + c.getPosition() + ","              //(0,0,0), 
+//        + "FD" +(int)(c.getFacingDirection())  //FD75
+//        + "AS" + c.getActionState() + ";"   //AS1;
+//        + "!" + createClientColoursString(id));
+//       return s.toString();
+//    }
     
-    public static String createClientColoursString(int id){
-      Character c = SceneCharacterManager.getCharacterByID(id);
-      StringBuilder s = new StringBuilder();
-        if(c.getModelTextures() != null){
-            ArrayList<String> cols = c.getModelTextures();
-            s.append("ID" + c.getID());             //ID1 
-            s.append("CN" + cols.size() + ":");            //CN2: 
-              for(int j = 0; j < cols.size(); j++){
-                s.append(cols.get(j));
-              }
-            s.append(";");
-        }
-       return s.toString();
-    }
-    
-    public static String createTextureMessage(){
-       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
-       StringBuilder s = new StringBuilder();
-        for(int i = 0; i < a.size(); i++){
-            if(a.get(i).getModelTextures() != null){
-                ArrayList<String> cols = a.get(i).getModelTextures();
-                s.append("ID" + a.get(i).getID());             //ID1 
-                s.append("CN" + cols.size() + ":");            //CN2: 
-                  for(int j = 0; j < cols.size(); j++){
-                    s.append(cols.get(j));
-                  }
-                s.append(";");
-            }
-       }
-//       System.out.println(s.toString());
-       return s.toString();
-    }
-    
-    public static String createTextureMessage(int id){
-       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
-       StringBuilder s = new StringBuilder();
-        for(int i = 0; i < a.size(); i++){
-            if(a.get(i).getID() == id && a.get(i).getModelTextures() != null){
-                ArrayList<String> cols = a.get(i).getModelTextures();
-                s.append("ID" + a.get(i).getID());             //ID1 
-                s.append("CN" + cols.size() + ":");            //CN2: 
-                for(int j = 0; j < cols.size(); j++){
-                    s.append(cols.get(j));
-                 }
-                break;
-            }
-       }
-//       System.out.println(s.toString());
-       return s.toString();
-    }
+//    public static String createClientColoursString(int id){
+//      Character c = SceneCharacterManager.getCharacterByID(id);
+//      StringBuilder s = new StringBuilder();
+//        if(c.getModelTextures() != null){
+//            ArrayList<String> cols = c.getModelTextures();
+//            s.append("ID" + c.getID());             //ID1 
+//            s.append("CN" + cols.size() + ":");            //CN2: 
+//              for(int j = 0; j < cols.size(); j++){
+//                s.append(cols.get(j));
+//              }
+//            s.append(";");
+//        }
+//       return s.toString();
+//    }
+//    
+//    public static String createTextureMessage(){
+//       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
+//       StringBuilder s = new StringBuilder();
+//        for(int i = 0; i < a.size(); i++){
+//            if(a.get(i).getModelTextures() != null){
+//                ArrayList<String> cols = a.get(i).getModelTextures();
+//                s.append("ID" + a.get(i).getID());             //ID1 
+//                s.append("CN" + cols.size() + ":");            //CN2: 
+//                  for(int j = 0; j < cols.size(); j++){
+//                    s.append(cols.get(j));
+//                  }
+//                s.append(";");
+//            }
+//       }
+////       System.out.println(s.toString());
+//       return s.toString();
+//    }
+//    
+//    public static String createTextureMessage(int id){
+//       ArrayList<Character> a = SceneCharacterManager.getCharacterArray();
+//       StringBuilder s = new StringBuilder();
+//        for(int i = 0; i < a.size(); i++){
+//            if(a.get(i).getID() == id && a.get(i).getModelTextures() != null){
+//                ArrayList<String> cols = a.get(i).getModelTextures();
+//                s.append("ID" + a.get(i).getID());             //ID1 
+//                s.append("CN" + cols.size() + ":");            //CN2: 
+//                for(int j = 0; j < cols.size(); j++){
+//                    s.append(cols.get(j));
+//                 }
+//                break;
+//            }
+//       }
+////       System.out.println(s.toString());
+//       return s.toString();
+//    }
     
     public static String createBallMessage(){
         return "BALL" + SceneObjectManager.getBall().getBallPosition().toString();    

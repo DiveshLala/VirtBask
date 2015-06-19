@@ -468,12 +468,7 @@ public class Player extends BasketballCharacter{
      
      @Override
      public void doUpdateActivity(){}
-     
-     @Override
-    public String getCharacterLogString(){
-        return "P";
-    }
-     
+          
      public String logCharacterData(){
          
          StringBuilder s = new StringBuilder();

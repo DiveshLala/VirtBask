@@ -80,6 +80,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -551,17 +552,13 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
    
  public static void logNewPlayer(BasketballCharacter ba){
       if(isLogging){
-          String characterType = ba.getCharacterLogString();
           
           StringBuilder s = new StringBuilder();             
-          s.append("NEW" + ba.getModelType() + "!" + characterType + "!" + ba.getID() + "!");
-          
-          for(int i = 0; i < ba.getModelTextures().size(); i++){
-              s.append(ba.getModelTextures().get(i));
-          }        
+          s.append("NEW" + ba.getCharacterType() + "!" + ba.getCharacterModelPath() + "!" + ba.getID() + "!");
+                 
           s.append(ba.getPosition());
           Log.write(path, s.toString());
-          System.out.println("logged new");
+          System.out.println("logged new player");
       }
   }
   
@@ -648,9 +645,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
           }
   }
   
-
-      
-  
     public boolean getRunning(){
       return isRunning;
   }
@@ -736,7 +730,8 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
       ArrayList<Character> players = SceneCharacterManager.getCharacterArray();
       StringBuilder s = new StringBuilder();
       
-      s.append(System.currentTimeMillis() + "$");
+      long l =  TimeUnit.MILLISECONDS.convert(System.nanoTime() - timeGameStarted, TimeUnit.NANOSECONDS);
+      s.append(l + "$");
       s.append("B" + ball.getBallPosition() + "$");
       
       for(int i = 0; i < players.size(); i++){

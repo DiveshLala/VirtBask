@@ -542,12 +542,7 @@ public class BasketballAgent extends BasketballCharacter{
         updateMovements();
         updateAgentAttention();
     }
-    
-    @Override
-    public String getCharacterLogString(){
-        return "A";
-    }
-    
+        
     public String logCharacterData(){
          
         StringBuilder s = new StringBuilder();

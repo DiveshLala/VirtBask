@@ -30,9 +30,9 @@ public abstract class Character{
     
     public abstract String getCharacterType();
     
-    public String getModelType(){
-        return characterModel.getTypeIdentifier();
-    }
+//    public String getCharacterType(){
+//        return characterModel.getTypeIdentifier();
+//    }
     
     public float getRadius(){
         return radius;

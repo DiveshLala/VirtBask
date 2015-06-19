@@ -44,8 +44,11 @@ public abstract class BasketballCharacter extends Character{
     public abstract boolean checkStealing(Ball b);
     public abstract void updateBallNoPossession();
     public abstract void stopBall();
-    public abstract String getCharacterLogString();
     public abstract Vector3f getBallHandVector();
+    
+    public String getCharacterModelPath(){
+        return this.getModelFilePath();
+    }
     
     
     
