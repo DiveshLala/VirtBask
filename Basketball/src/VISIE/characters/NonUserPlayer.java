@@ -60,7 +60,7 @@ public class NonUserPlayer extends BasketballCharacter{
     }
     
     public String getCharacterType(){
-        return "P";
+        return "N";
     }
     
     public AnimatedModel getCharacterModel(){

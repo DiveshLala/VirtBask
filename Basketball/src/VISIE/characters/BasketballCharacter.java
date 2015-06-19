@@ -4,6 +4,7 @@
  */
 package VISIE.characters;
 import Basketball.Ball;
+import VISIE.Games.Game;
 import VISIE.Sound.CharacterSoundNode;
 import VISIE.mathfunctions.Conversions;
 import VISIE.mathfunctions.Polygon2D;
@@ -115,7 +116,7 @@ public abstract class BasketballCharacter extends Character{
     } 
     
     public void triggerClientSound(){
-        characterSoundNode.playClientUtterance();
+        characterSoundNode.playClientUtterance();        
     }
     
     public void flagUtterance(String s){

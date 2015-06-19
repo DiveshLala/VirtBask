@@ -561,6 +561,12 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
           System.out.println("logged new player");
       }
   }
+ 
+ public static void logSoundInfo(String utterance, Character c){
+     StringBuilder s = new StringBuilder();
+     s.append("UTTERANCE" + "!" + c.getID() + "!" + utterance);
+     Log.write(path, utterance);
+ }
   
     public void createPlayerTarget(){
       
@@ -636,7 +642,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             this.updatePlayerSkeleton();
           }
 
-          if(isLogging){
+          if(isLogging && timeGameStarted > 0){
               this.writeToFile();
           } 
                     

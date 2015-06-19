@@ -183,7 +183,9 @@ public class BasketballAgent extends BasketballCharacter{
     public void updateMovements(){ 
           
         int behaviorState = behaviorModule.getBehaviorState(); 
-                
+        
+
+        
 //        System.out.println(behaviorState + " " + this.getID());
         
             BPNewModel model = (BPNewModel)characterModel;

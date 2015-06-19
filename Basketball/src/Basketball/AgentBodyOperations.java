@@ -97,7 +97,7 @@ public class AgentBodyOperations {
     
     public void turnTorsoToTarget(Vector3f target){
         float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
-        if(Conversions.minDistanceBetweenAngles(targetAngle, torsoRotationAngle) > 5){
+        if(Conversions.minDistanceBetweenAngles(targetAngle, torsoRotationAngle) > 10){
             float f = Conversions.calculateSpinDirection(targetAngle, torsoRotationAngle);
             float rotation = Conversions.adjustAngleTo360(torsoRotationAngle + (torsoTurnSpeed * -f * (Main.getFrameRate() * 200)));
             this.setFacingDirection(rotation);

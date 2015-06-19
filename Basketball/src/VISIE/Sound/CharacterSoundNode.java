@@ -4,11 +4,13 @@
  */
 package VISIE.Sound;
 
+import VISIE.Games.Game;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
 import VISIE.characters.Character;
 import VISIE.mathfunctions.Conversions;
+import VISIE.recording.Log;
 
 /**
  *
@@ -109,13 +111,18 @@ public class CharacterSoundNode extends SoundNodes{
             AudioNode an = getNodeByName(soundFlag);
             an.setDirection(Conversions.degreesToNormalizedCoordinates(parentCharacter.getFacingDirection()));
             an.play();
+            Game.logSoundInfo(soundFlag, parentCharacter);
             soundFlag = "";
+
         }
+                
     }
     
     public void playUtterance(String s){
     
     }
+    
+    
     
     
 }

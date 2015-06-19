@@ -255,16 +255,18 @@ public class BPNewModel extends AnimatedModel{
                     this.executeAnimation(legChannel, newAnimation, speed, l);
                 }
             }
-            else if(super.hasAnimationFinished(2) || this.hasFootTouchedGround()){
+            else if(legChannel.getAnimationName().startsWith("turn") && newAnimation.startsWith("turn")){
+                //if stuck in perpetual turn, wait until previous nearly complete
+                if(this.getCurrentAnimationTimePercentage(2) > 0.85f){
                     this.executeAnimation(legChannel, newAnimation, speed, l);
+                }                
             }
-//            else{
-//                if(this.canLegAnimOverride(legChannel.getAnimationName(), newAnimation)){
-//                   this.executeAnimation(legChannel, newAnimation, speed, l);
-//                }
-//            }
+            else if(super.hasAnimationFinished(2) || this.hasFootTouchedGround()){
+                 this.executeAnimation(legChannel, newAnimation, speed, l);
+            }
         }
-        else if(legChannel.getAnimationName().startsWith("turn")){
+        
+        if(legChannel.getAnimationName().startsWith("turn")){
             this.setTurningLoop();
         }
     }
