@@ -287,7 +287,7 @@ public abstract class BasketballCharacter extends Character{
     }
     
     public void setSoundNodes(){
-        characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt");
+        characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt", this);
     }
     
     public void playWalkingSound(){

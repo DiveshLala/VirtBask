@@ -222,6 +222,8 @@ public class SceneCharacterManager {
        for(Character c:characterArray){
            BasketballCharacter bc = (BasketballCharacter)c;
            bc.playWalkingSound();
+           bc.triggerClientSound();                  
+
        }    
     }
     

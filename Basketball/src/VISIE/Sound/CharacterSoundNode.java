@@ -7,6 +7,8 @@ package VISIE.Sound;
 import com.jme3.audio.AudioNode;
 import com.jme3.scene.Node;
 import java.util.ArrayList;
+import VISIE.characters.Character;
+import VISIE.mathfunctions.Conversions;
 
 /**
  *
@@ -18,10 +20,12 @@ public class CharacterSoundNode extends SoundNodes{
     public ArrayList<AudioNode> utteranceNodes;
     private long lastFootstepTime;
     private String soundFlag = "";
+    private VISIE.characters.Character parentCharacter;
     
-    public CharacterSoundNode(Node n, String filePath){
+    public CharacterSoundNode(Node n, String filePath, Character c){
         
         parentNode = n;
+        parentCharacter = c;
                 
         ArrayList<String> soundFiles = readFiles(filePath);
         createNodes(soundFiles);
@@ -74,7 +78,6 @@ public class CharacterSoundNode extends SoundNodes{
             else if(footstepType.startsWith("turn")){
                 an.setVolume(0.01f);
             }
-
             an.play();
             lastFootstepTime = System.currentTimeMillis();
         }
@@ -104,9 +107,10 @@ public class CharacterSoundNode extends SoundNodes{
     public void playClientUtterance(){
         if(!soundFlag.isEmpty()){
             AudioNode an = getNodeByName(soundFlag);
+            an.setDirection(Conversions.degreesToNormalizedCoordinates(parentCharacter.getFacingDirection()));
             an.play();
+            soundFlag = "";
         }
-        soundFlag = "";
     }
     
     public void playUtterance(String s){

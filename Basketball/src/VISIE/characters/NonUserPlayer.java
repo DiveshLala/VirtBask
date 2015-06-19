@@ -482,7 +482,7 @@ public class NonUserPlayer extends BasketballCharacter{
     }
     
     public void handleNUPPredefinedGestures(){
-    
+            
         BPNewModel bm = (BPNewModel) characterModel;
         String currentGest = characterModel.getCurrentAnimation(1);
                  

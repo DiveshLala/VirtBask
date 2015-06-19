@@ -30,6 +30,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.bullet.objects.PhysicsCharacter;
 import com.jme3.bullet.objects.PhysicsRigidBody;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.scene.shape.Box;
 
@@ -132,6 +133,10 @@ public class Player extends BasketballCharacter{
     
     public float getFacingDirection(){
         return playerFacingDirection;
+    }
+    
+    public Quaternion getFacingQuaternion(){
+        return new Quaternion().fromAngles(0, (float)Math.toRadians(playerFacingDirection), 0);
     }
 
     public Vector3f getPosition(){
