@@ -4,6 +4,7 @@
  */
 package VISIE.models;
 
+import com.jme3.animation.AnimControl;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,77 +19,55 @@ import java.util.HashMap;
  */
 public class AnimationStates {
     
-    private ArrayList<String[]> animationMap;
-    private ArrayList<String[]> walkingMap;    
+    private Object[] animations;
     
-    public AnimationStates(String animFile, String walkFile){
+    public AnimationStates(AnimControl control){
         
+        animations = control.getAnimationNames().toArray();
         
-        animationMap = new ArrayList<String[]>();
-        walkingMap = new ArrayList<String[]>();
-        
-        try{
-          BufferedReader reader = new BufferedReader(new FileReader(animFile));
-          String line;
-          
-          while((line = reader.readLine()) != null){
-              String[] data = line.split(",");
-              animationMap.add(data);
-          } 
-          
-          reader = new BufferedReader(new FileReader(walkFile));
-          
-          while((line = reader.readLine()) != null){
-              String[] data = line.split(",");
-              walkingMap.add(data);
-          } 
-        }
-        catch (FileNotFoundException e) {
-          e.printStackTrace();
-        }
-        catch (IOException e) {
-          e.printStackTrace();
-        }
     }
     
     
     
     public int getAnimationState(String animationName){
-        for(int i = 0; i < animationMap.size(); i++){
-             if(animationMap.get(i)[1].equals(animationName)){
-                 return Integer.parseInt(animationMap.get(i)[0]);
-             }      
-        }
         
+        for(int i = 0; i < animations.length; i++){
+           String s = animations[i].toString();
+           if(s.equals(animationName)){
+               return i;
+           }
+        
+        }        
         return 0;
     }
-    
+//    
     public int getWalkingState(String animationName){
-        for(int i = 0; i < walkingMap.size(); i++){
-             if(walkingMap.get(i)[1].equals(animationName)){
-                 return Integer.parseInt(walkingMap.get(i)[0]);
-             }      
-        } 
+        
+        for(int i = 0; i < animations.length; i++){
+           String s = animations[i].toString();
+           if(s.equals(animationName)){
+               return i;
+           }
+        
+        }        
         return 0;
     }
-    
+//    
     public String getAnimationName(int state){
         
-        for(int i = 0; i < animationMap.size(); i++){
-             if(Integer.parseInt(animationMap.get(i)[0]) == state){
-                 return animationMap.get(i)[1];
-             }      
+        if(animations.length >= state){
+            String s = animations[state].toString();
+            return s;
         }
         
         return "";
     }
-    
+//    
     public String getWalkingName(int state){
         
-        for(int i = 0; i < walkingMap.size(); i++){
-             if(Integer.parseInt(walkingMap.get(i)[0]) == state){
-                 return walkingMap.get(i)[1];
-             }      
+        if(animations.length >= state){
+            String s = animations[state].toString();
+            return s;
         }
         
         return "";

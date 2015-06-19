@@ -140,17 +140,17 @@ public class NetworkMessagingProcessor {
         return null;
     }
     
-    public static String createSkeletonInfoMessage(){
-        StringBuilder s = new StringBuilder();
-        ArrayList<Character> characterArray = SceneCharacterManager.getCharacterArray();
-        for(int i = 0; i < characterArray.size(); i++){
-            if(characterArray.get(i).getCharacterType() == "P"){
-                Character c = characterArray.get(i);
-                s.append(c.getID() + "," + c.getSkeletonRotations() + "!");
-            }
-        } 
-        return "SKEL" + s;
-    }
+//    public static String createSkeletonInfoMessage(){
+//        StringBuilder s = new StringBuilder();
+//        ArrayList<Character> characterArray = SceneCharacterManager.getCharacterArray();
+//        for(int i = 0; i < characterArray.size(); i++){
+//            if(characterArray.get(i).getCharacterType() == "P"){
+//                Character c = characterArray.get(i);
+//                s.append(c.getID() + "," + c.getSkeletonRotations() + "!");
+//            }
+//        } 
+//        return "SKEL" + s;
+//    }
     
     public static String createCharacterInitializationMessage(){
        ArrayList<Character> a = SceneCharacterManager.getCharacterArray();

@@ -6,7 +6,6 @@ package Basketball;
 import VISIE.characters.BasketballAgent;
 import VISIE.characters.BasketballCharacter;
 import VISIE.mathfunctions.Conversions;
-import VISIE.models.BasketballPlayerModel;
 import VISIE.scenemanager.Scene;
 import VISIE.scenemanager.SceneCharacterManager;
 import com.jme3.math.Vector3f;

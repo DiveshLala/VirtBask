@@ -65,7 +65,7 @@ public class AgentBodyOperations {
     public void setFacingDirection(float torsoRotation, float headRotation){ 
         headRotationAngle = headRotation;
         torsoRotationAngle = torsoRotation;
-        agentModel.turnBody(headRotationAngle - torsoRotationAngle, torsoRotationAngle);
+        agentModel.turnBody(torsoRotationAngle);
     }
     
     public void turnBodyToTarget(Vector3f target){

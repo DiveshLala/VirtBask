@@ -135,7 +135,7 @@ public class NonUserPlayer extends BasketballCharacter{
     public void setFacingDirection(float headRotation, float torsoRotation){
             headRotationAngle = headRotation;
             bodyRotationAngle = torsoRotation;
-            characterModel.turnBody(headRotationAngle - bodyRotationAngle, bodyRotationAngle);
+            characterModel.turnBody(bodyRotationAngle);
             facingDirection = bodyRotationAngle;
     }
     
@@ -162,7 +162,7 @@ public class NonUserPlayer extends BasketballCharacter{
    public void setFacingDirection(Vector3f vec){
             headRotationAngle = Conversions.originToTargetAngle(this.getPosition(), vec);
             bodyRotationAngle = Conversions.originToTargetAngle(this.getPosition(), vec);
-            characterModel.turnBody(headRotationAngle, bodyRotationAngle);
+            characterModel.turnBody(bodyRotationAngle);
     }
    
    public void setSkeletonJoints(ArrayList<String> jointInfo){

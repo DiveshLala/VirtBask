@@ -11,7 +11,6 @@ import VISIE.models.AnimatedModel;
 import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;
 import VISIE.gesturerecognition.GestureRecognition;
-import VISIE.models.BasketballPlayerModel;
 import VISIE.scenemanager.SceneCharacterManager;
 import com.jme3.animation.LoopMode;
 import com.jme3.math.Vector3f;
@@ -234,45 +233,7 @@ public class Player extends BasketballCharacter{
         float targetAngle = Conversions.originToTargetAngle(this.getPosition(), target);
         return Conversions.minDistanceBetweenAngles(targetAngle, headRotationAngle) < mutualGazeAngle;
     }
-     
-     public void doBallManipulation(){
-         
-         if(characterModel.getClass().equals(BasketballPlayerModel.class)){
-                          
-                 //dribbling
-                BasketballPlayerModel m = (BasketballPlayerModel)characterModel;
-                
-                if(this.getSpeed() > 0){
-                    m.doDribbling(0.5f);
-                }
-                else{
-                  if(m.isBallDribbled() && m.getCurrentAnimationTimePercentage(1) > 0.95){
-                      this.playAnimation(1, "postDribble", 1, LoopMode.DontLoop);
-                  }
-                    ball.updateBallInPossession();
-                    ball.removeSpin();
-                    
-                }
-                
-                if(m.isBallDribbled()){ 
-                    float dribbleTime = m.getCurrentAnimationTimePercentage(1);
-                    if(dribbleTime < 0.1){
-                        ball.updateBallInPossession();
-                    }
-                    else if(dribbleTime > 0.1 && dribbleTime < 0.15){
-                        ball.bounceBall(mainNode.getViewDirection().mult(this.getSpeed()));
-              //          ball.adjustCollisionGroup(false);
-                    }
-                    else if(dribbleTime > 0.90){
-            //            ball.adjustCollisionGroup(true);
-                    }
-                    else if(ball.isBallInSpace(m.getWorldCoordinateOfJoint("right hand"))){
-                        ball.updateBallInPossession();
-                    }
-                }
-             }
-     }
-     
+          
      public void playAnimation(int channel, String animationName, float speed, LoopMode l){
         characterModel.playAnimation(channel, animationName, speed, l); 
     }
@@ -280,11 +241,7 @@ public class Player extends BasketballCharacter{
      public void playKinectGesture(String animationName){
          playerGesture.setKinectGesture(animationName);
      }
-     
-     public void updateGestures(){
-         playerGesture.updateGestures();
-     }
-     
+          
      public void shootBall(){
          if(this.hasPossession){
             this.playAnimation(1, "shootAction", 1, LoopMode.DontLoop);

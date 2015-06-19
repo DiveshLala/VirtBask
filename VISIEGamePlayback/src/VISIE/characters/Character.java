@@ -74,9 +74,9 @@ public abstract class Character{
         return characterModel.getModel();
     }
     
-    public String getSkeletonRotations(){
-        return characterModel.getBoneRotationInfo();
-    }  
+//    public String getSkeletonRotations(){
+//        return characterModel.getBoneRotationInfo();
+//    }  
     
     public void setCharacterType(String type){
         characterType = type;

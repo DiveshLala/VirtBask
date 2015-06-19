@@ -24,37 +24,32 @@ public class ModelLoader {
     }
     
     
-    public static AnimatedModel createAnimatedModel(String type, int id){
+    public static AnimatedModel createAnimatedModel(String type, int id, float scale){
         Spatial s;
-        
-        if(type.equals("A")){
-            s = assetManager.loadModel("Models/CuteRobotModel/cuteRobot.mesh.xml");
-            CuteModel cm = new CuteModel(s, id);
-            return cm;
-       }
-        else if(type.equals("B")){
-            s = assetManager.loadModel("Models/EvilRobotModel/evilRobot.mesh.xml");
-            EvilModel em = new EvilModel(s, id);
-            return em;
+
+
+        if(type.contains("player")){
+            s = assetManager.loadModel("Models/BPNew/playeranim.j3o");
+            BPNewModel bm = new BPNewModel(s, id, 0.48f);
+            bm.setModelFilePath("Models/BPNew/playeranim.j3o");
+            return bm;
         }
-        else if(type.equals("I")){
-            s = assetManager.loadModel("Models/Ichigo/ichigo02.mesh.xml");
-            IchigoModel im = new IchigoModel(s, id);
-            return im;
-       }
-        else if(type.equals("S")){
-            s = assetManager.loadModel("Models/CuteRobotModel/cuteRobot.mesh.xml");
-            CuteModel cm = new CuteModel(s, id);
-            return cm;
+        else if(type.contains("alan")){
+            s = assetManager.loadModel("Models/BPNew/alananim.j3o");
+            BPNewModel bm = new BPNewModel(s, id, 0.48f);
+            bm.setModelFilePath("Models/BPNew/alananim.j3o");
+            return bm;
         }
-        else if(type.equals("K")){
-            s = assetManager.loadModel("Models/KinectUserModel/kinectUser.mesh.xml");
-            KinectUserModel km = new KinectUserModel(s, id);
-            return km;
+        else if(type.contains("bob")){
+            s = assetManager.loadModel("Models/BPNew/bobanim.j3o");
+            BPNewModel bm = new BPNewModel(s, id, 0.4f);
+            bm.setModelFilePath("Models/BPNew/bobanim.j3o");
+            return bm;
         }
-        else if(type.equals("D")){
-            s = assetManager.loadModel("Models/BasketballPlayer/basketballPlayer.mesh.xml");
-            BasketballPlayerModel bm = new BasketballPlayerModel(s, id);
+        else if(type.contains("carl")){
+            s = assetManager.loadModel("Models/BPNew/carlanim.j3o");
+            BPNewModel bm = new BPNewModel(s, id, 0.4f);
+            bm.setModelFilePath("Models/BPNew/carlanim.j3o");
             return bm;
         }
         else {

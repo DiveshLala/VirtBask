@@ -7,6 +7,7 @@ import VISIE.models.AnimatedModel;
 import com.jme3.math.Vector3f;
 import com.jme3.math.Quaternion;
 import com.jme3.animation.Bone;
+import com.jme3.animation.Skeleton;
 import com.jme3.math.Transform;
 import com.jme3.math.Matrix3f;
 
@@ -26,6 +27,7 @@ public class ModelBone {
     private float i = 0.01f;
     public Quaternion spineQuat = new Quaternion();
     public Quaternion currentQuat = new Quaternion();
+    public int boneIndex;
     
     public ModelBone(Bone p, Bone c, String h, AnimatedModel am){
         
@@ -44,6 +46,10 @@ public class ModelBone {
     
     public void setCurrentModelBoneVector(Vector3f vec){
         currentBoneVector = vec;
+    }
+    
+    public void setBoneIndex(Skeleton s){    
+        boneIndex = s.getBoneIndex(parentJoint);
     }
     
     public Vector3f getCurrentModelBoneVector(){
@@ -89,6 +95,10 @@ public class ModelBone {
     
     public Vector3f getModelSpaceBoneVector(){
         return(parentJoint.getModelSpacePosition().subtract(childJoint.getModelSpacePosition()));    
+    }
+    
+    public int getBoneIndex(){
+           return boneIndex;  
     }
     
 

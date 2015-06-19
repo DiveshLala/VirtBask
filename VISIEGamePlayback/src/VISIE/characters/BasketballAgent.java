@@ -17,7 +17,7 @@ import Basketball.TrainingBehaviorModule;
 import VISIE.mathfunctions.Conversions;
 import VISIE.JointProjectXMLProcessor;
 import VISIE.models.AnimatedModel;
-import VISIE.models.BasketballPlayerModel;
+import VISIE.models.BPNewModel;
 import VISIE.scenemanager.Court;
 import VISIE.scenemanager.SceneCharacterManager;
 import VISIE.scenemanager.SceneCreator;
@@ -35,7 +35,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 public class BasketballAgent extends BasketballCharacter implements JointProjectCharacter{
     
     protected RigidBodyControl mainNode;
-    protected BasketballPlayerModel agentModel;
+    protected BPNewModel agentModel;
  //   protected float torsoRotationAngle;
     public List<Vector3f> targetPositions = new ArrayList<Vector3f>();
 
@@ -61,12 +61,12 @@ public class BasketballAgent extends BasketballCharacter implements JointProject
     public AgentUptake uptake;
     public AgentRecognition recognition;
     
-    public BasketballAgent(int i, BasketballPlayerModel am, RigidBodyControl p, float r, float height){
+    public BasketballAgent(int i, BPNewModel am, RigidBodyControl p, float r, float height){
         characterID = i;
         mainNode = p;
         characterModel = am;
         characterModel.initialize();
-        agentModel = (BasketballPlayerModel)characterModel;
+        agentModel = (BPNewModel)characterModel;
         currentSpeed = 0.0f;
         radius = r;
         hasCollided = false;
@@ -167,7 +167,7 @@ public class BasketballAgent extends BasketballCharacter implements JointProject
 //                }
         }
         else{
-            BasketballPlayerModel model = (BasketballPlayerModel)characterModel;
+            BPNewModel model = (BPNewModel)characterModel;
             //animations are according to agent state
                         
             if(actionState == 0){             //dribbling
@@ -227,7 +227,7 @@ public class BasketballAgent extends BasketballCharacter implements JointProject
     
     public void doBallManipulation(){
         
-            BasketballPlayerModel model = (BasketballPlayerModel)characterModel;
+            BPNewModel model = (BPNewModel)characterModel;
         
             //pass thrown
             if(model.isBallPassed()){      
@@ -295,7 +295,7 @@ public class BasketballAgent extends BasketballCharacter implements JointProject
     
     public float getCurrentMovementProgress(int channelID){
    //     System.out.println(agentModel.getCurrentAnimationTimePercentage(channelID));
-        BasketballPlayerModel model = (BasketballPlayerModel)characterModel;
+        BPNewModel model = (BPNewModel)characterModel;
         return model.getCurrentAnimationTimePercentage(channelID);
     }
     

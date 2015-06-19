@@ -48,19 +48,6 @@ public class SceneCharacterManager {
         charactersToRemove.add(id);
     }
     
-    private void addNewNonUserPlayer(String s){
-         //get model type info and ID
-         String[] info = s.split("!");
-         int id = Integer.parseInt(info[0]);
-         String modelType = info[1];
-         String[] textures = {"shirtyellowbob.jpg", "skin1.jpg", "shortsblue.jpg", "shoesgreen.jpg", "izukura.jpg"};
-                 
-         Vector3f startPosition = new Vector3f(10, 4f, 10);
-         NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, root, startPosition, textures);
-         characterArray.add(nup);
-         IDCounter++;
-         System.out.println("added " + id);
-    }
     
     private void removeCharacter(int id){
        for(int i = characterArray.size() - 1; i >= 0; i--){
@@ -74,24 +61,7 @@ public class SceneCharacterManager {
            }       
        }
     }
-    
-    public void updateSceneObjects(){
-          if(NUPsToAdd.size() > 0){
-              for(int i = 0; i < NUPsToAdd.size(); i++){
-                  addNewNonUserPlayer(NUPsToAdd.get(i));
-              }
-              NUPsToAdd.clear();
-          } 
-          
-         if(charactersToRemove.size() > 0){
-              for(int i = 0; i < charactersToRemove.size(); i++){
-                  removeCharacter(charactersToRemove.get(i));
-              }
-              charactersToRemove.clear();
-          }
-            
-    }
-    
+        
     public static void updateNonUserPlayerState(int id, Vector3f position, float facingDirection, int actionState, float walkingSpeed){
           
         for(int i = 0; i < characterArray.size(); i++){

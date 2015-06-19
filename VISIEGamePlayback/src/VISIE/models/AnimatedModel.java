@@ -19,6 +19,11 @@ import com.jme3.math.Vector2f;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.collision.CollisionResults;
+import com.jme3.material.MatParam;
+import com.jme3.material.RenderState.BlendMode;
+import com.jme3.math.ColorRGBA;
+import com.jme3.renderer.queue.RenderQueue.Bucket;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 /**
  *
@@ -41,48 +46,42 @@ public abstract class AnimatedModel implements AnimEventListener{
     public abstract void removeUserControl();
     public abstract void applyColours();
    // public abstract void applyColours(ArrayList<Vector3f> colList);
-    public abstract void turnBody(float headRotationAngle, float bodyRotationAngle);
+    public abstract void turnBody(float angle);
+    public abstract void turnHead(float angle);
+    public abstract void resetHead();
     public abstract int getNumberOfColours();
     //public abstract Quaternion findParentInverseRotations(Bone startJoint);
     public abstract String jointNameConverter(String s);
+    public abstract void noArmGesture();
+    public abstract void standStill();
     public abstract void playAnimation(int channelType, String animationType, float speed, LoopMode l);
      protected Vector2f rotVec = new Vector2f();
      protected float rotationAngle;
      private String boneRotationInfo = "";
-     protected float modelRotationAngle = 0;
      protected Quaternion initialRotation;
      protected String typeIdentifier;
      protected AnimationStates animationStates;
+     protected VISIE.characters.Character parentCharacter;
+     protected String modelFilePath;
      
      public CapsuleCollisionShape getCollisionShapeForModel(){
            BoundingBox b = (BoundingBox)model.getWorldBound();
            float radius = (b.getXExtent() + b.getZExtent())/2;
            return new CapsuleCollisionShape(radius, b.getYExtent(), 1);
       }
-
-//    public void turnLeftGesture(){
-//        if(!channel.getAnimationName().equals("leftTurn")){
-//            channel.setAnim("leftTurn");
-//            channel.setSpeed(0.00001f);
-//        }
-//    }
-//    public void turnRightGesture(){
-//    if(!channel.getAnimationName().equals("rightTurn")){
-//            channel.setAnim("rightTurn");
-//            channel.setSpeed(0.0001f);
-//        }
-//    }
-//    public void waitingGesture(){
-////     if(!channel.getAnimationName().equals("wait")){
-////            channel.setAnim("wait");
-////            channel.setLoopMode(LoopMode.Cycle);
-////        }
-//      channel.setAnim("walk");
-//      channel.setSpeed(2f);
-//      channel.setLoopMode(LoopMode.DontLoop);
-//        
-//    }
+     
+     public void executeAnimation(AnimChannel channel, String animationName, float speed, LoopMode l){
+           channel.setAnim(animationName);
+           channel.setSpeed(speed);
+           channel.setLoopMode(l);  
+     }
+     
+    public void setParentCharacter(VISIE.characters.Character c){
+        parentCharacter = c;
+    }
     
+    public void forceAnimation(int channelType, String animationType, float speed, LoopMode l){}
+        
     public Spatial getModel(){
         return model;
     }
@@ -94,8 +93,20 @@ public abstract class AnimatedModel implements AnimEventListener{
             c = armChannel;
             return c.getTime()/c.getAnimMaxTime();
         }
+        else if(channelID == 2){
+            c = legChannel;
+            return c.getTime()/c.getAnimMaxTime();
+        }
         else
             return 0;
+    }
+    
+    public String getArmAnimationName(int state){
+        return animationStates.getAnimationName(state);
+    }
+    
+    public String getLegAnimationName(int state){
+        return animationStates.getWalkingName(state);
     }
     
     public boolean animationTimeBetween(int channelID, float minPerc, float maxPerc){
@@ -134,6 +145,13 @@ public abstract class AnimatedModel implements AnimEventListener{
    
      public void animateBoneAngle(String boneName, Quaternion rotQuat){
         Skeleton s = control.getSkeleton();
+        Bone b = s.getBone(boneName);       
+        b.setUserControl(true);      
+        b.setUserTransforms(Vector3f.ZERO, rotQuat, Vector3f.UNIT_XYZ);
+  }
+     
+    public void animateBoneAngle(AnimControl cont, String boneName, Quaternion rotQuat){
+        Skeleton s = cont.getSkeleton();
         //channel.setLoopMode(LoopMode.DontLoop);
         Bone b = s.getBone(boneName);       
         b.setUserControl(true);      
@@ -160,14 +178,6 @@ public abstract class AnimatedModel implements AnimEventListener{
        f = b.getLocalRotation().toAngles(null);
        return f;
    }
-    
-    public Quaternion getQuatBoneRotation(String boneName){
-       Quaternion q;
-       Skeleton s = control.getSkeleton();
-       Bone b = s.getBone(boneName);
-       q = b.getLocalRotation();
-       return q;
-    }
     
     public ArrayList<Vector3f> getModelColours(){
         return colours;
@@ -222,14 +232,15 @@ public abstract class AnimatedModel implements AnimEventListener{
              }
                 
              if(header.equals("ROTA")){
-                 float x, z;
                  try{
-                     rotationAngle = Float.parseFloat(s.substring(s.indexOf(":") + 1));
-//                      x = Float.parseFloat(s.substring(s.indexOf("X") + 1, s.indexOf("Y") - 1));
-//                      z = Float.parseFloat(s.substring(s.indexOf("Z") + 1, s.length()));
-//                      rotVec = new Vector2f(x,z);
+                      rotationAngle = Float.parseFloat(s.substring(s.indexOf(":") + 1));
+                      if(Float.isNaN(rotationAngle)){
+                          rotationAngle = 0;
+                      } 
                  }
-                 catch(Exception e){}
+                 catch(Exception e){
+                     System.out.println("rotation error " + e);
+                 }
              }
              
              else{
@@ -253,6 +264,11 @@ public abstract class AnimatedModel implements AnimEventListener{
          for(int i = 0; i < modelBones.size(); i++){
              modelBones.get(i).moveModelBone();         
          }
+         
+        rotateSpine();    
+     }
+     
+     protected void rotateSpine(){
      }
      
      public void setJointRotations(ArrayList<String> rotations){
@@ -270,16 +286,22 @@ public abstract class AnimatedModel implements AnimEventListener{
                  w = Float.parseFloat(floats[3]);
              }
              Quaternion quat = new Quaternion(x, y, z, w);
-             Quaternion q2 = quat.inverse();
-             Quaternion q3 = q2.mult(new Quaternion().fromAngles((float)Math.toRadians(90), 0, 0));
-             
+        //     System.out.println(rotations.get(i));
+       //      System.out.println(quat);
              animateBoneAngle(boneName, quat);
+             
+             
+             for(int j = 0; j < modelBones.size(); j++){
+                 if(boneName.equals(modelBones.get(j).getParentJointName())){
+                     modelBones.get(j).setCurrentQuat(quat);
+                     break;
+                 }
+             }
          }
-     
      }
      
-     public String getBoneRotationInfo(){
-        
+     public String getModelBoneRotationInfo(){
+         
        boneRotationInfo = "";
         
        StringBuilder sb = new StringBuilder();
@@ -289,11 +311,40 @@ public abstract class AnimatedModel implements AnimEventListener{
        }
        
        boneRotationInfo = sb.toString();
+       
        return boneRotationInfo;
     }
      
-     public float getModelRotationAngle(){
-         return modelRotationAngle;
+//     public Quaternion getModelRotation(){
+//         return model.getLocalRotation();
+//     }
+     
+    //used for logging... uses index instead of names 
+    public String getModelBonesForLogging(){
+         
+       boneRotationInfo = "";
+        
+       StringBuilder sb = new StringBuilder();
+       
+       for(int i = 0; i < modelBones.size(); i++){
+           sb.append(modelBones.get(i).getBoneIndex() + ":" + modelBones.get(i).getCurrentQuat() + ";");       
+       }
+       
+       boneRotationInfo = sb.toString();
+       
+       return boneRotationInfo;
+    }
+     
+     public String getNUPBoneRotationInfo(){
+         
+        StringBuilder sb = new StringBuilder(); 
+        Skeleton s = control.getSkeleton();
+         
+         for(int i = 0; i < modelBones.size(); i++){
+             Bone b = s.getBone(modelBones.get(i).getParentJointName());
+             sb.append(b.getName() + ":" + (b.getLocalRotation()) + ";");
+         }
+         return sb.toString();
      }
      
       public Vector3f calculatePointTarget(){
@@ -310,6 +361,24 @@ public abstract class AnimatedModel implements AnimEventListener{
         return vec;
     }
     
+    public Vector3f getBoneVectorOfModel(String parent, String child){
+        
+        return this.getWorldCoordinateOfJoint(child).subtract(this.getWorldCoordinateOfJoint(parent)).normalize();
+        
+    }
+    
+    public Vector3f getLocalCoordinateOfJoint(String s){
+        
+        Vector3f vec = new Vector3f();
+        String jointName = jointNameConverter(s);
+        
+        if(jointName != null){ 
+            vec = control.getSkeleton().getBone(jointName).getModelSpacePosition();
+        }
+        return vec;
+     
+    }
+    
       
       public String getTypeIdentifier(){
           return typeIdentifier;
@@ -317,10 +386,10 @@ public abstract class AnimatedModel implements AnimEventListener{
       
       public boolean hasAnimationFinished(int i){
           if(i == 1){
-           return (armChannel.getTime() > (armChannel.getAnimMaxTime() - 0.01));
+              return (armChannel.getTime() / armChannel.getAnimMaxTime()) > 0.925f;
           }
           else if(i == 2){
-           return (legChannel.getTime() > (legChannel.getAnimMaxTime() - 0.01)); 
+              return (legChannel.getTime() / legChannel.getAnimMaxTime()) > 0.925f;
           }
           else{
               return true;
@@ -353,6 +422,26 @@ public abstract class AnimatedModel implements AnimEventListener{
               return legChannel.getAnimationName();
           }
           return "";
+      }
+      
+      public float getAnimationSpeed(int channel){
+            if(channel == 1){
+              return armChannel.getSpeed();
+          }
+          else if(channel == 2){
+              return legChannel.getSpeed();
+          }
+          return 0;
+      }
+      
+      public boolean isLooped(int channel){
+          if(channel == 1){
+              return (armChannel.getLoopMode().equals(LoopMode.Loop));
+          }
+          else if(channel == 2){
+              return (legChannel.getLoopMode().equals(LoopMode.Loop));
+          }
+          return false;
       }
       
       public Vector3f getPointingVector(int hand){
@@ -390,18 +479,66 @@ public abstract class AnimatedModel implements AnimEventListener{
           return results.size() > 0;
       }
       
-        public String getAnimationName(int state){
-          return animationStates.getAnimationName(state);
+      public void setTransparency(float value){
+          
+        Node n = (Node)model;
+        for(int i = 0; i < n.getChildren().size(); i++){
+            
+            Node m = (Node)n.getChild(i);
+            
+            for(int j = 0; j < m.getChildren().size(); j++){
+                if(!m.getChild(j).getName().contains("ghost")){
+                    Geometry g = (Geometry)m.getChild(j);
+                    g.getMaterial().getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+                    MatParam diff = g.getMaterial().getParam("Diffuse");
+                    ColorRGBA col = (ColorRGBA)diff.getValue();
+                    col.a = value;
+                    g.getMaterial().setColor("Diffuse", col);
+                    g.getMaterial().setColor("Ambient", col);
+                    g.setQueueBucket(Bucket.Transparent);
+                }
+            }
+            
+        }
+    }
+      
+      public float getRotationAngle(){
+          return rotationAngle;
       }
-        
-        public String getArmAnimationName(int state){
-        return animationStates.getAnimationName(state);
-    }
-    
-    public String getLegAnimationName(int state){
-        return animationStates.getWalkingName(state);
-    }
-    
+      
+      public int getActionState(String animationName){
+          return animationStates.getAnimationState(animationName);      
+      }
+      
+      public String getModelFilePath(){
+          return modelFilePath;
+      }
+      
+      public void setModelFilePath(String s){
+          modelFilePath = s;
+      }
+      
+      public int getWalkingState(String animationName){
+          return animationStates.getWalkingState(animationName);
+      }
+      
+      public String getAnimationName(int state){
+          return animationStates.getAnimationName(state);
+        }
+      
+            
+      public float getAnimationTime(int channel){
+          if(channel == 1){
+              return armChannel.getTime();
+          }
+          else if(channel == 2){
+              return legChannel.getTime();
+          }
+          else{
+              return 0;
+          }
+      }
+      
     public void setFrame(int channel, String animationName, float time){
        if(channel == 1){
            armChannel.setAnim(animationName);

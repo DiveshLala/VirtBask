@@ -144,7 +144,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "Game1.txt";
+  private String logFileName = "20150619_144331.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -633,39 +633,35 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
             }
           }
   //    }
-
-//      catch(InterruptedException e){
-//          System.out.println(e);
-//      }
       
       if(s != null && !s.startsWith("*")){
           
         if(s.startsWith("NEW")){
             this.createCharacter(s);
-       //           currentReadLine++;
+         //         currentReadLine++;
         }     
         else{  
-            String[] data = s.split("\\$"); 
+            String[] linedata = s.split("\\$"); 
 
-            if(data[1].startsWith("B")){//first data is ball position
-               String vec = data[1].substring(1, data[1].length());
+            if(linedata[1].startsWith("B")){//first data is ball position
+               String vec = linedata[1].substring(1, linedata[1].length());
                ball.setBallPosition(NetworkMessagingProcessor.stringToVector(vec));
             }
 
-            for(int i = 2; i < data.length; i++){
-                if(data[i].contains("P")){ //player info
-                    this.setPlayerInfo(data, i);
+            for(int i = 2; i < linedata.length; i++){
+                if(linedata[i].contains("P")){ //player info
+                    this.setPlayerInfo(linedata, i);
                 }            
-                else if(data[i].contains("A")){
-                  this.setAgentInfo(data, i);
+                else if(linedata[i].contains("A")){
+                  this.setAgentInfo(linedata, i);
                 }
-                else if(data[i].contains("N")){
-                    this.setNUPInfo(data, i);
+                else if(linedata[i].contains("N")){
+                    this.setNUPInfo(linedata, i);
                 }
             }
         }
                       
-        this.calculateMutualGaze();  
+    //    this.calculateMutualGaze();  
         timeSinceLast = System.nanoTime();
       }
       
@@ -725,18 +721,18 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                 }
             }
             
-            Quaternion lShoulder = p.getModel().getQuatBoneRotation("leftShoulderJoint");
-            Quaternion rShoulder = p.getModel().getQuatBoneRotation("rightShoulderJoint");
-            Quaternion lElbow = p.getModel().getQuatBoneRotation("leftElbowJoint");
-            Quaternion rElbow = p.getModel().getQuatBoneRotation("rightElbowJoint");
-            
-         //   System.out.println(lShoulder);
-            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
-            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
-            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
-            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
-            
-            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
+//            Quaternion lShoulder = p.getModel().getQuatBoneRotation("leftShoulderJoint");
+//            Quaternion rShoulder = p.getModel().getQuatBoneRotation("rightShoulderJoint");
+//            Quaternion lElbow = p.getModel().getQuatBoneRotation("leftElbowJoint");
+//            Quaternion rElbow = p.getModel().getQuatBoneRotation("rightElbowJoint");
+//            
+//         //   System.out.println(lShoulder);
+//            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
+//            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
+//            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
+//            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
+//            
+//            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
             
      //       Log.write(writePFile.getPath(), full);
             
@@ -832,22 +828,22 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                 }
             }
             
-            Quaternion lShoulder = nup.getModel().getQuatBoneRotation("leftShoulderJoint");
-            Quaternion rShoulder = nup.getModel().getQuatBoneRotation("rightShoulderJoint");
-            Quaternion lElbow = nup.getModel().getQuatBoneRotation("leftElbowJoint");
-            Quaternion rElbow = nup.getModel().getQuatBoneRotation("rightElbowJoint");
-            
-         //   System.out.println(lShoulder);
-            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
-            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
-            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
-            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
-            
-            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
+//            Quaternion lShoulder = nup.getModel().getQuatBoneRotation("leftShoulderJoint");
+//            Quaternion rShoulder = nup.getModel().getQuatBoneRotation("rightShoulderJoint");
+//            Quaternion lElbow = nup.getModel().getQuatBoneRotation("leftElbowJoint");
+//            Quaternion rElbow = nup.getModel().getQuatBoneRotation("rightElbowJoint");
+//            
+//         //   System.out.println(lShoulder);
+//            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
+//            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
+//            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
+//            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
+//            
+//            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
                             
 
        //     System.out.println(playerPos.distance(nup.getPosition()));
-            Log.write(distances.getPath(), currentReadLine + "," + playerPos.distance(nup.getPosition()) + "");
+         //   Log.write(distances.getPath(), currentReadLine + "," + playerPos.distance(nup.getPosition()) + "");
           }
           catch(NumberFormatException e){
               System.out.println(e);
@@ -861,13 +857,11 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       String modelType;
       String characterType;
       int id;
-      String[] textures;
       Vector3f startPos;
-      ArrayList<String> tempTextures = new ArrayList<String>();
       
       String[] data = s.split("!");
-      modelType = data[0].replace("NEW", "");
-      characterType = data[1];
+      characterType = data[0].replace("NEW", "");
+      modelType = data[1];
       id = Integer.parseInt(data[2]);
       
       boolean isPresent = false;
@@ -878,39 +872,25 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
               break;
           }
       }
-      
-      for(int i = 3; i < data.length; i++){
-          if(!data[i].startsWith("(")){
-              tempTextures.add(data[i]);
-          }
-          else{
-              break;
-          }
-      }
-      textures = new String[tempTextures.size()];
-      
-      for(int i = 0; i < tempTextures.size(); i++){
-          textures[i] = tempTextures.get(i);
-      }
-      
+          
       
       String vec = data[data.length -1];
       startPos = NetworkMessagingProcessor.stringToVector(vec);
       
       if(!isPresent){
-      
-          if(characterType.equals("A")){     
-            BasketballAgent ba = characterCreator.addBasketballCharacter(id, 0, modelType, startPos, textures);
+                
+          if(characterType.toLowerCase().contains("agent")){//agengt type     
+            BasketballAgent ba = characterCreator.addAgentCharacter(id, modelType, startPos, 0.48f);
             characterArray.add(ba);
           }
-          else if(characterType.equals("P")){
-              Player p = characterCreator.addPlayerCharacter(id, modelType, rootNode, startPos, textures);
+          else if(characterType.startsWith("P")){ //player type
+              Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
           }
-          else if(characterType.equals("N")){
-              NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, rootNode, startPos, textures);
-              characterArray.add(nup);
-          }   
+//          else if(characterType.startsWith("N")){  //NUP type
+//              NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, rootNode, startPos, textures);
+//              characterArray.add(nup);
+//          }   
           
       }
   }

@@ -21,8 +21,6 @@ public abstract class BasketballCharacter extends Character{
     private float cameraRot;
     private boolean cameraInitialised = false;
     
-    public abstract void doBallManipulation();
-
     public boolean isInPossession(){
         return hasPossession;
     }

@@ -8,7 +8,7 @@ import VISIE.models.ModelLoader;
 import VISIE.models.AnimatedModel;
 import VISIE.characters.NonUserPlayer;
 import VISIE.characters.Player;
-import VISIE.models.BasketballPlayerModel;
+import VISIE.models.BPNewModel;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
@@ -32,12 +32,11 @@ public class CharacterCreator{
         bulletAppState = bApp;
     }
       
-    public Player addPlayerCharacter(int id, String playerModelType, Node root, Vector3f startPosition, String[] textures){
+    public Player addPlayerCharacter(int id, String modelType, Vector3f startPosition, float scale){
         Player p;
         CharacterControl playerNode;
-        AnimatedModel am = ModelLoader.createAnimatedModel(playerModelType, id);
+        AnimatedModel am = ModelLoader.createAnimatedModel(modelType, id, scale);
         Spatial model = am.getModel();
-        am.addTextures(textures);
         CapsuleCollisionShape cc = am.getCollisionShapeForModel();
         float playerRadius = cc.getRadius();
         float playerHeight = cc.getHeight();
@@ -65,14 +64,13 @@ public class CharacterCreator{
         return p;
     }
     
-    public NonUserPlayer addNonUserPlayerCharacter(int id, String modelType, Node root, Vector3f startPosition, String[] textures){
+    public NonUserPlayer addNonUserPlayerCharacter(int id, String modelType, Vector3f startPosition, float scale){
         //Non-user player must be RigidBodyControl for collisions
         NonUserPlayer nup;
         RigidBodyControl playerNode;
         
-        AnimatedModel am = ModelLoader.createAnimatedModel(modelType, id);
+        AnimatedModel am = ModelLoader.createAnimatedModel(modelType, id, scale);
         Spatial model = am.getModel();
-        am.addTextures(textures);
         CapsuleCollisionShape cc = am.getCollisionShapeForModel();
         float playerRadius = cc.getRadius();
         float playerHeight = cc.getHeight();
@@ -100,35 +98,37 @@ public class CharacterCreator{
        return new CapsuleCollisionShape(radius, b.getYExtent(), 1);
    }
     
-    public BasketballAgent addBasketballCharacter(int id, int agentRole, String modelType, Vector3f startPosition, String[] textures){
-       
+     public BasketballAgent addAgentCharacter(int id, String modelType, Vector3f startPosition, float scale){
+        
         AnimatedModel am;
         BasketballAgent ba;
 
-        am = ModelLoader.createAnimatedModel(modelType, id);
+        am = ModelLoader.createAnimatedModel(modelType, id, scale);
         
         Spatial model = am.getModel();
-        BasketballPlayerModel bm = (BasketballPlayerModel)am;
-        bm.addTextures(textures);
+        BPNewModel bm = (BPNewModel)am;
         CapsuleCollisionShape cc = am.getCollisionShapeForModel();
         RigidBodyControl character = new RigidBodyControl(cc, 100f);
         character.setAngularFactor(0);
-        character.setFriction(2.5f);
-
-        ba = new BasketballAgent(id, (BasketballPlayerModel)am, character, cc.getRadius(), cc.getHeight());
+        character.setFriction(0.8f);
+        
+        ba = new BasketballAgent(id, (BPNewModel)am, character, cc.getRadius(), cc.getHeight());
         ba.setCharacterType("BasketballAgent");
+
         
         Node n = new Node();
         n.setName("Basketball Player " + id);
+        am.setParentCharacter(ba);
         n.setLocalTranslation(startPosition);
         n.attachChild(model);
         n.addControl(character);
         ba.setExistenceNode(n);
-   //     bulletAppState.getPhysicsSpace().add(character);
+        bulletAppState.getPhysicsSpace().add(character);
         root.attachChild(n); 
         ba.initialiseTarget();
+  //      ba.setSoundNodes();
         return ba;
-   }
+    }
     
     public static Vector3f generateStartingPosition(int i){
         
