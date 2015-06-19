@@ -1,0 +1,16 @@
+P0, D, shirtyellowbob.jpg, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+P1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+
+//defending team
+0, D, shirtyellowalan.jpg, skinAlan.jpg, shortsblue.jpg, shoesgreen.jpg, Alan.jpg
+0, D, shirtyellowbob.jpg, skinBob.jpg, shortsblue.jpg, shoesgreen.jpg, Bob.jpg
+0, D, shirtyellowcarl.jpg, skinCarl.jpg, shortsblue.jpg, shoesgreen.jpg, Carl.jpg
+0, D, shirtyellowbob.jpg, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+0, D, shirtyellowbob.jpg, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+
+//attacking team
+1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg
+1, D, templateshirt.JPG, skin1.jpg, shortsblue.jpg, shoesgreen.jpg, izukura.jpg

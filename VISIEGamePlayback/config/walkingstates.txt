@@ -1,0 +1,7 @@
+0,standingPose
+1,walk
+2,run
+3,stepLeft
+4,stepRight
+5,stepBack
+6,jump
