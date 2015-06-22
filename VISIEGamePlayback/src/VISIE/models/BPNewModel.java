@@ -657,21 +657,17 @@ public class BPNewModel extends AnimatedModel{
     @Override
     public void setFrame(int channel, String animationName, float time){
 //        
-//        if(modelRoot.getName().contains("carl")){
-//            System.out.println(armChannel.getAnimationName() + " " + this.getCurrentAnimationTimePercentage(1));
-//            System.out.println(legChannel.getAnimationName() + " " + this.getCurrentAnimationTimePercentage(2));
-//        }
-       
-
        super.setFrame(channel, animationName, time);
         
        if(channel == 1){
            clothesUpper.setAnim(animationName);
            clothesUpper.setTime(time);
+           clothesUpper.setSpeed(0);
        }
        else if(channel == 2){
            clothesLower.setAnim(animationName);
            clothesLower.setTime(time);
+           clothesLower.setSpeed(0);
        }
     }
     

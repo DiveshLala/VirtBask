@@ -563,20 +563,96 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   @Override
   public void simpleUpdate(float tpf) {
       
-         
+              
         //createLoading();
             if(isRunning){  
-                  long curTime = System.nanoTime();
-                  long elapsedTime = curTime - timeSinceLast;
-      
-                if(timeBetweenFrames < elapsedTime || currentReadLine == 0){                  
-                    this.doPlayBack();
-                }
                 
+                 if(currentReadLine == 0){
+                     this.doPlayBack(0);
+                     timeSinceLast = System.currentTimeMillis();
+                 }
+                 
+                 if(!isPaused){                      
+                    if(!isRewind && currentReadLine + 1 < data.size()){
+                        int i = this.getNextFrame(currentReadLine);
+                        this.doPlayBack(i);
+                        currentReadLine = i;
+                        
+                    }
+                    else if(isRewind && currentReadLine - 1 >= 0){
+                        int i = this.getPreviousFrame(currentReadLine);
+                        this.doPlayBack(i);
+                        currentReadLine = i;
+                    }
+                 }
+                timeSinceLast = System.currentTimeMillis();
                 this.showViewPoint();
          //       this.displayInfo();
           }
+  }
+  
+  private int getNextFrame(int index){
       
+      String s = data.get(index + 1);
+      if(s.startsWith("NEW")){
+          return index + 1;
+      }
+      else{
+          long curFrameTime = 1000;
+          
+          if(!data.get(index).startsWith("NEW")){
+              String a = data.get(index);
+              String[] t = a.split("\\$", 2);
+              curFrameTime = Long.parseLong(t[0]);
+          }
+          
+          long curTime = System.currentTimeMillis();
+          long elapsedTime = curTime - timeSinceLast;
+          
+          for(int i = 1; i < data.size() - index; i++){
+                String dataLine = data.get(index + i);
+                String[] t = dataLine.split("\\$", 2);
+                long nextFrameTime = Integer.parseInt(t[0]);
+                long diff = nextFrameTime - curFrameTime;
+                if(elapsedTime < diff){//can move
+                    return index + i;
+                }
+          }
+          
+          return index + 1;
+      }
+  }
+  
+  private int getPreviousFrame(int index){
+      
+      String s = data.get(index - 1);
+      if(s.startsWith("NEW")){
+          return index - 1;
+      }
+      else{
+          long curFrameTime = 1000;
+          
+          if(!data.get(index).startsWith("NEW")){
+              String a = data.get(index);
+              String[] t = a.split("\\$", 2);
+              curFrameTime = Long.parseLong(t[0]);
+          }
+          
+          long curTime = System.currentTimeMillis();
+          long elapsedTime = curTime - timeSinceLast;
+          
+          for(int i = 1; i < data.size() + index; i++){
+                String dataLine = data.get(index - i);
+                String[] t = dataLine.split("\\$", 2);
+                long previousFrameTime = Integer.parseInt(t[0]);
+                long diff =  curFrameTime - previousFrameTime;
+                if(elapsedTime < diff){//can move
+                    return index - i;
+                }
+          }
+          
+          return index - 1;
+      }
   }
 
   
@@ -604,41 +680,17 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   public void pauseGame(){
       isRunning = !isRunning;
-//      if(isRunning)
-//          bulletAppState.setSpeed(1.0f);
-//      else
-//          bulletAppState.setSpeed(0);
   }
   
-  public void doPlayBack(){
+  public void doPlayBack(int frameNumber){
       
-      String s = data.get(currentReadLine);
-      
-     // try{
-          if(!isPaused){
-      //      float f = (1f/playSpeed) * 100f;
-      //      Thread.sleep((int)f);
+      String s = data.get(frameNumber);
             
-            if(!isRewind){
-                currentReadLine++;
-                if(currentReadLine > data.size() - 1){
-                    currentReadLine = data.size() - 1;
-                }
-            }
-            else{
-                currentReadLine--;
-                if(currentReadLine < 0){
-                    currentReadLine = 0;
-                }
-            }
-          }
-  //    }
-      
       if(s != null && !s.startsWith("*")){
           
         if(s.startsWith("NEW")){
             this.createCharacter(s);
-         //         currentReadLine++;
+         //   currentReadLine++;
         }  
         else{  
             String[] linedata = s.split("\\$"); 
@@ -652,9 +704,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                 this.playUtterance(linedata);
             }
         }
-                      
-    //    this.calculateMutualGaze();  
-        timeSinceLast = System.nanoTime();
       }
       
   }
@@ -832,83 +881,83 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
 //      }  
 //  }
   
-  private void setNUPInfo(String[] data, int startIndex){
-      
-      int a = data[startIndex].indexOf("N");
-      int id = Integer.parseInt(data[startIndex].substring(0, a));
-      Vector3f newPos;
-      float fd;
-      int actionState;
-      int walkingState;
-      float speed;
-      
-      if(SceneCharacterManager.getCharacterByID(id) != null){
-          NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterByID(id);
-         
-          newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
-          nup.setPosition(newPos);
-          
-          fd = Float.parseFloat(data[startIndex + 2]);
-          nup.setFacingDirection(fd, fd); 
-          nupFD = fd;
-          nupPos = newPos;          
-          
-          if(!nup.getCameraInitialised()){
-              nup.initialiseCamera();
-              nup.setCameraRot(fd);
-            //  System.out.println(nup.getCameraRot());
-          }
-          
-          try{
-            if(data[startIndex + 3].length() > 5){
-                String skelRot = data[startIndex + 3];
-                nup.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
-            }
-            else{
-                actionState = Integer.parseInt(data[startIndex + 3]);
-                String s = nup.getModel().getArmAnimationName(actionState);
-                float animTime = Float.parseFloat(data[startIndex + 5]);
-                nup.getModel().setFrame(1, s, animTime);
-            }
-            
-            walkingState = Integer.parseInt(data[startIndex + 4]);
-            String t = nup.getModel().getLegAnimationName(walkingState);
-            float animTime = Float.parseFloat(data[startIndex + 6]);
-            nup.getModel().setFrame(2, t, animTime);
-            
-            if(!isPaused){
-                if(walkingState == 3){
-                    nup.setCameraRot(nup.getCameraRot() + (0.33f * 2 * 0.25f));
-                }
-                else if(walkingState == 4){
-                    nup.setCameraRot(nup.getCameraRot() - (0.33f * 2 * 0.25f));
-                }
-            }
-            
-//            Quaternion lShoulder = nup.getModel().getQuatBoneRotation("leftShoulderJoint");
-//            Quaternion rShoulder = nup.getModel().getQuatBoneRotation("rightShoulderJoint");
-//            Quaternion lElbow = nup.getModel().getQuatBoneRotation("leftElbowJoint");
-//            Quaternion rElbow = nup.getModel().getQuatBoneRotation("rightElbowJoint");
+//  private void setNUPInfo(String[] data, int startIndex){
+//      
+//      int a = data[startIndex].indexOf("N");
+//      int id = Integer.parseInt(data[startIndex].substring(0, a));
+//      Vector3f newPos;
+//      float fd;
+//      int actionState;
+//      int walkingState;
+//      float speed;
+//      
+//      if(SceneCharacterManager.getCharacterByID(id) != null){
+//          NonUserPlayer nup = (NonUserPlayer)SceneCharacterManager.getCharacterByID(id);
+//         
+//          newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
+//          nup.setPosition(newPos);
+//          
+//          fd = Float.parseFloat(data[startIndex + 2]);
+//          nup.setFacingDirection(fd, fd); 
+//          nupFD = fd;
+//          nupPos = newPos;          
+//          
+//          if(!nup.getCameraInitialised()){
+//              nup.initialiseCamera();
+//              nup.setCameraRot(fd);
+//            //  System.out.println(nup.getCameraRot());
+//          }
+//          
+//          try{
+//            if(data[startIndex + 3].length() > 5){
+//                String skelRot = data[startIndex + 3];
+//                nup.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+//            }
+//            else{
+//                actionState = Integer.parseInt(data[startIndex + 3]);
+//                String s = nup.getModel().getArmAnimationName(actionState);
+//                float animTime = Float.parseFloat(data[startIndex + 5]);
+//                nup.getModel().setFrame(1, s, animTime);
+//            }
 //            
-//         //   System.out.println(lShoulder);
-//            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
-//            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
-//            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
-//            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
+//            walkingState = Integer.parseInt(data[startIndex + 4]);
+//            String t = nup.getModel().getLegAnimationName(walkingState);
+//            float animTime = Float.parseFloat(data[startIndex + 6]);
+//            nup.getModel().setFrame(2, t, animTime);
 //            
-//            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
-                            
-
-       //     System.out.println(playerPos.distance(nup.getPosition()));
-         //   Log.write(distances.getPath(), currentReadLine + "," + playerPos.distance(nup.getPosition()) + "");
-          }
-          catch(NumberFormatException e){
-              System.out.println(e);
-              String skelRot = data[startIndex + 3];
-              nup.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
-          }
-      }  
-  }
+//            if(!isPaused){
+//                if(walkingState == 3){
+//                    nup.setCameraRot(nup.getCameraRot() + (0.33f * 2 * 0.25f));
+//                }
+//                else if(walkingState == 4){
+//                    nup.setCameraRot(nup.getCameraRot() - (0.33f * 2 * 0.25f));
+//                }
+//            }
+//            
+////            Quaternion lShoulder = nup.getModel().getQuatBoneRotation("leftShoulderJoint");
+////            Quaternion rShoulder = nup.getModel().getQuatBoneRotation("rightShoulderJoint");
+////            Quaternion lElbow = nup.getModel().getQuatBoneRotation("leftElbowJoint");
+////            Quaternion rElbow = nup.getModel().getQuatBoneRotation("rightElbowJoint");
+////            
+////         //   System.out.println(lShoulder);
+////            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
+////            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
+////            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
+////            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
+////            
+////            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
+//                            
+//
+//       //     System.out.println(playerPos.distance(nup.getPosition()));
+//         //   Log.write(distances.getPath(), currentReadLine + "," + playerPos.distance(nup.getPosition()) + "");
+//          }
+//          catch(NumberFormatException e){
+//              System.out.println(e);
+//              String skelRot = data[startIndex + 3];
+//              nup.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+//          }
+//      }  
+ // }
   
   private void createCharacter(String s){
       String modelType;

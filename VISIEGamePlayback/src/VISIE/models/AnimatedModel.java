@@ -543,10 +543,12 @@ public abstract class AnimatedModel implements AnimEventListener{
        if(channel == 1){
            armChannel.setAnim(animationName);
            armChannel.setTime(time);
+           armChannel.setSpeed(0);
        }
        else if(channel == 2){
            legChannel.setAnim(animationName);
            legChannel.setTime(time);
+           legChannel.setSpeed(0);
        }
     }
 }
