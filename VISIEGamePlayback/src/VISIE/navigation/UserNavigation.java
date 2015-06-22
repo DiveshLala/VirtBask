@@ -141,7 +141,7 @@ public class UserNavigation {
                  
                  player.setCharacterRotationRadians(cameraRot);
                  player.setHeadRotationRadians(cameraRot);
-                 player.turnBody();
+        //         player.turnBody();
                  player.setSpeed(s);
                
                  
@@ -222,7 +222,7 @@ public class UserNavigation {
         
         player.setCharacterRotationRadians(cameraRot);  
         player.setHeadRotationRadians(cameraRot);
-        player.turnBody();
+    //    player.turnBody();
      }
      
 }

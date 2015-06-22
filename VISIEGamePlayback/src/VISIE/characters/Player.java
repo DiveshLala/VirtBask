@@ -153,6 +153,7 @@ public class Player extends BasketballCharacter{
     }
     
     public void setPosition(Vector3f vec){
+        
          mainNode.setPhysicsLocation(vec);
     }
     
@@ -199,7 +200,8 @@ public class Player extends BasketballCharacter{
     }
     
     //turn model
-    public void turnBody(){
+    public void turnBody(float f){
+        playerFacingDirection = Conversions.adjustAngleTo360(f);
   //      System.out.println("sss" + playerFacingDirection);
         mainNode.setViewDirection(Conversions.degreesToNormalizedCoordinates(playerFacingDirection));
     }

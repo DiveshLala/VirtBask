@@ -96,6 +96,7 @@ public class NonUserPlayer extends BasketballCharacter{
     
     public void turnBody(float degree){
    //     modelNode.
+        facingDirection = Conversions.adjustAngleTo360(degree);
        modelNode.setPhysicsRotation(new Quaternion().fromAngles(0, (float)Math.toRadians(degree), 0));
     }
     

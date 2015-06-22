@@ -22,6 +22,7 @@ public abstract class BasketballCharacter extends Character{
     private float cameraRot;
     private boolean cameraInitialised = false;
     private CharacterSoundNode characterSoundNode;
+    public abstract void turnBody(float f);
     
     public boolean isInPossession(){
         return hasPossession;
@@ -145,4 +146,21 @@ public abstract class BasketballCharacter extends Character{
      public void playUtterance(String s){
         characterSoundNode.playUtterance(s);
     }
+     
+     public String getArmAnimationName(int actionState){
+        return characterModel.getArmAnimationName(actionState);
+     }
+     
+     public String getLegAnimationName(int actionState){
+        return characterModel.getLegAnimationName(actionState);
+     }
+     
+     public void setAnimationFrame(int channel, String animName, float animTime){
+         characterModel.setFrame(channel, animName, animTime);
+     }
+     
+     public void setSkeletonJoints(ArrayList<String> jointInfo){
+         
+     }
+     
 }

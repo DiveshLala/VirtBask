@@ -85,6 +85,10 @@ public class BasketballAgent extends BasketballCharacter implements JointProject
         return characterModel;
     }
     
+    public void turnBody(float f){
+        this.abo.setFacingDirection(f, f);
+    }
+    
     public void setTrainingBehaviorModule(int i){
         behaviorModule = new TrainingBehaviorModule(this, i);
     }

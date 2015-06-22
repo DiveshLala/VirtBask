@@ -642,23 +642,11 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
         }  
         else{  
             String[] linedata = s.split("\\$"); 
-
+            
             if(linedata[1].startsWith("B")){//first data is ball position
                String vec = linedata[1].substring(1, linedata[1].length());
                ball.setBallPosition(NetworkMessagingProcessor.stringToVector(vec));
-               
-               for(int i = 2; i < linedata.length; i++){
-            //    System.out.println(linedata[]);
-                if(linedata[i].contains("P")){ //player info
-                    this.setPlayerInfo(linedata, i);
-                }            
-                else if(linedata[i].contains("A")){//agent info
-                  this.setAgentInfo(linedata, i);
-                }
-                else if(linedata[i].contains("N")){//nup info
-                    this.setNUPInfo(linedata, i);
-                }
-            }
+               this.setCharacterInfo(linedata, 2);
           }
             else if(linedata[1].startsWith("U")){//data is uttrerance
                 this.playUtterance(linedata);
@@ -678,116 +666,171 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       bc.playUtterance(utterance);
               
     }
-   
   
-  public void setPlayerInfo(String[] data, int startIndex){
-      
-      int a = data[startIndex].indexOf("P");
-      int id = Integer.parseInt(data[startIndex].substring(0, a));
+  private void setCharacterInfo(String[] data, int startIndex){
+            
+      String type = data[startIndex];
+      String str = type.replaceAll("[^\\d.]", "");
+
+      int id = Integer.parseInt(str);
       Vector3f newPos;
       float fd;
       int actionState;
       int walkingState;
       float speed;
-            
+      
       if(SceneCharacterManager.getCharacterByID(id) != null){
-          Player p = (Player)SceneCharacterManager.getCharacterByID(id);
-         
+          BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterByID(id);
+          
           newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
-          p.setPosition(newPos);
+          bc.setPosition(newPos);
           
           fd = Float.parseFloat(data[startIndex + 2]);
-          p.setCharacterRotationRadians((float)Math.toRadians(fd));
-          p.setHeadRotationRadians((float)Math.toRadians(fd));
-          p.turnBody();
-          playerFD = fd;
-          playerPos = newPos;
+          bc.turnBody(fd);
           
-          if(!p.getCameraInitialised()){
-              p.initialiseCamera();
-              p.setCameraRot(fd);
-          }
-          
-          try{
-            if(data[startIndex + 3].length() > 5){
+          if(data[startIndex + 3].length() > 5){
                 String skelRot = data[startIndex + 3];
-                p.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
-            }
-            else{
+                bc.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+          }
+          else{
                 actionState = Integer.parseInt(data[startIndex + 3]);
-                String s = p.getModel().getArmAnimationName(actionState);
+                String s = bc.getArmAnimationName(actionState);
                 float animTime = Float.parseFloat(data[startIndex + 5]);
-                p.getModel().setFrame(1, s, animTime);
-            }
-            
-            walkingState = Integer.parseInt(data[startIndex + 4]);
-            String t = p.getModel().getLegAnimationName(walkingState);
-            float animTime = Float.parseFloat(data[startIndex + 6]);
-            p.getModel().setFrame(2, t, animTime);
-            
-            if(!isPaused){
-                if(walkingState == 3){
-                    p.setCameraRot(p.getCameraRot() + (0.33f * p.getTurnSpeed() * 0.25f));
-                }
-                else if(walkingState == 4){
-                    p.setCameraRot(p.getCameraRot() - (0.33f * p.getTurnSpeed() * 0.25f));
-                }
-            }
-            
-//            Quaternion lShoulder = p.getModel().getQuatBoneRotation("leftShoulderJoint");
-//            Quaternion rShoulder = p.getModel().getQuatBoneRotation("rightShoulderJoint");
-//            Quaternion lElbow = p.getModel().getQuatBoneRotation("leftElbowJoint");
-//            Quaternion rElbow = p.getModel().getQuatBoneRotation("rightElbowJoint");
-//            
-//         //   System.out.println(lShoulder);
-//            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
-//            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
-//            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
-//            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
-//            
-//            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
-            
-     //       Log.write(writePFile.getPath(), full);
-            
+                bc.setAnimationFrame(1, s, animTime);
           }
-          catch(NumberFormatException e){
-              String skelRot = data[startIndex + 3];
-              p.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
-          }
-      }  
-  }
-  
-  private void setAgentInfo(String[] data, int startIndex){
-      
-      int a = data[startIndex].indexOf("A");
-      int id = Integer.parseInt(data[startIndex].substring(0, a));
-      Vector3f newPos;
-      float fd;
-      int actionState;
-      int walkingState;
-      float speed;
-            
-      if(SceneCharacterManager.getCharacterByID(id) != null){
-          BasketballAgent ba = (BasketballAgent)SceneCharacterManager.getCharacterByID(id);
-         
-          newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
-          ba.setPosition(newPos);
-          
-          fd = Float.parseFloat(data[startIndex + 2]);
-          ba.abo.setFacingDirection(fd, fd);  
-          
-          actionState = Integer.parseInt(data[startIndex + 3]);
-          String s = ba.getModel().getArmAnimationName(actionState);
-          float animTime = Float.parseFloat(data[startIndex + 5]);
-          ba.getModel().setFrame(1, s, animTime);
           
           walkingState = Integer.parseInt(data[startIndex + 4]);
-          String t = ba.getModel().getLegAnimationName(walkingState);
-          animTime = Float.parseFloat(data[startIndex + 6]);
-          ba.getModel().setFrame(2, t, animTime);  
-                 
-      }  
-  }
+          String t = bc.getLegAnimationName(walkingState);
+          float animTime = Float.parseFloat(data[startIndex + 6]);
+          bc.setAnimationFrame(2, t, animTime);  
+          
+                    
+          if(type.contains("P") && bc.getCameraInitialised()){
+              bc.initialiseCamera();
+              bc.setCameraRot(fd);
+          }
+          
+          if(type.contains("N") && bc.getCameraInitialised()){
+              bc.initialiseCamera();
+              bc.setCameraRot(fd);
+          }                 
+      }
+      
+      if(startIndex + 7 < data.length){
+          this.setCharacterInfo(data, startIndex + 7);
+      }
+      
+    }
+   
+  
+//  public void setPlayerInfo(String[] data, int startIndex){
+//      
+//      int a = data[startIndex].indexOf("P");
+//      int id = Integer.parseInt(data[startIndex].substring(0, a));
+//      Vector3f newPos;
+//      float fd;
+//      int actionState;
+//      int walkingState;
+//      float speed;
+//            
+//      if(SceneCharacterManager.getCharacterByID(id) != null){
+//          Player p = (Player)SceneCharacterManager.getCharacterByID(id);
+//         
+//          newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
+//          p.setPosition(newPos);
+//          
+//          fd = Float.parseFloat(data[startIndex + 2]);
+//          p.setCharacterRotationRadians((float)Math.toRadians(fd));
+//          p.setHeadRotationRadians((float)Math.toRadians(fd));
+//          p.turnBody();
+//          playerFD = fd;
+//          playerPos = newPos;
+//          
+//          if(!p.getCameraInitialised()){
+//              p.initialiseCamera();
+//              p.setCameraRot(fd);
+//          }
+//          
+//          try{
+//            if(data[startIndex + 3].length() > 5){
+//                String skelRot = data[startIndex + 3];
+//                p.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+//            }
+//            else{
+//                actionState = Integer.parseInt(data[startIndex + 3]);
+//                String s = p.getModel().getArmAnimationName(actionState);
+//                float animTime = Float.parseFloat(data[startIndex + 5]);
+//                p.getModel().setFrame(1, s, animTime);
+//            }
+//            
+//            walkingState = Integer.parseInt(data[startIndex + 4]);
+//            String t = p.getModel().getLegAnimationName(walkingState);
+//            float animTime = Float.parseFloat(data[startIndex + 6]);
+//            p.getModel().setFrame(2, t, animTime);
+//            
+//            if(!isPaused){
+//                if(walkingState == 3){
+//                    p.setCameraRot(p.getCameraRot() + (0.33f * p.getTurnSpeed() * 0.25f));
+//                }
+//                else if(walkingState == 4){
+//                    p.setCameraRot(p.getCameraRot() - (0.33f * p.getTurnSpeed() * 0.25f));
+//                }
+//            }
+//            
+////            Quaternion lShoulder = p.getModel().getQuatBoneRotation("leftShoulderJoint");
+////            Quaternion rShoulder = p.getModel().getQuatBoneRotation("rightShoulderJoint");
+////            Quaternion lElbow = p.getModel().getQuatBoneRotation("leftElbowJoint");
+////            Quaternion rElbow = p.getModel().getQuatBoneRotation("rightElbowJoint");
+////            
+////         //   System.out.println(lShoulder);
+////            String s1 = (lShoulder.getX() + "," + lShoulder.getY() + "," + lShoulder.getZ() + "," + lShoulder.getW() + ",");
+////            String s2 = (rShoulder.getX() + "," + rShoulder.getY() + "," + rShoulder.getZ() + "," + rShoulder.getW() + ",");
+////            String s3 = (lElbow.getX() + "," + lElbow.getY() + "," + lElbow.getZ() + "," + lElbow.getW() + ",");
+////            String s4 = (rElbow.getX() + "," + rElbow.getY() + "," + rElbow.getZ() + "," + rElbow.getW());
+////            
+////            String full = currentReadLine - 4 + "," + s1 + s2 + s3 + s4;
+//            
+//     //       Log.write(writePFile.getPath(), full);
+//            
+//          }
+//          catch(NumberFormatException e){
+//              String skelRot = data[startIndex + 3];
+//              p.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+//          }
+//      }  
+//  }
+  
+//  private void setAgentInfo(String[] data, int startIndex){
+//      
+//      int a = data[startIndex].indexOf("A");
+//      int id = Integer.parseInt(data[startIndex].substring(0, a));
+//      Vector3f newPos;
+//      float fd;
+//      int actionState;
+//      int walkingState;
+//      float speed;
+//            
+//      if(SceneCharacterManager.getCharacterByID(id) != null){
+//          BasketballAgent ba = (BasketballAgent)SceneCharacterManager.getCharacterByID(id);
+//         
+//          newPos = NetworkMessagingProcessor.stringToVector(data[startIndex + 1]);
+//          ba.setPosition(newPos);
+//          
+//          fd = Float.parseFloat(data[startIndex + 2]);
+//          ba.abo.setFacingDirection(fd, fd);  
+//          
+//          actionState = Integer.parseInt(data[startIndex + 3]);
+//          String s = ba.getModel().getArmAnimationName(actionState);
+//          float animTime = Float.parseFloat(data[startIndex + 5]);
+//          ba.getModel().setFrame(1, s, animTime);
+//          
+//          walkingState = Integer.parseInt(data[startIndex + 4]);
+//          String t = ba.getModel().getLegAnimationName(walkingState);
+//          animTime = Float.parseFloat(data[startIndex + 6]);
+//          ba.getModel().setFrame(2, t, animTime);  
+//                 
+//      }  
+//  }
   
   private void setNUPInfo(String[] data, int startIndex){
       
