@@ -558,14 +558,17 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
                  
           s.append(ba.getPosition());
           Log.write(path, s.toString());
-          System.out.println("logged new player");
       }
   }
  
  public static void logSoundInfo(String utterance, Character c){
-     StringBuilder s = new StringBuilder();
-     s.append("UTTERANCE" + "!" + c.getID() + "!" + utterance);
-     Log.write(path, utterance);
+     
+     if(isLogging){
+        long l = getMillisElapsed();
+        StringBuilder s = new StringBuilder();
+        s.append(l + "$U$" + c.getID() + "$" + utterance);
+        Log.write(path, s.toString());
+     }
  }
   
     public void createPlayerTarget(){
@@ -736,7 +739,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
       ArrayList<Character> players = SceneCharacterManager.getCharacterArray();
       StringBuilder s = new StringBuilder();
       
-      long l =  TimeUnit.MILLISECONDS.convert(System.nanoTime() - timeGameStarted, TimeUnit.NANOSECONDS);
+      long l = this.getMillisElapsed();
       s.append(l + "$");
       s.append("B" + ball.getBallPosition() + "$");
       
@@ -748,6 +751,10 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
       Log.write(path, s.toString());
       
   }
+    
+    public static long getMillisElapsed(){
+          return TimeUnit.MILLISECONDS.convert(System.nanoTime() - timeGameStarted, TimeUnit.NANOSECONDS);
+    }
        
        public void setManagers(AppStateManager asm, AssetManager am, RenderManager rm, InputManager im){
            stateManager = asm;

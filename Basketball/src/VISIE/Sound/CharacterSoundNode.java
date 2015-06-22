@@ -111,11 +111,13 @@ public class CharacterSoundNode extends SoundNodes{
             AudioNode an = getNodeByName(soundFlag);
             an.setDirection(Conversions.degreesToNormalizedCoordinates(parentCharacter.getFacingDirection()));
             an.play();
-            Game.logSoundInfo(soundFlag, parentCharacter);
+            this.logSound(soundFlag, parentCharacter);
             soundFlag = "";
-
-        }
-                
+        }       
+    }
+    
+    private void logSound(String sound, Character c){
+        Game.logSoundInfo(sound, c);
     }
     
     public void playUtterance(String s){
