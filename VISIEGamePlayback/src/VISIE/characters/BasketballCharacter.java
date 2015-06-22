@@ -4,6 +4,7 @@
  */
 package VISIE.characters;
 import Basketball.Ball;
+import VISIE.Sound.CharacterSoundNode;
 import VISIE.models.AnimatedModel;
 import VISIE.scenemanager.SceneCharacterManager;
 import com.jme3.math.Vector3f;
@@ -20,6 +21,7 @@ public abstract class BasketballCharacter extends Character{
     private BasketballTeam team;
     private float cameraRot;
     private boolean cameraInitialised = false;
+    private CharacterSoundNode characterSoundNode;
     
     public boolean isInPossession(){
         return hasPossession;
@@ -134,5 +136,13 @@ public abstract class BasketballCharacter extends Character{
     
     public void initialiseCamera(){
         cameraInitialised = true;
+    }
+    
+    public void setSoundNodes(){
+        characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt", this);
+    }
+    
+     public void playUtterance(String s){
+        characterSoundNode.playUtterance(s);
     }
 }

@@ -144,7 +144,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "20150619_153932.txt";
+  private String logFileName = "20150622_150224.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -639,25 +639,29 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
         if(s.startsWith("NEW")){
             this.createCharacter(s);
          //         currentReadLine++;
-        }     
+        }  
         else{  
             String[] linedata = s.split("\\$"); 
 
             if(linedata[1].startsWith("B")){//first data is ball position
                String vec = linedata[1].substring(1, linedata[1].length());
                ball.setBallPosition(NetworkMessagingProcessor.stringToVector(vec));
-            }
-
-            for(int i = 2; i < linedata.length; i++){
+               
+               for(int i = 2; i < linedata.length; i++){
+            //    System.out.println(linedata[]);
                 if(linedata[i].contains("P")){ //player info
                     this.setPlayerInfo(linedata, i);
                 }            
-                else if(linedata[i].contains("A")){
+                else if(linedata[i].contains("A")){//agent info
                   this.setAgentInfo(linedata, i);
                 }
-                else if(linedata[i].contains("N")){
+                else if(linedata[i].contains("N")){//nup info
                     this.setNUPInfo(linedata, i);
                 }
+            }
+          }
+            else if(linedata[1].startsWith("U")){//data is uttrerance
+                this.playUtterance(linedata);
             }
         }
                       
@@ -666,6 +670,14 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       }
       
   }
+  
+  private void playUtterance(String[] linedata){
+      int charID = Integer.parseInt(linedata[2]);
+      String utterance = linedata[3];
+      BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterByID(charID);
+      bc.playUtterance(utterance);
+              
+    }
    
   
   public void setPlayerInfo(String[] data, int startIndex){
@@ -769,19 +781,11 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           float animTime = Float.parseFloat(data[startIndex + 5]);
           ba.getModel().setFrame(1, s, animTime);
           
-          if(ba.getID() == 2){
-              System.out.println("arm " + ba.get2DPosition() + " " + s + " " + animTime);
-          }
-          
           walkingState = Integer.parseInt(data[startIndex + 4]);
           String t = ba.getModel().getLegAnimationName(walkingState);
           animTime = Float.parseFloat(data[startIndex + 6]);
           ba.getModel().setFrame(2, t, animTime);  
-          
-         if(ba.getID() == 2){
-              System.out.println("leg " + ba.get2DPosition() + " " + t + " " + animTime);
-          }
-        
+                 
       }  
   }
   
