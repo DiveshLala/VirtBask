@@ -107,7 +107,7 @@ public abstract class BasketballCharacter extends Character{
     }
     
     public boolean isShooting(){
-        return characterModel.getCurrentAnimation(1).startsWith("shoot");        
+        return characterModel.getCurrentAnimation(1).contains("shoot");        
     }
     
     public boolean isPassing(){

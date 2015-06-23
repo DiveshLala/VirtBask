@@ -206,10 +206,9 @@ public class NonUserPlayer extends BasketballCharacter{
        currentKinectGesture = gesture;
        
        if(gesture.equals("shoot") && this.canShoot()){
-        //   ball.shootBall();
            this.removePossession();
        }
-       else if(gesture.equals("pass")){
+       else if(gesture.startsWith("pass")){
              Character c = this.getPassTarget();
             
             if(c != null){
@@ -478,28 +477,23 @@ public class NonUserPlayer extends BasketballCharacter{
     
     @Override
     public void doNUPGestureActivity(String gesture){
+        System.out.println("kin gest");
         this.doGestureActivity(gesture);
     }
     
-    public void handleNUPPredefinedGestures(){
-            
+    public void handleNUPPredefinedGestures(){  
         BPNewModel bm = (BPNewModel) characterModel;
         String currentGest = characterModel.getCurrentAnimation(1);
                  
-         if(currentGest.contains("shoot") && bm.isBallShot()){
+         if(currentGest.contains("shoot") && bm.isBallShot() && this.isInPossession()){
              this.doShooting();
          }
-         else if(currentGest.equals("pass")){
-             this.doPassGesture();
+         else if(currentGest.equals("pass") && this.isInPossession()){
+             this.doPassing();
          }
-//         else if(currentGest.equals("initiatePass")){
-//            Character c = this.getGestureTarget();
-//            ArrayList<Character> list = new ArrayList<Character>();
-//            list.add(c);
-//         }
     }
             
-    private void doPassGesture(){
+    private void doPassing(){
      
         BPNewModel bm = (BPNewModel)characterModel;     
         Character c = this.getPassTarget();
