@@ -1,6 +1,6 @@
 hasKinect,false
 hasPressureSensor,false
-serverAddress,localhost
+serverAddress,10.229.54.190
 TCPPort,1235
 UDPPort,1237
 kinectAddress,host

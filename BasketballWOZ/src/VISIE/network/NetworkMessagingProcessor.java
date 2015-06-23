@@ -186,7 +186,7 @@ public class NetworkMessagingProcessor {
                 if(characterArray.get(i).getID() == id){
                     
                     if(id != playerID){
-                        if(!characterType.startsWith("N")){
+                        if(!characterType.startsWith("P")){
                             BasketballAgent ba = (BasketballAgent)characterArray.get(i);
                             SceneCharacterManager.updateAgentState(ba, pos, facingDirection,actionState, animationSpeed, loopMode, walkState, walkSpeed);
                             break;
