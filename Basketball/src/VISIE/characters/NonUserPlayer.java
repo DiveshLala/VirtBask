@@ -535,6 +535,11 @@ public class NonUserPlayer extends BasketballCharacter{
         return true;
     }
     
+    @Override
+    public void playPassSound(){
+        this.flagUtterance("pass");
+    }
+        
 //    public String getSkeletonRotations(){
 //        
 //        return characterModel.getNUPBoneRotationInfo();
