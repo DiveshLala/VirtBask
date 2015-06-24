@@ -93,137 +93,143 @@ public class CollabPlanner extends AgentPlanning {
      
      @Override
      public void doAfterScoreActivity(){
+         
+         super.doAfterScoreActivity();
       
-         if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){//do celebrations
-             CollabAgent ca = (CollabAgent)parentCharacter;
-             
-             if(!ca.isDoingJP()){         
-                BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
-                ca.setJointProject("celebration", bc, false);
-             }
-         }
-         else if(parentCharacter.getTeamID() != GameManager.getAttackingTeam()){//team has to take ball to start location
-             
-             if(parentCharacter.isInPossession()){
-                 GameManager.setPossessionSwapState();
-             }
-            else if(SceneCharacterManager.getCharacterInPossession() == null){//if no one is in possession, retrieve ball
-                 if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-                        this.setTargetPosition(Court.getRandomHoopSidePosition());
-                 }
-                 else{
-                     if(this.isClosestToBall(parentCharacter.getTeamMates())){
-                         this.setTargetPosition(ball.getBallPosition());
-                     }
-                     else{
-                         if(this.isTargetReached(2f)){
-                            this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-                         }
-                     }
-                 }
-            }
-           else{  //go to random position
-             if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-                 if(this.isTargetReached(2f)){
-                    this.setTargetPosition(Court.getRandomHoopSidePosition());
-                 }
-             }
-             else{
-                 if(this.isTargetReached(2f)){
-                    this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-                 }
-             }
-            }
-
-         }
+//         if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){//do celebrations
+//             CollabAgent ca = (CollabAgent)parentCharacter;
+//             
+//             if(!ca.isDoingJP()){         
+//                BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
+//                ca.setJointProject("celebration", bc, false);
+//             }
+//         }
+//         else if(parentCharacter.getTeamID() != GameManager.getAttackingTeam()){//team has to take ball to start location
+//             
+//             if(parentCharacter.isInPossession()){
+//                 GameManager.setPossessionSwapState();
+//             }
+//            else if(SceneCharacterManager.getCharacterInPossession() == null){//if no one is in possession, retrieve ball
+//                 if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+//                        this.setTargetPosition(Court.getRandomHoopSidePosition());
+//                 }
+//                 else{
+//                     if(this.isClosestToBall(parentCharacter.getTeamMates())){
+//                         this.setTargetPosition(ball.getBallPosition());
+//                     }
+//                     else{
+//                         if(this.isTargetReached(2f)){
+//                            this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+//                         }
+//                     }
+//                 }
+//            }
+//           else{  //go to random position
+//             if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+//                 if(this.isTargetReached(2f)){
+//                    this.setTargetPosition(Court.getRandomHoopSidePosition());
+//                 }
+//             }
+//             else{
+//                 if(this.isTargetReached(2f)){
+//                    this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+//                 }
+//             }
+//            }
+//
+//         }
      }
      
     @Override
     public void swapRoleActivity(){//ball in hand, swap roles
+        
+        super.swapRoleActivity();
                                  
-         boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
-         
-         if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-             if(!isTargetHoopSide){
-                  this.setTargetPosition(Court.getRandomHoopSidePosition());
-             }
-         }
-         else{
-            if(isTargetHoopSide){
-                 this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-             }
-         }
-         
-         if(parentCharacter.isInPossession()){
-             parentCharacter.setBehaviorState(0);
-             this.setTargetPosition(Court.getRestartLocation());
-             if(this.isTargetReached(0.5f)){
-                 GameManager.setAttackingTeam(parentCharacter.getTeamID());
-                 GameManager.setInState();
-             }
-         }
-         else{
-             CollabAgent ca = (CollabAgent)parentCharacter;
-             boolean apologyDone = ca.getLatestCompletedJointProject().equals("apology") && ca.getTimeSinceLatestJP() < 20;
-             boolean isCelebrating = parentCharacter.getCurrentAnimations().toLowerCase().contains("celeb");
-             
-             if(ball.getPenultimateTouch() == parentCharacter.getID() && !apologyDone && !isCelebrating){
-                if(!ca.isDoingJP()){
-                    BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
-                    ca.setJointProject("apology", bc, false);
-                }
-                 
-             }
-             else{
-                parentCharacter.setBehaviorState(1);
-                if(this.isTargetReached(2f)){
-                    parentCharacter.abo.turnBodyToTarget(ball.getBallPosition());
-       //             parentCharacter.abo.doTurningAnimation();
-                }
-             }
-         }
+//         boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
+//         
+//         if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+//             if(!isTargetHoopSide){
+//                  this.setTargetPosition(Court.getRandomHoopSidePosition());
+//             }
+//         }
+//         else{
+//            if(isTargetHoopSide){
+//                 this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+//             }
+//         }
+//         
+//         if(parentCharacter.isInPossession()){
+//             parentCharacter.setBehaviorState(0);
+//             this.setTargetPosition(Court.getRestartLocation());
+//             if(this.isTargetReached(0.5f)){
+//                 GameManager.setAttackingTeam(parentCharacter.getTeamID());
+//                 GameManager.setInState();
+//             }
+//         }
+//         else{
+//             CollabAgent ca = (CollabAgent)parentCharacter;
+//             boolean apologyDone = ca.getLatestCompletedJointProject().equals("apology") && ca.getTimeSinceLatestJP() < 20;
+//             boolean isCelebrating = parentCharacter.getCurrentAnimations().toLowerCase().contains("celeb");
+//             
+//             if(ball.getPenultimateTouch() == parentCharacter.getID() && !apologyDone && !isCelebrating){
+//                if(!ca.isDoingJP()){
+//                    BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
+//                    ca.setJointProject("apology", bc, false);
+//                }
+//                 
+//             }
+//             else{
+//                parentCharacter.setBehaviorState(1);
+//                if(this.isTargetReached(2f)){
+//                    parentCharacter.abo.turnBodyToTarget(ball.getBallPosition());
+//       //             parentCharacter.abo.doTurningAnimation();
+//                }
+//             }
+//         }
      }
     
     @Override
     public void doOutOfBoundActivity(){
+        
+        super.doOutOfBoundActivity();
 
         
-        boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
-        
-        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-             if(!isTargetHoopSide){
-                  this.setTargetPosition(Court.getRandomHoopSidePosition());
-             }
-         }
-         else{
-            if(isTargetHoopSide){
-                    this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-             }
-        }
-                    
-        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-            
-             CollabAgent ca = (CollabAgent)parentCharacter;
-            
-             boolean encouragementDone = ca.getLatestCompletedJointProject().equals("encourage") && ca.getTimeSinceLatestJP() < 20;
-             
-             if(!encouragementDone){
-                if(!ca.isDoingJP()){
-                    BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
-                    ca.setJointProject("encourage", bc, false);
-                }
-             }         
-        }
-        else{
-            if(this.isClosestToBall(parentCharacter.getTeamMates())){
-                if(parentCharacter.isInPossession()){
-                    this.setTargetPosition(Court.getRestartLocation());
-                }
-                else{
-                    this.setTargetPosition(ball.getBallPosition());
-                }
-            }
-        }
+//        boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
+//        
+//        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+//             if(!isTargetHoopSide){
+//                  this.setTargetPosition(Court.getRandomHoopSidePosition());
+//             }
+//         }
+//         else{
+//            if(isTargetHoopSide){
+//                    this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+//             }
+//        }
+//                    
+//        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+//            
+//             CollabAgent ca = (CollabAgent)parentCharacter;
+//            
+//             boolean encouragementDone = ca.getLatestCompletedJointProject().equals("encourage") && ca.getTimeSinceLatestJP() < 20;
+//             
+//             if(!encouragementDone){
+//                if(!ca.isDoingJP()){
+//                    BasketballCharacter bc = (BasketballCharacter)parentCharacter.planner.getMyClosestTeamMate();
+//                    ca.setJointProject("encourage", bc, false);
+//                }
+//             }         
+//        }
+//        else{
+//            if(this.isClosestToBall(parentCharacter.getTeamMates())){
+//                if(parentCharacter.isInPossession()){
+//                    this.setTargetPosition(Court.getRestartLocation());
+//                }
+//                else{
+//                    this.setTargetPosition(ball.getBallPosition());
+//                }
+//            }
+//        }
      }
     
     public CollabAgent getParentCharacter(){

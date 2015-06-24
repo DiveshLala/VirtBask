@@ -442,7 +442,6 @@ public class AgentPlanning {
          }
          else{
              parentCharacter.setBehaviorState(1);
-             
              if(this.isTargetReached(2f)){
                  parentCharacter.setSpeed(0);
                  parentCharacter.abo.turnBodyToTarget(ball.getBallPosition());

@@ -630,6 +630,10 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             listener.setRotation(p.getFacingQuaternion());
             sceneCharacterManager.updateCharacterSounds();
             
+            sceneCharacterManager.showAgentTargetPositions(1);
+            sceneCharacterManager.showAgentTargetPositions(2);
+            sceneCharacterManager.showAgentTargetPositions(3);
+            
             //needed to set update ball position
             if(broadcastServer != null){
                 String posChar = "null";
@@ -637,8 +641,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
                     posChar = SceneCharacterManager.getCharacterInPossession().getID() + "";
                 } 
                 broadcastServer.setBallMessage(ball.getBallPosition().toString() + "!" + posChar);
-                broadcastServer.setGameStateMessage(NetworkMessagingProcessor.createGameStateMessage(timeRemaining)); 
-                
+                broadcastServer.setGameStateMessage(NetworkMessagingProcessor.createGameStateMessage(timeRemaining));  
             }
 
           if(p.isKinectPlayer()){

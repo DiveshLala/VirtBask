@@ -94,8 +94,49 @@ public class AgentBodyOperations {
         }
     }
     
+        
+    private void doStationaryTurningAnimation(){
+                                        
+        if(turnCode == 1){
+            if(!parentCharacter.isInPossession()){
+                parentCharacter.playAnimation(1, "turnLeft", 1, LoopMode.DontLoop);
+            }
+            parentCharacter.playAnimation(2, "turnLeft", 1, LoopMode.DontLoop);
+        }
+        else if(turnCode == 2){
+            if(!parentCharacter.isInPossession()){
+                parentCharacter.playAnimation(1, "turnRight", 1, LoopMode.DontLoop);
+            }
+            parentCharacter.playAnimation(2, "turnRight", 1, LoopMode.DontLoop);
+        }
+        else if(this.isLegMovementNavigation()){   //stops any stepping or walking animations                                        
+            parentCharacter.playAnimation(2, "standingPose", runSpeed/2, LoopMode.Loop);
+            if(this.isArmMovementNavigation()){
+                parentCharacter.playAnimation(1, "standingPose", runSpeed, LoopMode.Loop);
+            }
+        }
+    }
     
-    public void turnTorsoToTarget(Vector3f target){
+    private boolean isLegMovementNavigation(){
+        return parentCharacter.getLegAnimationName().startsWith("step") ||
+        parentCharacter.getLegAnimationName().startsWith("walk") ||
+        parentCharacter.getLegAnimationName().startsWith("run");
+    }
+    
+    private boolean isArmMovementNavigation(){
+        return parentCharacter.getCurrentGestureName().startsWith("walk") ||
+        parentCharacter.getCurrentGestureName().startsWith("run");            
+    }
+    
+    public void setFacingDirection(float rotation){ 
+        
+        headRotationAngle = rotation;
+        torsoRotationAngle = rotation;
+        agentModel.turnBody(rotation);
+        
+    }
+    
+    public void turnBodyToTarget(Vector3f target){
         float targetAngle = Conversions.originToTargetAngle(parentCharacter.getPosition(), target);
         if(Conversions.minDistanceBetweenAngles(targetAngle, torsoRotationAngle) > 10){
             float f = Conversions.calculateSpinDirection(targetAngle, torsoRotationAngle);
@@ -114,41 +155,8 @@ public class AgentBodyOperations {
         }
 
         if(parentCharacter.getSpeed() == 0){
-            this.doTurningAnimation();
-        }        
-    }
-    
-    private void doTurningAnimation(){
-                                        
-        if(turnCode == 1){
-            if(!parentCharacter.isInPossession()){
-                parentCharacter.playAnimation(1, "turnLeft", 1, LoopMode.DontLoop);
-            }
-            parentCharacter.playAnimation(2, "turnLeft", 1, LoopMode.DontLoop);
-        }
-        else if(turnCode == 2){
-            if(!parentCharacter.isInPossession()){
-                parentCharacter.playAnimation(1, "turnRight", 1, LoopMode.DontLoop);
-            }
-            parentCharacter.playAnimation(2, "turnRight", 1, LoopMode.DontLoop);
-        }
-        else if(parentCharacter.getLegAnimationName().startsWith("step") ||
-                parentCharacter.getLegAnimationName().startsWith("walk") ||
-                parentCharacter.getLegAnimationName().startsWith("run")){   //stops any stepping or walking animations                                        
-            parentCharacter.playAnimation(2, "standingPose", runSpeed/2, LoopMode.Loop);
-        }
-    }
-    
-    public void setFacingDirection(float rotation){ 
-        
-        headRotationAngle = rotation;
-        torsoRotationAngle = rotation;
-        agentModel.turnBody(rotation);
-        
-    }
-    
-    public void turnBodyToTarget(Vector3f target){
-        this.turnTorsoToTarget(target);
+            this.doStationaryTurningAnimation();
+        }  
     }
     
     public boolean isReadyForPass(Character c){
