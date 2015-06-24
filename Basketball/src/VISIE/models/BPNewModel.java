@@ -517,8 +517,11 @@ public class BPNewModel extends AnimatedModel{
             this.playLegAnimation(animationType, speed, l);
         }
         
-        if((armChannel.getAnimationName().contains("walk") && legChannel.getAnimationName().contains("walk")) ||
-           (armChannel.getAnimationName().contains("run") && legChannel.getAnimationName().contains("run"))){
+//        if((armChannel.getAnimationName().contains("walk") && legChannel.getAnimationName().contains("walk")) ||
+//           (armChannel.getAnimationName().contains("run") && legChannel.getAnimationName().contains("run"))){
+//            this.synchronizeArmChannel();
+//        }
+        if(armChannel.getAnimationName().equals(legChannel.getAnimationName())){
             this.synchronizeArmChannel();
         }
         

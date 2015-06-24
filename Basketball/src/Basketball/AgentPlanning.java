@@ -490,7 +490,7 @@ public class AgentPlanning {
          else if(SceneCharacterManager.getCharacterInPossession() == null){
              parentCharacter.setBehaviorState(1);
              if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){ //team which just scored
-                    this.setTargetPosition(Court.getRandomHoopSidePosition());
+                  this.adjustCourtTargets();
              }
              else{                                                             //team in next possession
                  this.retrieveDeadBall();

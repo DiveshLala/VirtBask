@@ -78,13 +78,13 @@ public class PossessionDecision {
                 }
                 else{
                     float timeStationary = Conversions.milliToSecond(System.currentTimeMillis() - stationaryTime);
-                    System.out.println("deciding pos ...");                     
+             //       System.out.println("deciding pos ...");                     
                     if(timeStationary > stationaryTimeLimit || timeSinceReceivedBall < 0.2f){ //find new target
                         parentCharacter.setBehaviorState(0);
                         ArrayList<ArrayList<String>> areas = AgentPlanning.getPlayerAreas(parentCharacter, parentCharacter);
                         Vector3f bestPos = this.calculateBestPosition(parentCharacter, Court.getPlayerArea(parentCharacter), areas.get(0), areas.get(1));
                         parentCharacter.planner.setTargetPosition(bestPos);
-                        System.out.println("new pos target " + bestPos + parentCharacter.getPosition()); 
+               //         System.out.println("new pos target " + bestPos + parentCharacter.getPosition()); 
                         isStationary = false;
                         parentCharacter.setBehaviorState(0);
                     }
