@@ -556,6 +556,7 @@ public class BPNewModel extends AnimatedModel{
         jointMap.put("right shoulder", "upper_arm.R");
         jointMap.put("left elbow", "forearm.L");
         jointMap.put("right elbow", "forearm.R");
+        jointMap.put("left finger", "f_index.01.L");
         jointMap.put("right finger", "f_index.01.R");
         jointMap.put("right ring", "f_ring.01.R");
         

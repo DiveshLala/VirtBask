@@ -113,7 +113,6 @@ public class Ball{
     }
     
     public BasketballCharacter checkForStealing(Character possessor){
-        
         BasketballAgent ba = (BasketballAgent)possessor;
         ArrayList<BasketballCharacter> opponents = ba.getOpponents();
 
