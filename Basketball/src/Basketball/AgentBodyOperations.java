@@ -362,4 +362,18 @@ public class AgentBodyOperations {
         return shootPenalty;
     }
     
+    public boolean isCoolDown(){//checks if player is in the middle of shooting/passing, return true if can end this state
+        
+        if(!parentCharacter.isShooting() && !parentCharacter.isPassing()){
+            return true;
+        }
+        else if(parentCharacter.isShooting() && parentCharacter.getCurrentMovementProgress(1) > 0.8){
+            return true;
+        }
+        else if(parentCharacter.isPassing() && parentCharacter.getCurrentMovementProgress(1) > 0.5){
+            return true;
+        }
+        return false;
+    }
+    
 }

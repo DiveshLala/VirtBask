@@ -278,12 +278,12 @@ public class BasketballAgent extends BasketballCharacter{
                 
                 Character c = planner.getMyClosestTeamMate();
                 if(!perception.isWithinGaze(c.getPosition(), 10f)){ 
-                    System.out.println("within gaze");
+         //           System.out.println("within gaze");
                     abo.turnBodyToTarget(c.getPosition());
                 }
                 else{
                     planner.possession.setStationaryTime();
-                    System.out.println("turn and pass ");
+        //            System.out.println("turn and pass ");
                     model.playArmAnimation("initiatePass", 1, LoopMode.DontLoop);
                     this.doTurnAndPass(c);
                 }

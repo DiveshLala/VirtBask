@@ -477,7 +477,6 @@ public class NonUserPlayer extends BasketballCharacter{
     
     @Override
     public void doNUPGestureActivity(String gesture){
-        System.out.println("kin gest");
         this.doGestureActivity(gesture);
     }
     

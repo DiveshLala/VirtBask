@@ -196,7 +196,7 @@ public class BPNewModel extends AnimatedModel{
                     this.executeAnimation(armChannel, newAnimation, speed, l);
                 }
                 else if(legChannel.getAnimationName().equals("standingPose")){
-                   if(armChannel.getAnimationName().startsWith("walk")){
+                   if(this.isArmMovementNavigation()){
                        this.executeAnimation(armChannel, newAnimation, speed, l);
                    }
                 }
@@ -214,10 +214,12 @@ public class BPNewModel extends AnimatedModel{
                  this.executeAnimation(armChannel, newAnimation, speed, l);
             }
             else{
-                if(legChannel.getAnimationName().startsWith("standingPose") &&
-                   armChannel.getAnimationName().startsWith("walk")){
+                if(legChannel.getAnimationName().startsWith("standingPose") && isArmMovementNavigation()){
                     this.executeAnimation(armChannel, newAnimation, 1, l);
                 }
+                else if(legChannel.getAnimationName().startsWith("turn") && isArmMovementNavigation()){
+                    this.executeAnimation(armChannel, newAnimation, 1, l);
+                } 
                 if(legChannel.getAnimationName().startsWith("turn") && newAnimation.startsWith("turn")){ //execute leg channel animations
                     this.executeAnimation(armChannel, newAnimation, 1, l);
                 }
@@ -229,6 +231,10 @@ public class BPNewModel extends AnimatedModel{
                 }
             }
         }        
+    }
+    
+    private boolean isArmMovementNavigation(){
+        return armChannel.getAnimationName().startsWith("walk") || armChannel.getAnimationName().startsWith("run");
     }
     
     public void playLegAnimation(String newAnimation, float speed, LoopMode l){

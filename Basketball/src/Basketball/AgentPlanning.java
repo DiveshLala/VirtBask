@@ -135,16 +135,7 @@ public class AgentPlanning {
         
         
         //if characters are shooting or passing, do nothing
-        if(!parentCharacter.isShooting() && !parentCharacter.isPassing()){
-            parentCharacter.setActionState(1);
-            parentCharacter.setBehaviorState(1);
-        }
-        else if(parentCharacter.isShooting() && parentCharacter.getCurrentMovementProgress(1) > 0.8){
-            parentCharacter.setActionState(1);
-            parentCharacter.setBehaviorState(1);  
-        }
-        else if(parentCharacter.isPassing() && parentCharacter.getCurrentMovementProgress(1) > 0.5){
-            parentCharacter.setActionState(1);
+        if(parentCharacter.abo.isCoolDown()){
             parentCharacter.setBehaviorState(1);
         }
         
@@ -152,7 +143,6 @@ public class AgentPlanning {
         if(ball.getBallPosition().setY(0).distance(parentCharacter.get2DPosition()) < 5){
             this.setTargetPosition(ball.getBallPosition());       
         }
-        
         else{
             Vector3f predictedBallPos = ball.getBallPosition().add(ball.getBallTravellingDirection().normalize().mult(5));
             
@@ -166,9 +156,9 @@ public class AgentPlanning {
             else{
                 this.setTargetPosition(parentCharacter.getPosition());
                 parentCharacter.abo.turnBodyToTarget(ball.getBallPosition());
-        //        parentCharacter.abo.doTurningAnimation();
             }
         }
+        this.updateCurrentTargetPosition();
     }
     
     public void setBall(Ball b){
@@ -419,21 +409,29 @@ public class AgentPlanning {
         this.updateCurrentTargetPosition();
      }
      
-     public void swapRoleActivity(){
-                  
+     private void adjustCourtTargets(){
+         
          boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
          
          if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-             if(!isTargetHoopSide){
+             if(!isTargetHoopSide || !Court.isInsideCourt(targetPosition)){
                   this.setTargetPosition(Court.getRandomHoopSidePosition());
              }
          }
          else{
-            if(isTargetHoopSide){
+            if(isTargetHoopSide || !Court.isInsideCourt(targetPosition)){
                  this.setTargetPosition(Court.getRandomNonHoopSidePosition());
              }
          }
+     }
          
+         
+         
+     
+     public void swapRoleActivity(){
+         
+         this.adjustCourtTargets();
+                           
          if(parentCharacter.isInPossession()){
              parentCharacter.setBehaviorState(0);
              this.setTargetPosition(Court.getRestartLocation());
@@ -444,59 +442,63 @@ public class AgentPlanning {
          }
          else{
              parentCharacter.setBehaviorState(1);
+             
              if(this.isTargetReached(2f)){
                  parentCharacter.setSpeed(0);
                  parentCharacter.abo.turnBodyToTarget(ball.getBallPosition());
              }
          }
+         this.updateCurrentTargetPosition();
+     }
+     
+     private void retrieveDeadBall(){
+          if(this.isClosestToBall(parentCharacter.getTeamMates())){
+               if(ball.getBallPosition().y < Court.getHoopLocation().getY()){
+                  this.setTargetPosition(ball.getBallPosition());
+               }
+               else{
+                   this.setTargetPosition(parentCharacter.get2DPosition());
+               }
+           }
+           else{
+               if(this.isTargetReached(2f) || !Court.isInsideCourt(targetPosition)){
+                  this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+               }
+           }
+          parentCharacter.setBehaviorState(1);
+     }
+     
+     private void prepareForNextRound(){
+         
+        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+           if(this.isTargetReached(2f) || !Court.isInsideCourt(targetPosition)){
+              this.setTargetPosition(Court.getRandomHoopSidePosition());
+           }
+       }
+       else{
+           if(this.isTargetReached(2f) || !Court.isInsideCourt(targetPosition)){
+              this.setTargetPosition(Court.getRandomNonHoopSidePosition());
+           }
+       }
+         
      }
      
      public void doAfterScoreActivity(){
-         
-        boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);
-         
-        if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-             if(!isTargetHoopSide){
-                  this.setTargetPosition(Court.getRandomHoopSidePosition());
-             }
-             parentCharacter.setBehaviorState(7);
-         }
-         else{
-            if(isTargetHoopSide){
-                 this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-             }
-            parentCharacter.setBehaviorState(1);
-         }
-         
+                  
          if(parentCharacter.isInPossession()){
              GameManager.setPossessionSwapState();
          }
          else if(SceneCharacterManager.getCharacterInPossession() == null){
-             if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
+             parentCharacter.setBehaviorState(1);
+             if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){ //team which just scored
                     this.setTargetPosition(Court.getRandomHoopSidePosition());
              }
-             else{
-                 if(this.isClosestToBall(parentCharacter.getTeamMates())){
-                     this.setTargetPosition(ball.getBallPosition());
-                 }
-                 else{
-                     if(this.isTargetReached(2f)){
-                        this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-                     }
-                 }
+             else{                                                             //team in next possession
+                 this.retrieveDeadBall();
              }
          }
          else{
-             if(parentCharacter.getTeamID() == GameManager.getAttackingTeam()){
-                 if(this.isTargetReached(2f)){
-                    this.setTargetPosition(Court.getRandomHoopSidePosition());
-                 }
-             }
-             else{
-                 if(this.isTargetReached(2f)){
-                    this.setTargetPosition(Court.getRandomNonHoopSidePosition());
-                 }
-             }
+             this.prepareForNextRound();
          }   
          this.updateCurrentTargetPosition();
      }

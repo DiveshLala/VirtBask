@@ -629,7 +629,7 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
             listener.setLocation(p.getPosition()); 
             listener.setRotation(p.getFacingQuaternion());
             sceneCharacterManager.updateCharacterSounds();
-
+            
             //needed to set update ball position
             if(broadcastServer != null){
                 String posChar = "null";
