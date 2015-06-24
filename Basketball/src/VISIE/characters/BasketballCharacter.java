@@ -41,7 +41,7 @@ public abstract class BasketballCharacter extends Character{
     protected CharacterControl mainNode;
     
     public abstract void doBallManipulation();
-    public abstract void updateBallPossession(Ball b, Vector3f vec);
+    public abstract void checkBallStealing(Ball b);
     public abstract boolean checkStealing(Ball b);
     public abstract void updateBallNoPossession();
     public abstract void stopBall();

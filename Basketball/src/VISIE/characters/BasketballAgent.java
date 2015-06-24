@@ -493,7 +493,8 @@ public class BasketballAgent extends BasketballCharacter{
         return defenseStrategy;
     }
     
-    public void updateBallPossession(Ball b, Vector3f vec){
+    @Override
+    public void checkBallStealing(Ball b){
         if(GameManager.getGameState() == 0 && 
             this.getPosition().distance(Court.getRestartLocation()) > 7.5f){
 
@@ -504,13 +505,13 @@ public class BasketballAgent extends BasketballCharacter{
                 this.setBehaviorState(1);
                 stealer.setPossession();
             }
-            else{
-                b.setBallPosition(vec);
-            }
+//            else{
+//                b.setBallPosition(vec);
+//            }
         }
-        else{
-            b.setBallPosition(vec);
-        }
+//        else{
+//            b.setBallPosition(vec);
+//        }
     
     }
     
@@ -543,6 +544,9 @@ public class BasketballAgent extends BasketballCharacter{
         setBehavior();
         updateMovements();
         updateAgentAttention();
+        if(this.isInPossession()){
+            this.checkBallStealing(ball);
+        }
     }
         
     public String logCharacterData(){

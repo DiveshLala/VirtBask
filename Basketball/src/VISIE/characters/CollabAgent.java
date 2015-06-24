@@ -248,11 +248,11 @@ public class CollabAgent extends BasketballAgent{
         return currentJP != null && currentJP.isActive();
     }
         
-    @Override
-    public void updateBallPossession(Ball b, Vector3f vec){
-        
-        super.updateBallPossession(b, vec);
-    }
+//    @Override
+//    public void checkBallStealing(Ball b, Vector3f vec){
+//        
+//        super.updateBallPossession(b, vec);
+//    }
     
     public boolean isLearner(){
         return isLearnerAgent;

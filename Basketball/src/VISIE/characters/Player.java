@@ -438,8 +438,8 @@ public class Player extends BasketballCharacter{
          return ghostNode;
      }
      
-     public void updateBallPossession(Ball b, Vector3f vec){
-         ball.setBallPosition(vec);
+     public void checkBallStealing(Ball b){
+    //     ball.setBallPosition(vec);
      }
      
      public boolean checkStealing(Ball b){

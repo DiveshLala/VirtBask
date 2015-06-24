@@ -1,8 +1,8 @@
 numPlayers,2
 isOffense,true
 isMultiPlayer,false
-hasKinect,true
-hasPressureSensor,true
+hasKinect,false
+hasPressureSensor,false
 TCPPort,1235
 UDPPort,1237
 kinectAddress,host

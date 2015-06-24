@@ -415,19 +415,19 @@ public class NonUserPlayer extends BasketballCharacter{
         return isDribbling;
     }
     
-    public void updateBallPossession(Ball b, Vector3f vec){
-        if(b.isCloseToNUP(this)){
-                b.adjustCollisionGroup(true);
-            }
-            else{
-                b.adjustCollisionGroup(false);
-            }
-            
-            if(this.getKinectNUP() && this.isDribbling()){
-            }
-            else{
-                b.setBallPosition(vec); 
-            }
+    public void checkBallStealing(Ball b){
+//        if(b.isCloseToNUP(this)){
+//                b.adjustCollisionGroup(true);
+//            }
+//            else{
+//                b.adjustCollisionGroup(false);
+//            }
+//            
+//            if(this.getKinectNUP() && this.isDribbling()){
+//            }
+//            else{
+//                b.setBallPosition(vec); 
+//            }
     }
     
         public boolean checkStealing(Ball b){
