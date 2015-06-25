@@ -204,6 +204,11 @@ public class BPNewModel extends AnimatedModel{
                     this.executeAnimation(armChannel, newAnimation, speed, l);
                 }
             }
+            else if(newAnimation.equals("shoot") && armChannel.getAnimationName().equals("dribbleLoop")){//
+                if(this.isDribbleBounce().equals("hand")){
+                    this.executeAnimation(armChannel, newAnimation, speed, l);
+                }
+            }
             else if(newAnimation.equals("preDribble")){ //force predribble
                 this.executeAnimation(armChannel, newAnimation, speed, l);
             }
@@ -384,17 +389,17 @@ public class BPNewModel extends AnimatedModel{
     @Override
     public void executeAnimation(AnimChannel channel, String animationName, float speed, LoopMode l){
         
-        channel.setAnim(animationName);
+        channel.setAnim(animationName, animationBlendTime);
         channel.setSpeed(speed);
         channel.setLoopMode(l);       
         
         if(channel.equals(armChannel)){        
-           clothesUpper.setAnim(animationName);
+           clothesUpper.setAnim(animationName, animationBlendTime);
            clothesUpper.setSpeed(speed);
            clothesUpper.setLoopMode(l);
         }
         else if(channel.equals(legChannel)){
-            clothesLower.setAnim(animationName);
+            clothesLower.setAnim(animationName, animationBlendTime);
             clothesLower.setSpeed(speed);
             clothesLower.setLoopMode(l);            
         }

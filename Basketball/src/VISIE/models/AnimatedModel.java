@@ -63,6 +63,7 @@ public abstract class AnimatedModel implements AnimEventListener{
      protected AnimationStates animationStates;
      protected VISIE.characters.Character parentCharacter;
      protected String modelFilePath;
+     protected float animationBlendTime = 0.5f;
      
      public CapsuleCollisionShape getCollisionShapeForModel(){
            BoundingBox b = (BoundingBox)model.getWorldBound();
@@ -71,7 +72,7 @@ public abstract class AnimatedModel implements AnimEventListener{
       }
      
      public void executeAnimation(AnimChannel channel, String animationName, float speed, LoopMode l){
-           channel.setAnim(animationName);
+           channel.setAnim(animationName, animationBlendTime);
            channel.setSpeed(speed);
            channel.setLoopMode(l);  
      }

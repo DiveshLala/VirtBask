@@ -251,14 +251,12 @@ public class BasketballAgent extends BasketballCharacter{
             }
             
             else if(behaviorState == 2){            //shooting
-           //     System.out.println("sdsds");
+                 this.setSpeed(0);
+                 abo.turnBodyToTarget(Court.getHoopLocation());
+
                 if(perception.isLookingAtTarget(Court.getHoopLocation())){
                     model.playArmAnimation("shoot", 2f, LoopMode.DontLoop);
         //            model.playLegAnimation("standingPose", 1, LoopMode.Loop);
-                }
-                else{
-                    this.setSpeed(0);
-                    abo.turnBodyToTarget(Court.getHoopLocation());
                 }
             }
             

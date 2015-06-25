@@ -60,7 +60,7 @@ public class PossessionDecision {
             }
         }
         else if(this.canShoot(25f, 10f)){//shoot
-            parentCharacter.abo.turnBodyToTarget(Court.getGoalPosition());
+//            parentCharacter.abo.turnBodyToTarget(Court.getGoalPosition());
             parentCharacter.setBehaviorState(2);
         }
         else{ //run
