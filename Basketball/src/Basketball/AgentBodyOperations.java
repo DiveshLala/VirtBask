@@ -96,6 +96,8 @@ public class AgentBodyOperations {
     
         
     private void doStationaryTurningAnimation(){
+        
+        
                                         
         if(turnCode == 1){
             if(!parentCharacter.isInPossession()){
@@ -109,7 +111,7 @@ public class AgentBodyOperations {
             }
             parentCharacter.playAnimation(2, "turnRight", 1, LoopMode.DontLoop);
         }
-        else if(this.isLegMovementNavigation()){   //stops any stepping or walking animations                                        
+        else if(this.isLegMovementNavigation()){   //stops any running or walking animations                                        
             parentCharacter.playAnimation(2, "standingPose", runSpeed/2, LoopMode.Loop);
             if(this.isArmMovementNavigation()){
                 parentCharacter.playAnimation(1, "standingPose", runSpeed, LoopMode.Loop);
@@ -118,8 +120,7 @@ public class AgentBodyOperations {
     }
     
     private boolean isLegMovementNavigation(){
-        return parentCharacter.getLegAnimationName().startsWith("step") ||
-        parentCharacter.getLegAnimationName().startsWith("walk") ||
+        return parentCharacter.getLegAnimationName().startsWith("walk") ||
         parentCharacter.getLegAnimationName().startsWith("run");
     }
     

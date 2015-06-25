@@ -173,12 +173,12 @@ public class Ball{
                         System.out.println(playerInPossession + " is now in possession");    
                 }
             }
-            else if(this.checkForCapture(c)){
-                bc.setPossession();
-                bc.setActionState(0);
-                bc.stopBall();
-                System.out.println(playerInPossession + " has captured possession");   
-            }
+//            else if(this.checkForCapture(c)){
+//                bc.setPossession();
+//                bc.setActionState(0);
+//                bc.stopBall();
+//                System.out.println(playerInPossession + " has captured possession");   
+//            }
         }
     }
     

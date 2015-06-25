@@ -183,9 +183,7 @@ public class BasketballAgent extends BasketballCharacter{
     public void updateMovements(){ 
           
         int behaviorState = behaviorModule.getBehaviorState(); 
-        
-
-        
+           
 //        System.out.println(behaviorState + " " + this.getID());
         
             BPNewModel model = (BPNewModel)characterModel;
@@ -215,6 +213,12 @@ public class BasketballAgent extends BasketballCharacter{
             }
             
             else if(behaviorState == 1){  //no ball running
+                
+                //removes any passing animations
+                if(this.getCurrentGestureName().startsWith("pass") && this.characterModel.hasAnimationFinished(1)){
+                    this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+                }
+                
                                 
                 if(!planner.isTargetReached(0.5f)){ //target reached
                     abo.moveTowardsTarget(planner.getTargetPosition(), false, false);
@@ -273,19 +277,24 @@ public class BasketballAgent extends BasketballCharacter{
                 this.doTurnAndPass(c);
             }
             else if(behaviorState == 5){ // have possession, turn towards player
-                                
-                this.setSpeed(0);
-                
-                Character c = planner.getMyClosestTeamMate();
-                if(!perception.isWithinGaze(c.getPosition(), 10f)){ 
-         //           System.out.println("within gaze");
-                    abo.turnBodyToTarget(c.getPosition());
+                        
+                if(this.isInPossession()){
+                    this.setSpeed(0);
+
+                    Character c = planner.getMyClosestTeamMate();
+                    if(!perception.isWithinGaze(c.getPosition(), 10f)){ 
+             //           System.out.println("within gaze");
+                        abo.turnBodyToTarget(c.getPosition());
+                    }
+                    else{
+                        planner.possession.setStationaryTime();
+    //                    System.out.println("turn and pass ");
+                        model.playArmAnimation("initiatePass", 1, LoopMode.DontLoop);
+                        this.doTurnAndPass(c);
+                    }
                 }
                 else{
-                    planner.possession.setStationaryTime();
-        //            System.out.println("turn and pass ");
-                    model.playArmAnimation("initiatePass", 1, LoopMode.DontLoop);
-                    this.doTurnAndPass(c);
+                   this.setBehaviorState(1);
                 }
             }
             else if(behaviorState == 6){    // get attention of teammate in possession 
@@ -322,8 +331,7 @@ public class BasketballAgent extends BasketballCharacter{
                 else{
                     ball.passBall(this.getFacingDirection());
                 }
-                
-                this.removePossession();
+                this.removePossession(); 
             }
             
             //dribbling
@@ -455,6 +463,11 @@ public class BasketballAgent extends BasketballCharacter{
         planner.resetPossessionTime();
     }
     
+    public void removePossession(){
+        super.removePossession();
+        planner.resetNonPossessionTime();
+    }
+    
     public void copyPose(String pose){
         ArrayList<String> rots = NetworkMessagingProcessor.parseJointData(pose);
         characterModel.setJointRotations(rots);
@@ -532,6 +545,11 @@ public class BasketballAgent extends BasketballCharacter{
     @Override
     public void resetPossessionTime(){
         planner.resetPossessionTime();
+    }
+    
+    @Override
+    public void resetNonPossessionTime(){
+        planner.resetNonPossessionTime();
     }
 
     public Vector3f doStalemateActivity(){

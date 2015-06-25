@@ -136,6 +136,8 @@ public abstract class BasketballCharacter extends Character{
     }
     
     public void resetPossessionTime(){}
+    
+    public void resetNonPossessionTime(){}
         
     public int getTeamID(){
         if(team == null){

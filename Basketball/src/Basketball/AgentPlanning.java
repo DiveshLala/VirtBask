@@ -369,6 +369,10 @@ public class AgentPlanning {
          possession.resetPossessionTime();
      }
      
+     public void resetNonPossessionTime(){
+         nonPossession.resetNonPossessionTime();
+     }
+     
      public void doOutOfBoundActivity(){
          
         boolean isTargetHoopSide = Court.pointIsHoopSide(targetPosition);

@@ -27,7 +27,7 @@ public class UnCoopPlanner extends AgentPlanning {
 
         if(behaviorState == 0){//has ball
             parentCharacter.setActionState(0); //dribbling to target 
-            possession.makeGreedyPossessionDecision();
+//            possession.makeGreedyPossessionDecision();
         }
         
         else if(behaviorState == 2){//shooting

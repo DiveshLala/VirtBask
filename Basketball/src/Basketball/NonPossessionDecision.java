@@ -24,6 +24,8 @@ public class NonPossessionDecision {
     private long stationaryTime;
     private boolean isStationary;
     private float stationaryTimeLimit = 5f;
+    private float timeSincePossessedBall;
+    private long nonposStartTime;
     
     public NonPossessionDecision(BasketballAgent ba){
         parentCharacter = ba;
@@ -32,14 +34,14 @@ public class NonPossessionDecision {
     
     public void findFreeSpace(){
         
-        //if player can receive open pass
-              
-        BasketballCharacter bcInPos = SceneCharacterManager.getCharacterInPossession();       
-        String possPos = Court.getPlayerArea(bcInPos);        
+        timeSincePossessedBall = Conversions.nanoToSecond(System.nanoTime() - nonposStartTime);
+        
+        //if player can receive open pass    
+        BasketballCharacter bcInPos = SceneCharacterManager.getCharacterInPossession();              
         
         //if open for pass, stand still to face player with ball 
         if(this.openForPass(bcInPos) && parentCharacter.get2DPosition().distance(bcInPos.get2DPosition()) < 15f){
-        //    System.out.println("open to pass");
+            parentCharacter.setBehaviorState(1);
             parentCharacter.planner.setTargetPosition(parentCharacter.getPosition());
         }
         //if not open, calculate best position to travel to 
@@ -49,34 +51,44 @@ public class NonPossessionDecision {
         
     }
     
+    public void resetNonPossessionTime(){
+        timeSincePossessedBall = 0;
+        nonposStartTime = System.nanoTime();
+    }
+    
     private void updateTargetPosition(BasketballCharacter bcInPos){
         
         if(parentCharacter.planner.isTargetReached(2f)){//target reached
-                if(!isStationary){ //after receives ball
-                    this.setStationaryTime();
-                    isStationary = true;
-                }
-                else{
-                    float timeStationary = Conversions.milliToSecond(System.currentTimeMillis() - stationaryTime);
-   //                 System.out.println("deciding non pos...");                     
-                    if(timeStationary > stationaryTimeLimit){ //find new target
-                        
-                        String possPos = Court.getPlayerArea(bcInPos);  
-                        
-                        parentCharacter.setBehaviorState(0);
-                        Vector3f bestPos = this.calculateBestPosition(bcInPos, possPos);
-                        parentCharacter.planner.setTargetPosition(bestPos);
-         //               System.out.println("new nonpos target " + bestPos + parentCharacter.getPosition()); 
-                        isStationary = false;
-                    }
-                }
-            } 
-            else{
-                parentCharacter.planner.updateCurrentTargetPosition();
-                parentCharacter.setBehaviorState(1);
-        //        System.out.println("np moving to target");
+            
+            if(timeSincePossessedBall < 5){ //ensures that new target generated after ball is passed
+                this.createNewTarget(bcInPos);
+            }    
+            else if(!isStationary){ //sets up stationary time after reaching target
+                this.setStationaryTime();
+                isStationary = true;
             }
+            else{
+                float timeStationary = Conversions.milliToSecond(System.currentTimeMillis() - stationaryTime);                   
+                if(timeStationary > stationaryTimeLimit){ //find new target           
+                    this.createNewTarget(bcInPos);
+                    isStationary = false;
+                }
+            }
+        } 
+        else{
+            parentCharacter.planner.updateCurrentTargetPosition();
+            parentCharacter.setBehaviorState(1);
+        }
     
+    }
+    
+    private void createNewTarget(BasketballCharacter bcInPos){
+        
+        String possPos = Court.getPlayerArea(bcInPos);  
+        parentCharacter.setBehaviorState(1);
+        Vector3f bestPos = this.calculateBestPosition(bcInPos, possPos);
+        parentCharacter.planner.setTargetPosition(bestPos);
+        
     }
     
     private Vector3f calculateBestPosition(BasketballCharacter bcInPos, String possession){
@@ -168,6 +180,8 @@ public class NonPossessionDecision {
         
         float distanceFromPossessor = parentCharacter.get2DPosition().distance(possessor.get2DPosition());
         float minDistFromPossessor = 7f;
+        float maxDistFromPossessor = 15f;
+        int candidateNumber = 5;
         boolean isInArea = Court.getPlayerArea(parentCharacter).equals(area);
         boolean isWithinDist = distanceFromPossessor > minDistFromPossessor;
         
@@ -176,11 +190,23 @@ public class NonPossessionDecision {
             return parentCharacter.get2DPosition();
         }
         else{
-            Vector3f newPos = possessor.get2DPosition();
-            while(!(possessor.get2DPosition().distance(newPos) > minDistFromPossessor)){
-               newPos = Court.getRandomCoordinateInArea(area);
+            //create random candidates in area
+            ArrayList<Vector3f> candidates = new ArrayList<Vector3f>();
+            for(int i=0; i < candidateNumber; i++){
+                candidates.add(Court.getRandomCoordinateInArea(area));
             }
-            return newPos;
+            
+            //choose best that satisfies requirements
+            for(Vector3f vec:candidates){
+                if(possessor.get2DPosition().distance(vec) > minDistFromPossessor &&
+                   possessor.get2DPosition().distance(vec) < maxDistFromPossessor){
+                    return vec;
+                }
+            }
+            
+            //if none, move in direction of centre coordinate
+            Vector3f dir = Court.getCentreCoordinate(area).subtract(possessor.get2DPosition()).normalize();
+            return possessor.get2DPosition().add(dir.mult(minDistFromPossessor));
         }
     }
         
