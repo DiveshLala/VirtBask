@@ -164,7 +164,6 @@ public abstract class Game implements ActionListener, Runnable, PhysicsCollision
     
     protected Listener listener;
     
-    private Spatial tester;
     float rot = 0.1f;
       
     public void finishLoading(){
