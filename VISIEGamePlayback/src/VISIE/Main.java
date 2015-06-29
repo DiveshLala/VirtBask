@@ -143,7 +143,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "20150623_123424.txt";
+  private String logFileName = "20150623_144659.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -742,7 +742,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                 String s = bc.getArmAnimationName(actionState);
                 float animTime = Float.parseFloat(data[startIndex + 5]);
                 bc.setAnimationFrame(1, s, animTime);
-                System.out.println(data[0] + " " + id + " " + s + " " + animTime);
+      //          System.out.println(data[0] + " " + id + " " + s + " " + animTime);
           }
           
           walkingState = Integer.parseInt(data[startIndex + 4]);

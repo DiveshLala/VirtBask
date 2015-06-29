@@ -276,7 +276,8 @@ public abstract class AnimatedModel implements AnimEventListener{
          for(int i  = 0; i < rotations.size(); i++){
              float x = 0, y = 0, z = 0, w = 1;
              String str = rotations.get(i);
-             String boneName = str.substring(0, str.indexOf(":"));
+             int boneIndex = Integer.parseInt(str.substring(0, str.indexOf(":")));
+             String boneName = control.getSkeleton().getBone(boneIndex).getName();
              String floatStr = str.substring(str.indexOf("(") + 1, str.indexOf(")"));
              String[] floats = floatStr.split(", ");
              for(int j = 0; j < floats.length; j++){
@@ -285,6 +286,7 @@ public abstract class AnimatedModel implements AnimEventListener{
                  z = Float.parseFloat(floats[2]);
                  w = Float.parseFloat(floats[3]);
              }
+             
              Quaternion quat = new Quaternion(x, y, z, w);
         //     System.out.println(rotations.get(i));
        //      System.out.println(quat);
