@@ -111,6 +111,7 @@ public class CollabAgent extends BasketballAgent{
         }
     }
     
+    
     private void doPosJPActivities(){
         
             ArrayList<BasketballCharacter> teammates = this.getTeamMates();

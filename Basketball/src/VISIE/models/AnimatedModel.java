@@ -63,7 +63,7 @@ public abstract class AnimatedModel implements AnimEventListener{
      protected AnimationStates animationStates;
      protected VISIE.characters.Character parentCharacter;
      protected String modelFilePath;
-     protected float animationBlendTime = 0.5f;
+     protected float animationBlendTime = 0.2f;
      
      public CapsuleCollisionShape getCollisionShapeForModel(){
            BoundingBox b = (BoundingBox)model.getWorldBound();

@@ -117,7 +117,7 @@ public class SkilledAgent extends BasketballAgent{
             }
             else if(behaviorState == 4){ // passing
                 Character c = planner.getMyClosestTeamMate();
-                this.doTurnAndPass(c);
+          //      this.doTurnAndPass(c);
             }
             else if(behaviorState == 5){ // look for player and then pass
                 
@@ -129,7 +129,7 @@ public class SkilledAgent extends BasketballAgent{
 //                    abo.doTurningAnimation();
                 }
                 else{
-                    this.doTurnAndPass(c);
+              //      this.doTurnAndPass(c);
                 }
             }
      //   }

@@ -72,7 +72,7 @@ public class JointProjectManager {
                 if(parentCharacter.canDoClearPass(interactionCharacter, 4.5f)){
                     parentCharacter.setSpeed(0);
                     parentCharacter.playAnimation(1, "initiatePass", 1, LoopMode.DontLoop);
-                    parentCharacter.doTurnAndPass(interactionCharacter);
+                    parentCharacter.doTurnAndPassMovement(interactionCharacter);
                 }
                 else if(!parentCharacter.getCurrentAnimations().startsWith("pass")){
                     

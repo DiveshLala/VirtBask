@@ -40,7 +40,7 @@ public class NonPossessionDecision {
         BasketballCharacter bcInPos = SceneCharacterManager.getCharacterInPossession();
         
         //if open for pass, stand still to face player with ball 
-        if(timeSincePossessedBall < 5 && this.openForPass(bcInPos) && parentCharacter.get2DPosition().distance(bcInPos.get2DPosition()) < 15f){
+        if(timeSincePossessedBall > 5 && this.openForPass(bcInPos) && parentCharacter.get2DPosition().distance(bcInPos.get2DPosition()) < 15f){
             parentCharacter.setBehaviorState(1);
             parentCharacter.planner.setTargetPosition(parentCharacter.getPosition());
         }
@@ -135,6 +135,7 @@ public class NonPossessionDecision {
     }
     
     private void getBestPositionInOccupied(ArrayList<String> candidates){
+        System.out.println("DDDDDDDDD");
 
     }
     

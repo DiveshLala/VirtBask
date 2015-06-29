@@ -187,7 +187,6 @@ public class BasketballAgent extends BasketballCharacter{
 //        System.out.println(behaviorState + " " + this.getID());
         
             BPNewModel model = (BPNewModel)characterModel;
-     //       System.out.println("sdd " + model.getBallPossessionNode().getWorldTranslation());
             //animations are according to agent state
                         
             if(behaviorState == 0 && this.isInPossession()){             //dribbling 
@@ -207,29 +206,12 @@ public class BasketballAgent extends BasketballCharacter{
                
             }
             else if(behaviorState == 4){ // passing
-                Character c = planner.getMyClosestTeamMate();
-                this.doTurnAndPass(c);
+                Character c = this.planner.getMyClosestTeamMate();
+                this.doTurnAndPassMovement(c);
             }
             else if(behaviorState == 5){ // have possession, turn towards player
-                        
-                if(this.isInPossession()){
-                    this.setSpeed(0);
-
-                    Character c = planner.getMyClosestTeamMate();
-                    if(!perception.isWithinGaze(c.getPosition(), 10f)){ 
-             //           System.out.println("within gaze");
-                        abo.turnBodyToTarget(c.getPosition());
-                    }
-                    else{
-                        planner.possession.setStationaryTime();
-    //                    System.out.println("turn and pass ");
-                        model.playArmAnimation("initiatePass", 1, LoopMode.DontLoop);
-                        this.doTurnAndPass(c);
-                    }
-                }
-                else{
-                   this.setBehaviorState(1);
-                }
+                Character c = this.planner.getMyClosestTeamMate();
+                this.doTurnAndPassMovement(c);
             }
             else if(behaviorState == 6){    // get attention of teammate in possession 
                 Character c = planner.getMyClosestTeamMate();
@@ -336,84 +318,112 @@ public class BasketballAgent extends BasketballCharacter{
             
     }
     
-    public void doBallManipulation(){
-        
-            BPNewModel model = (BPNewModel)characterModel;
+    public void doTurnAndPassMovement(Character c){
             
-            //pass thrown
-            if(model.isBallPassed()){
-                BasketballCharacter target = planner.getPassingTarget();
-                
-                if(target != null){
-                    ball.passBall(this, target);
-                }
-                else{
-                    ball.passBall(this.getFacingDirection());
-                }
-                this.removePossession(); 
-            }
+        if(this.isInPossession()){
+            this.setSpeed(0);
             
-            //dribbling
-            else if(model.isBallDribbled()){
-                    
-                    BPNewModel bm = (BPNewModel)characterModel;
-                    String s = bm.isDribbleBounce();                         
-                    
-                    if(s.equals("bounce")){
-                        
-                                                
-                        if(ball.isBallInSpace(this.getHandPosition(2)) && ball.isBouncingUp()){
-                            ball.updateBallInPossession();
-                        }
-                        
-                        ball.dribbleInHand(this.getHandPosition(1));
-                        ballBounce = false;
-                                               
-                    }
-                    else if(s.equals("hand")){
-                                        
-                        
-                         ball.updateBallInPossession();
-                         ballBounce = false;
-                    }
-                    else if(s.equals("let go")){
-                        
-                       
-                        if(ball.getBallPosition().distance(model.getWorldCoordinateOfJoint("right finger")) < 0.9
-                            && !ballBounce){ 
-                            Vector3f fd = Conversions.degreesToNormalizedCoordinates(this.getFacingDirection());
-                            ball.bounceBall(fd.mult(this.getSpeed())); 
-                            ballBounce = true;
-                        }
-                    }
-                }
-            
-            else if(model.isBallShot()){
-                if(ball.isValidShoot()){
-                    this.removePossession();
-                    for(BasketballCharacter bc:this.getTeamMates()){
-                        if(bc.getCharacterType().equals("CollabAgent")){
-                            CollabAgent ca = (CollabAgent)bc;
-                            ca.recordShootContexts();
-                        }
-                    }
-                }
+            if(!perception.isWithinGaze(c.getPosition(), 10f)){ 
+                abo.turnBodyToTarget(c.getPosition());
             }
             else{
-                ball.updateBallInPossession();
-            }   
-    }
-    
-    public void doTurnAndPass(Character c){
-        
-        if(perception.isWithinGaze(c.getPosition(), 10f) && c.isLookingAtTarget(this.get2DPosition())){
-            BPNewModel model = (BPNewModel)characterModel;
-            model.playArmAnimation("pass", 0.75f, LoopMode.DontLoop);
+                planner.possession.setStationaryTime();
+                BPNewModel model = (BPNewModel)characterModel;
+                model.playArmAnimation("initiatePass", 1, LoopMode.DontLoop);
+                
+                
+                if(perception.isWithinGaze(c.getPosition(), 10f) && c.isLookingAtTarget(this.get2DPosition())){
+                    model.playArmAnimation("pass", 0.75f, LoopMode.DontLoop);
+                }
+                else{
+                    abo.turnBodyToTarget(c.getPosition());
+                }  
+            }
         }
         else{
-            abo.turnBodyToTarget(c.getPosition());
-        }       
+           this.setBehaviorState(1);
+        }
     }
+    
+    public void doBallManipulation(){
+
+        BPNewModel model = (BPNewModel)characterModel;
+
+        //pass thrown
+        if(model.isBallPassed()){
+            this.doPass();
+        }
+
+        //dribbling
+        else if(model.isBallDribbled()){ 
+            this.doDribbling();
+        }
+
+        else if(model.isBallShot() && ball.isValidShoot()){
+            this.doShooting();
+        }
+        else{
+            ball.updateBallInPossession();
+        }   
+    }
+    
+    private void doPass(){
+        
+        BasketballCharacter target = planner.getPassingTarget();
+
+        if(target != null){
+            ball.passBall(this, target);
+        }
+        else{
+            ball.passBall(this.getFacingDirection());
+        }
+        this.removePossession(); 
+            
+    }
+    
+    private void doDribbling(){
+        
+        BPNewModel bm = (BPNewModel)characterModel;
+        String s = bm.isDribbleBounce();                         
+
+        if(s.equals("bounce")){
+
+
+            if(ball.isBallInSpace(this.getHandPosition(2)) && ball.isBouncingUp()){
+                ball.updateBallInPossession();
+            }
+
+            ball.dribbleInHand(this.getHandPosition(1));
+            ballBounce = false;
+
+        }
+        else if(s.equals("hand")){
+
+
+             ball.updateBallInPossession();
+             ballBounce = false;
+        }
+        else if(s.equals("let go")){
+
+            if(ball.getBallPosition().distance(characterModel.getWorldCoordinateOfJoint("right finger")) < 0.9
+                && !ballBounce){ 
+                Vector3f fd = Conversions.degreesToNormalizedCoordinates(this.getFacingDirection());
+                ball.bounceBall(fd.mult(this.getSpeed())); 
+                ballBounce = true;
+            }
+        } 
+    }
+    
+    protected void doShooting(){
+        this.removePossession();
+        for(BasketballCharacter bc:this.getTeamMates()){
+            if(bc.getCharacterType().equals("CollabAgent")){
+                CollabAgent ca = (CollabAgent)bc;
+                ca.recordShootContexts();
+            }
+        } 
+    }
+    
     
     public void doDesperatePass(Character c){
         if(perception.isWithinGaze(c.getPosition(), 10f)){
