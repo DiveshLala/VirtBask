@@ -190,84 +190,20 @@ public class BasketballAgent extends BasketballCharacter{
      //       System.out.println("sdd " + model.getBallPossessionNode().getWorldTranslation());
             //animations are according to agent state
                         
-            if(behaviorState == 0 && this.isInPossession()){             //dribbling
-                
-                if(!planner.isTargetReached(2f)){ //target not reached 
-                                                            
-                    if(characterModel.getCurrentAnimation(1).contains("block")){
-                        this.abo.blockingTransition();
-                    }
-                    else if(GameManager.getGameState() != 0){
-                        abo.moveTowardsTarget(planner.getTargetPosition(), true, true);
-                    }
-                    else{
-                        abo.moveTowardsTarget(planner.getTargetPosition(), false, true);
-                    }
-                }
-                else{                           //stop
-                    BasketballCharacter bc = this.getNearestTeammate();
-                    this.setSpeed(0);
-                    abo.turnBodyToTarget(bc.getPosition());
-                }
-                abo.doDribblingAnimations();                
+            if(behaviorState == 0 && this.isInPossession()){             //dribbling 
+                this.updatePossessionMovements();              
             }
             
             else if(behaviorState == 1){  //no ball running
-                
-                //removes any passing animations
-                if(this.getCurrentGestureName().startsWith("pass") && this.characterModel.hasAnimationFinished(1)){
-                    this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
-                }
-                
-                                
-                if(!planner.isTargetReached(0.5f)){ //target reached
-                    abo.moveTowardsTarget(planner.getTargetPosition(), false, false);
-     //               System.out.println("moving " + getCurrentGestureName());
-                }
-                else{                           //stop
-               //     agentModel.standStill();
-                    //transitions block to standingPose
-                    if(characterModel.getCurrentAnimation(1).equals("blockLoop")){
-                        this.abo.blockingTransition();
-                    }
-                    else{
-                        agentModel.noArmGesture();
-                    }
-                          
-                    this.setSpeed(0);
-                    
-                    BasketballCharacter possessor = SceneCharacterManager.getCharacterInPossession();
-                    
-                    if(possessor != null){
-                        if(possessor.playerIsTeamMate(this)){
-    //                        System.out.println("turn to team mate");
-                           abo.turnBodyToTarget(possessor.getPosition()); 
-                        }
-                        else{
-                           abo.turnBodyToTarget(planner.getClosestOpponent().getPosition());
-                        }                        
-                    }
-                }
+                this.updateNonPossessionMovements();
             }
             
             else if(behaviorState == 2){            //shooting
-                 this.setSpeed(0);
-                 abo.turnBodyToTarget(Court.getHoopLocation());
-
-                if(perception.isLookingAtTarget(Court.getHoopLocation())){
-                    model.playArmAnimation("shoot", 2f, LoopMode.DontLoop);
-        //            model.playLegAnimation("standingPose", 1, LoopMode.Loop);
-                }
+                this.updateShootingMovements();
             }
             
             else if(behaviorState == 3){        //defending/blocking
-                if(!planner.isTargetReached(0.5f)){ //target reached
-                    abo.moveTowardsTarget(planner.getTargetPosition(), false, false);                            
-                }
-                else{
-                    this.setSpeed(0);
-                }
-                abo.doBlocking();
+                this.updateDefenseMovements();
                
             }
             else if(behaviorState == 4){ // passing
@@ -313,6 +249,91 @@ public class BasketballAgent extends BasketballCharacter{
                 Character c = planner.getMyClosestTeamMate();
                 this.doDesperatePass(c);
             }
+    }
+    
+    private void updatePossessionMovements(){
+        
+        if(!planner.isTargetReached(2f)){ //target not reached 
+
+            if(characterModel.getCurrentAnimation(1).contains("block")){
+                this.abo.blockingTransition();
+            }
+            else if(GameManager.getGameState() != 0){
+                abo.moveTowardsTarget(planner.getTargetPosition(), true, true);
+            }
+            else{
+                abo.moveTowardsTarget(planner.getTargetPosition(), false, true);
+            }
+        }
+        else{                           //stop
+            BasketballCharacter bc = this.getNearestTeammate();
+            this.setSpeed(0);
+            abo.turnBodyToTarget(bc.getPosition());
+        }
+        abo.doDribblingAnimations();
+    
+    }
+    
+    private void updateNonPossessionMovements(){
+        
+        //removes any passing animations
+        if(this.getCurrentGestureName().startsWith("pass")){
+            if(this.characterModel.hasAnimationFinished(1)){
+                this.playAnimation(1, "standingPose", 1, LoopMode.Loop);
+            }
+        }
+
+        else if(!planner.isTargetReached(0.5f)){ //target reached
+            abo.moveTowardsTarget(planner.getTargetPosition(), false, false);
+//               System.out.println("moving " + getCurrentGestureName());
+        }
+        else{                           //stop
+       //     agentModel.standStill();
+            //transitions block to standingPose
+            if(characterModel.getCurrentAnimation(1).equals("blockLoop")){
+                this.abo.blockingTransition();
+            }
+            else{
+                agentModel.noArmGesture();
+            }
+
+            this.setSpeed(0);
+
+            BasketballCharacter possessor = SceneCharacterManager.getCharacterInPossession();
+
+            if(possessor != null){
+                if(possessor.playerIsTeamMate(this)){
+//                        System.out.println("turn to team mate");
+                   abo.turnBodyToTarget(possessor.getPosition()); 
+                }
+                else{
+                   abo.turnBodyToTarget(planner.getClosestOpponent().getPosition());
+                }                        
+            }
+        }
+    }
+    
+    private void updateShootingMovements(){
+        
+        this.setSpeed(0);
+        abo.turnBodyToTarget(Court.getHoopLocation());
+        BPNewModel model = (BPNewModel)characterModel;
+
+       if(perception.isLookingAtTarget(Court.getHoopLocation())){
+           model.playArmAnimation("shoot", 2f, LoopMode.DontLoop);
+       }  
+    }
+    
+    private void updateDefenseMovements(){
+        
+        if(!planner.isTargetReached(0.5f)){ //target reached
+            abo.moveTowardsTarget(planner.getTargetPosition(), false, false);                            
+        }
+        else{
+            this.setSpeed(0);
+        }
+        abo.doBlocking();
+            
     }
     
     public void doBallManipulation(){

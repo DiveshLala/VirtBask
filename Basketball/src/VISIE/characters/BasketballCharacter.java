@@ -345,9 +345,9 @@ public abstract class BasketballCharacter extends Character{
         return 1;
     }
     
-    public boolean isPlayer(){
-        return isPlayer;
-    }
+//    public boolean isPlayer(){
+//        return isPlayer;
+//    }
     
     public void initializePositions(BasketballCharacter bc){}
     

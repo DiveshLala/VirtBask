@@ -37,10 +37,10 @@ public class NonPossessionDecision {
         timeSincePossessedBall = Conversions.nanoToSecond(System.nanoTime() - nonposStartTime);
         
         //if player can receive open pass    
-        BasketballCharacter bcInPos = SceneCharacterManager.getCharacterInPossession();              
+        BasketballCharacter bcInPos = SceneCharacterManager.getCharacterInPossession();
         
         //if open for pass, stand still to face player with ball 
-        if(this.openForPass(bcInPos) && parentCharacter.get2DPosition().distance(bcInPos.get2DPosition()) < 15f){
+        if(timeSincePossessedBall < 5 && this.openForPass(bcInPos) && parentCharacter.get2DPosition().distance(bcInPos.get2DPosition()) < 15f){
             parentCharacter.setBehaviorState(1);
             parentCharacter.planner.setTargetPosition(parentCharacter.getPosition());
         }

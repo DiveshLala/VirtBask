@@ -163,7 +163,7 @@ public class Ball{
                 
                 boolean playerIsTeamMate = bc.playerIsTeamMate((BasketballCharacter)SceneCharacterManager.getCharacterByID(lastTouched));
                 boolean reactionTimeOK = (System.currentTimeMillis() - latestBallPassTime) > 400 && (System.currentTimeMillis() - latestBallShotTime) > 400;
-                
+
                 if(!bc.isShooting() && !bc.isPassing() && bc.canSeeBall(this)
                    && (playerIsTeamMate || reactionTimeOK)){                      
                         bc.setPossession();
