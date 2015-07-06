@@ -292,7 +292,7 @@ public abstract class BasketballCharacter extends Character{
         return f < 60;                       
     }
     
-    public void setSoundNodes(){
+    public void setSoundNodes(){        
         characterSoundNode = new CharacterSoundNode(existenceNode, "assets/Sounds/characterSounds.txt", this);
     }
     

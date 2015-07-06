@@ -1,6 +1,6 @@
 numPlayers,2
 isOffense,true
-isMultiPlayer,false
+isMultiPlayer,true
 hasKinect,false
 hasPressureSensor,false
 TCPPort,1235
@@ -9,7 +9,7 @@ kinectAddress,host
 kinectPort,1240
 pressureSensorAddress,10.229.54.190
 pressureSensorPort,1234
-gameType,Team
+gameType,Training (dribbling and moving)
 immersiveHeight,1368
 immersiveWidth,768
 isImmersive,false

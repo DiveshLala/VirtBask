@@ -386,6 +386,11 @@ public class NonUserPlayer extends BasketballCharacter{
         return ghostNode;
     }
     
+    @Override
+    public void adjustCollisionGroup(){
+         ball.adjustCollisionGroup(true);
+     }
+    
     private Character getPassTarget(){
         Character targetedCharacter = null; 
         float minAngle = 100000000f;
@@ -437,12 +442,12 @@ public class NonUserPlayer extends BasketballCharacter{
      }
         
       public void updateBallNoPossession(){
-            if(ball.isCloseToNUP(this)){
-                ball.adjustCollisionGroup(true);
-            }
-            else{
-                ball.adjustCollisionGroup(false);
-            }
+//            if(ball.isCloseToNUP(this)){
+//                ball.adjustCollisionGroup(true);
+//            }
+//            else{
+//                ball.adjustCollisionGroup(false);
+//            }
      }
       
       public void stopBall(){

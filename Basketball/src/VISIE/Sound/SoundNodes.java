@@ -31,6 +31,7 @@ public abstract class SoundNodes {
         
         for(String s:fileNames){
             String[] str = s.split(",");
+            System.out.println(str[0]);
             AudioNode sound = new AudioNode(SceneCreator.getAssetManager(), "Sounds/" + str[0], false);
             sound.setPositional(true);
             sound.setLooping(false);

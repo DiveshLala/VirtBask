@@ -158,12 +158,13 @@ public class KinectPlayer extends Player{
      }
      
      public void updateBallPossession(Ball b, Vector3f vec){
-           if(b.isCloseToPlayer(this)){
-               b.adjustCollisionGroup(true);
-           }
-           else{
-               b.adjustCollisionGroup(false);
-           }
+//           if(b.isCloseToPlayer(this)){
+//               b.adjustCollisionGroup(true);
+//           }
+//           else{
+//               b.adjustCollisionGroup(false);
+//           }
+//         b.adjustCollisionGroup(true);
 
            if(!this.isDribbling()){
                b.setBallPosition(vec);
@@ -171,12 +172,12 @@ public class KinectPlayer extends Player{
      }
      
      public void updateBallNoPossession(){
-            if(ball.isCloseToPlayer(this)){
-               ball.adjustCollisionGroup(true);
-           }
-           else{
-               ball.adjustCollisionGroup(false);
-           }
+//            if(ball.isCloseToPlayer(this)){
+//               ball.adjustCollisionGroup(true);
+//           }
+//           else{
+//               ball.adjustCollisionGroup(false);
+//           }
      }
      
      public void stopBall(){
