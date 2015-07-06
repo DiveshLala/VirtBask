@@ -510,6 +510,18 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
      
      inputManager.addMapping("UtteranceEncourage", new KeyTrigger(KeyInput.KEY_6));
      inputManager.addListener(this, "UtteranceEncourage");
+     
+     inputManager.addMapping("UtteranceGreeting", new KeyTrigger(KeyInput.KEY_INSERT));
+     inputManager.addListener(this, "UtteranceGreeting");
+     
+     inputManager.addMapping("UtteranceLikeBBall", new KeyTrigger(KeyInput.KEY_HOME));
+     inputManager.addListener(this, "UtteranceLikeBBall");
+     
+     inputManager.addMapping("UtteranceLetsEnjoy", new KeyTrigger(KeyInput.KEY_PGUP));
+     inputManager.addListener(this, "UtteranceLetsEnjoy");
+     
+     inputManager.addMapping("UtteranceDisappointment", new KeyTrigger(KeyInput.KEY_PGDN));
+     inputManager.addListener(this, "UtteranceDisappointment");
   }
 
     public void onAction(String binding, boolean value, float tpf) {
@@ -600,11 +612,24 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
       else if(binding.equals("UtteranceEncourage") && !value){  
          this.playMyVoice("encourage");
      }
+     else if(binding.equals("UtteranceGreeting") && !value){ 
+         p.playAnimation(1, "callForPass", 0.75f, LoopMode.DontLoop);
+         this.playMyVoice("greeting");
+     }
+     else if(binding.equals("UtteranceLikeBBall") && !value){  
+         this.playMyVoice("likebball");
+     }
+     else if(binding.equals("UtteranceLetsEnjoy") && !value){  
+         this.playMyVoice("letsenjoy");
+     }
+    else if(binding.equals("UtteranceDisappointment") && !value){  
+         this.playMyVoice("disappointment");
+     }
   }
     
     public void playMyVoice(String s){
          String utteranceToPlay = p.getUtterance(s); //ensure random play
-    //     p.playUtterance(utteranceToPlay);
+         p.playUtterance(utteranceToPlay);
          mainClient.sendSoundInfo(utteranceToPlay);
     }
 
