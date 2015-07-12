@@ -86,6 +86,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private int membersPerTeam;
   private int playerTeamID; //0 is defednding, 1 is attacking
   private ArrayList<Team> teams = new ArrayList<Team>();
+  private int offset = 0;
   
   
   //displaySettings     
@@ -143,7 +144,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "20150623_144659.txt";
+  private String logFileName = "20150710_125804.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -566,17 +567,23 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
         //createLoading();
             if(isRunning){  
                 
+                boolean isSame = true;
+                
                  if(currentReadLine == 0){
                      this.doPlayBack(0);
-                     timeSinceLast = System.currentTimeMillis();
+                     timeSinceLast = System.currentTimeMillis() - offset;
                  }
                  
                  if(!isPaused){                      
                     if(!isRewind && currentReadLine + 1 < data.size()){
                         int i = this.getNextFrame(currentReadLine);
-                        this.doPlayBack(i);
-                        currentReadLine = i;
                         
+                        if(i != currentReadLine){
+                            isSame = false;
+                        }
+                        this.doPlayBack(i);
+                        currentReadLine = i; 
+
                     }
                     else if(isRewind && currentReadLine - 1 >= 0){
                         int i = this.getPreviousFrame(currentReadLine);
@@ -584,7 +591,10 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                         currentReadLine = i;
                     }
                  }
-                timeSinceLast = System.currentTimeMillis();
+                 
+                if(!isSame){ 
+                    timeSinceLast = System.currentTimeMillis() - offset;
+                }
                 this.showViewPoint();
          //       this.displayInfo();
           }
@@ -607,18 +617,32 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           
           long curTime = System.currentTimeMillis();
           long elapsedTime = curTime - timeSinceLast;
+          int closest = 1000;
           
-          for(int i = 1; i < data.size() - index; i++){
+          for(int i = 0; i < data.size() - index; i++){
                 String dataLine = data.get(index + i);
                 String[] t = dataLine.split("\\$", 2);
+                
+                if(t[0].startsWith("N")){
+                   return index + 1;
+                }
+                
                 long nextFrameTime = Integer.parseInt(t[0]);
-                long diff = nextFrameTime - curFrameTime;
-                if(elapsedTime < diff){//can move
-                    return index + i;
+                long diff = nextFrameTime - curFrameTime;                
+        //        System.out.println(i + " " + elapsedTime + " " + diff);
+                
+                int j = (int)Math.abs(elapsedTime - diff);
+                 
+                if(j > closest){
+                    return index + i - 1;
+                }
+                else{
+                    offset = (int)(elapsedTime - diff);
+                    closest = j;
                 }
           }
           
-          return index + 1;
+          return index;
       }
   }
   
@@ -736,19 +760,23 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           if(data[startIndex + 3].length() > 5){
                 String skelRot = data[startIndex + 3];
                 bc.setSkeletonJoints(NetworkMessagingProcessor.parseJointData(skelRot));
+        //        System.out.println(data[0] + " " + id + " " + skelRot);
           }
           else{
                 actionState = Integer.parseInt(data[startIndex + 3]);
                 String s = bc.getArmAnimationName(actionState);
                 float animTime = Float.parseFloat(data[startIndex + 5]);
                 bc.setAnimationFrame(1, s, animTime);
-      //          System.out.println(data[0] + " " + id + " " + s + " " + animTime);
+         //       System.out.println(data[0] + " " + id + " " + s + " " + animTime);
           }
           
           walkingState = Integer.parseInt(data[startIndex + 4]);
           String t = bc.getLegAnimationName(walkingState);
           float animTime = Float.parseFloat(data[startIndex + 6]);
-          bc.setAnimationFrame(2, t, animTime);  
+          bc.setAnimationFrame(2, t, animTime); 
+          if(id == 0){
+              System.out.println(data[0]);
+          }
           
                     
           if(type.contains("P") && bc.getCameraInitialised()){

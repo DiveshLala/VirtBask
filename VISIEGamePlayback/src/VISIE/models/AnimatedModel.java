@@ -286,7 +286,6 @@ public abstract class AnimatedModel implements AnimEventListener{
                  z = Float.parseFloat(floats[2]);
                  w = Float.parseFloat(floats[3]);
              }
-             
              Quaternion quat = new Quaternion(x, y, z, w);
         //     System.out.println(rotations.get(i));
        //      System.out.println(quat);
