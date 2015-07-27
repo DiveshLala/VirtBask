@@ -14,3 +14,7 @@ utterance affirmation1.wav,1,utterance affirmation1
 utterance affirmation2.wav,1,utterance affirmation2
 utterance celebration0.wav,1,utterance celebration0
 utterance celebration1.wav,1,utterance celebration1
+utterance disappointment0.wav,1,utterance disappointment0
+utterance greeting0.wav,1,utterance greeting0
+utterance letsenjoy0.wav,1,utterance letsenjoy0
+utterance likebball0.wav,1,utterance likebball0

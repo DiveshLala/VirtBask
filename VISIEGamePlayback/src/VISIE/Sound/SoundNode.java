@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public abstract class SoundNode {
     
     public ArrayList<AudioNode> soundNodes;
+    private AudioNode playerSoundNode;
     public File soundFile;
     public Node parentNode;    
     
@@ -33,5 +34,7 @@ public abstract class SoundNode {
             parentNode.attachChild(sound);
             soundNodes.add(sound);
         }
-    }      
+    }
+    
+
 }

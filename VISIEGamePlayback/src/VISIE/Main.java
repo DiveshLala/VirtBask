@@ -144,7 +144,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "20150710_125804.txt";
+  private String logFileName = "Game1.txt";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -166,6 +166,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
  private Vector3f nupPos;
   
   public static void main(String[] args) {
+        
         Main gameApp = new Main();   
         AppSettings settings = new AppSettings(true);
         settings.setTitle("VIRTUAL BASKETBALL");
@@ -207,8 +208,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
     objectCreator = new ObjectCreator(rootNode, bulletAppState);
     sceneCharacterManager = new SceneCharacterManager(this, characterArray, characterCreator, rootNode, bulletAppState);
     camView = new CameraView(cam, initialSettings.getImmersive(), initialSettings.getFixedOrientation());
-    JointProjectXMLProcessor jmp = new JointProjectXMLProcessor();
-    BehaviorXMLProcessor bp = new BehaviorXMLProcessor();
     
     createEnvironment();
     createBall();
@@ -228,8 +227,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   }
   
   
-  
-
   private void createEnvironment(){
     /** Set up Physics */
     viewPort.setBackgroundColor(new ColorRGBA(0.7f,0.8f,1f,1f));
@@ -562,12 +559,12 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
    
   @Override
   public void simpleUpdate(float tpf) {
-      
-              
+         
         //createLoading();
             if(isRunning){  
                 
                 boolean isSame = true;
+
                 
                  if(currentReadLine == 0){
                      this.doPlayBack(0);
@@ -621,10 +618,14 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           
           for(int i = 0; i < data.size() - index; i++){
                 String dataLine = data.get(index + i);
-                String[] t = dataLine.split("\\$", 2);
+                String[] t = dataLine.split("\\$");
                 
                 if(t[0].startsWith("N")){
                    return index + 1;
+                }
+                if(dataLine.contains("utter")){
+                   System.out.println(dataLine);
+                    this.playUtterance(t);
                 }
                 
                 long nextFrameTime = Integer.parseInt(t[0]);
@@ -1017,12 +1018,12 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           else if(characterType.startsWith("P")){ //player type
               Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
+              p.playHumanNode("Sounds/Recordings/Game1Recording.ogg", 20);
           }
           else if(characterType.startsWith("N")){  //NUP type
               NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(nup);
-          }   
-          
+          }     
       }
   }
   

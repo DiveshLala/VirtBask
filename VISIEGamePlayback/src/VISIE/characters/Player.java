@@ -12,6 +12,7 @@ import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;
 import VISIE.gesturerecognition.GestureRecognition;
 import VISIE.scenemanager.SceneCharacterManager;
+import VISIE.scenemanager.SceneCreator;
 import com.jme3.animation.LoopMode;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -25,6 +26,7 @@ import com.jme3.scene.shape.Sphere;
 import com.jme3.material.Material;
 import com.jme3.material.MaterialDef;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.AudioNode;
 import com.jme3.bullet.objects.PhysicsCharacter;
 import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Ray;
@@ -272,5 +274,17 @@ public class Player extends BasketballCharacter{
      
     public void setSkeletonJoints(ArrayList<String> jointInfo){
        characterModel.setJointRotations(jointInfo);
+    }
+    
+    public void playHumanNode(String fileName, float offset){
+         
+        AudioNode playerSoundNode = new AudioNode(SceneCreator.getAssetManager(), fileName, false);
+        playerSoundNode.setPositional(true);
+        playerSoundNode.setLooping(false);
+        playerSoundNode.setVolume(3);
+        playerSoundNode.setTimeOffset(offset);
+        this.getRootNode().attachChild(playerSoundNode);
+        playerSoundNode.play();
+        
     }
 }
