@@ -144,7 +144,9 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String logFileName = "Game1.txt";
+  private String filePath = "C:\\Users\\Divesh\\Desktop\\speech corpus data";
+  private String logFileName = filePath + "\\Game1.txt";
+  private String recordingFileName = "Game1Recording.ogg";
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -1018,7 +1020,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           else if(characterType.startsWith("P")){ //player type
               Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
-              p.playHumanNode("Sounds/Recordings/Game1Recording.ogg", 20);
+              p.playHumanNode("Sounds/Recordings/" + recordingFileName, 20);
           }
           else if(characterType.startsWith("N")){  //NUP type
               NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, startPos, 0.48f);

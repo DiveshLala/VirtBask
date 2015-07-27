@@ -277,7 +277,6 @@ public class Player extends BasketballCharacter{
     }
     
     public void playHumanNode(String fileName, float offset){
-         
         AudioNode playerSoundNode = new AudioNode(SceneCreator.getAssetManager(), fileName, false);
         playerSoundNode.setPositional(true);
         playerSoundNode.setLooping(false);
@@ -285,6 +284,5 @@ public class Player extends BasketballCharacter{
         playerSoundNode.setTimeOffset(offset);
         this.getRootNode().attachChild(playerSoundNode);
         playerSoundNode.play();
-        
     }
 }
