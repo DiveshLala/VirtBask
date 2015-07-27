@@ -164,8 +164,11 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private int maxFrame;
   private float playerFD;
   private float nupFD;
- private Vector3f playerPos;
- private Vector3f nupPos;
+  private Vector3f playerPos;
+  private Vector3f nupPos;
+  private long timeGameLoaded;
+  private long currentFrameTime;
+  private boolean charactersLoaded = false;
   
   public static void main(String[] args) {
         
@@ -564,10 +567,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
          
         //createLoading();
             if(isRunning){  
-                
-                boolean isSame = true;
-
-                
+                                
                  if(currentReadLine == 0){
                      this.doPlayBack(0);
                      timeSinceLast = System.currentTimeMillis() - offset;
@@ -577,12 +577,9 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                     if(!isRewind && currentReadLine + 1 < data.size()){
                         int i = this.getNextFrame(currentReadLine);
                         
-                        if(i != currentReadLine){
-                            isSame = false;
-                        }
                         this.doPlayBack(i);
                         currentReadLine = i; 
-
+                        
                     }
                     else if(isRewind && currentReadLine - 1 >= 0){
                         int i = this.getPreviousFrame(currentReadLine);
@@ -591,9 +588,9 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                     }
                  }
                  
-                if(!isSame){ 
-                    timeSinceLast = System.currentTimeMillis() - offset;
-                }
+//                if(!isSame){ 
+//                    timeSinceLast = System.currentTimeMillis() - offset;
+//                }
                 this.showViewPoint();
          //       this.displayInfo();
           }
@@ -602,50 +599,47 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private int getNextFrame(int index){
       
       String s = data.get(index + 1);
+      
       if(s.startsWith("NEW")){
           return index + 1;
       }
       else{
           long curFrameTime = 1000;
+          long error = 1000;
+          long expectedTimeElapsed = System.currentTimeMillis() - timeGameLoaded;
           
           if(!data.get(index).startsWith("NEW")){
               String a = data.get(index);
               String[] t = a.split("\\$", 2);
               curFrameTime = Long.parseLong(t[0]);
+              error = Math.abs(expectedTimeElapsed - curFrameTime);
+              System.out.println(error);
           }
           
-          long curTime = System.currentTimeMillis();
-          long elapsedTime = curTime - timeSinceLast;
-          int closest = 1000;
-          
           for(int i = 0; i < data.size() - index; i++){
-                String dataLine = data.get(index + i);
-                String[] t = dataLine.split("\\$");
-                
+              String dataLine = data.get(index + i);
+              String[] t = dataLine.split("\\$");
+              
                 if(t[0].startsWith("N")){
                    return index + 1;
                 }
+                
                 if(dataLine.contains("utter")){
-                   System.out.println(dataLine);
                     this.playUtterance(t);
                 }
                 
-                long nextFrameTime = Integer.parseInt(t[0]);
-                long diff = nextFrameTime - curFrameTime;                
-        //        System.out.println(i + " " + elapsedTime + " " + diff);
+                long j = Math.abs(expectedTimeElapsed - Long.parseLong(t[0]));
                 
-                int j = (int)Math.abs(elapsedTime - diff);
-                 
-                if(j > closest){
+                if(j > error){
                     return index + i - 1;
                 }
                 else{
-                    offset = (int)(elapsedTime - diff);
-                    closest = j;
+                    error = j;
                 }
           }
           
-          return index;
+          
+          return index + 1;
       }
   }
   
@@ -703,6 +697,9 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   public void pauseGame(){
       isRunning = !isRunning;
+      if(isRunning){
+          timeGameLoaded = System.currentTimeMillis();
+      }
   }
   
   public void doPlayBack(int frameNumber){
@@ -715,8 +712,18 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
             this.createCharacter(s);
          //   currentReadLine++;
         }  
-        else{  
+        else{
+
+            
             String[] linedata = s.split("\\$"); 
+               
+            if(!charactersLoaded){
+                timeGameLoaded = System.currentTimeMillis();
+                charactersLoaded = true;
+            }
+            
+            System.out.println(timeGameLoaded);
+            
             
             if(linedata[1].startsWith("B")){//first data is ball position
                String vec = linedata[1].substring(1, linedata[1].length());
@@ -779,6 +786,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           bc.setAnimationFrame(2, t, animTime); 
           if(id == 0){
               System.out.println(data[0]);
+              System.out.println(System.currentTimeMillis() - Integer.parseInt(data[0]));
           }
           
                     
@@ -1020,7 +1028,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           else if(characterType.startsWith("P")){ //player type
               Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
-              p.playHumanNode("Sounds/Recordings/" + recordingFileName, 20);
+              p.playHumanNode("Sounds/Recordings/" + recordingFileName, 22.6f);
           }
           else if(characterType.startsWith("N")){  //NUP type
               NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, startPos, 0.48f);
