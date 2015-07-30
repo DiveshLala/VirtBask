@@ -135,4 +135,14 @@ public class Conversions{
    //    float slope = line
    
    }
+   
+   public static String secondsConversionString(float seconds){
+      Double d = Math.floor(seconds/60);
+      int min = d.intValue();
+      Float f = seconds%60;
+      String sec = String.format("%02d", f.intValue());
+      Float ms = (seconds - (float)Math.floor(seconds)) * 1000f;
+      String msstr = String.format("%03d", ms.intValue());
+      return min + ":" + sec + "." + msstr;
+   }
 }

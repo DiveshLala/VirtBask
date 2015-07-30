@@ -56,6 +56,7 @@ public class Player extends BasketballCharacter{
     private float mutualGazeAngle = 30;
     private float perceivedFieldOfVision = 55;
     private PlayerGesture playerGesture;
+    private AudioNode playerSoundNode;
 
     public Player(CharacterControl p, float rad, int i, AnimatedModel model){
         mainNode = p;
@@ -277,7 +278,7 @@ public class Player extends BasketballCharacter{
     }
     
     public void playHumanNode(String fileName, float offset){
-        AudioNode playerSoundNode = new AudioNode(SceneCreator.getAssetManager(), fileName, false);
+        playerSoundNode = new AudioNode(SceneCreator.getAssetManager(), fileName, false);
         playerSoundNode.setPositional(true);
         playerSoundNode.setLooping(false);
         playerSoundNode.setVolume(3);
@@ -285,4 +286,16 @@ public class Player extends BasketballCharacter{
         this.getRootNode().attachChild(playerSoundNode);
         playerSoundNode.play();
     }
+    
+    public void pauseHumanRecording(){
+        playerSoundNode.stop();
+    }
+    
+    public void playHumanRecording(float time){
+        playerSoundNode.setTimeOffset(time);
+        playerSoundNode.play();
+        playerSoundNode.getStatus();
+    }
+    
+    
 }

@@ -144,9 +144,10 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private boolean[] vidPlayer = new boolean[3];  
   
   private int logTime = 0;
-  private String filePath = "C:\\Users\\Divesh\\Desktop\\speech corpus data";
-  private String logFileName = filePath + "\\Game1.txt";
-  private String recordingFileName = "Game1Recording.ogg";
+  private String filePath = "C:\\Users\\Divesh\\Desktop\\speech corpus data\\";
+  private String logFileName = "Game1.txt";
+  private String recordingFileName = logFileName.replace(".txt", "Recording.ogg");
+  private float recordingOffset;
   private File writePFile;
   private File writeNUPFile;
   private File JAFile;
@@ -349,12 +350,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
     }
      else if (binding.equals("Pause") && !value) {
         isPaused = !isPaused;
-        if(isPaused){
-            System.out.println("Paused at " + currentReadLine);
-        }
-        else{
-            System.out.println("Unpaused");
-        }
+        this.pauseGame();
     }
     else if (binding.equals("IncreaseSpeed") && !value) {
         
@@ -380,13 +376,17 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
 
     }
     else if (binding.equals("Rewind") && !value) {
+        
+        Player p = (Player)SceneCharacterManager.getCharacterByID(0);
+        
         isRewind = !isRewind;
         
         if(isRewind){
-            System.out.println("rewinding ");
+            p.pauseHumanRecording();
         }
         else{
-            System.out.println("play forward");
+            this.syncRecording();  
+            timeGameLoaded = System.currentTimeMillis() - currentFrameTime; 
         }
         
     }
@@ -588,11 +588,12 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                     }
                  }
                  
+                 
 //                if(!isSame){ 
 //                    timeSinceLast = System.currentTimeMillis() - offset;
 //                }
                 this.showViewPoint();
-         //       this.displayInfo();
+                this.displayInfo();
           }
   }
   
@@ -604,16 +605,14 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           return index + 1;
       }
       else{
-          long curFrameTime = 1000;
           long error = 1000;
           long expectedTimeElapsed = System.currentTimeMillis() - timeGameLoaded;
           
           if(!data.get(index).startsWith("NEW")){
               String a = data.get(index);
               String[] t = a.split("\\$", 2);
-              curFrameTime = Long.parseLong(t[0]);
-              error = Math.abs(expectedTimeElapsed - curFrameTime);
-              System.out.println(error);
+              currentFrameTime = Long.parseLong(t[0]);
+              error = Math.abs(expectedTimeElapsed - currentFrameTime);
           }
           
           for(int i = 0; i < data.size() - index; i++){
@@ -635,9 +634,9 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
                 }
                 else{
                     error = j;
+                    currentFrameTime = Long.parseLong(t[0]);
                 }
           }
-          
           
           return index + 1;
       }
@@ -645,34 +644,16 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   private int getPreviousFrame(int index){
       
-      String s = data.get(index - 1);
-      if(s.startsWith("NEW")){
+      String s = data.get(index + 1);
+      
+      if(!s.startsWith("NEW") && index > 5){
+          String dataLine = data.get(index - 1);
+          String[] t = dataLine.split("\\$");
+          currentFrameTime = Long.parseLong(t[0]);
           return index - 1;
       }
-      else{
-          long curFrameTime = 1000;
-          
-          if(!data.get(index).startsWith("NEW")){
-              String a = data.get(index);
-              String[] t = a.split("\\$", 2);
-              curFrameTime = Long.parseLong(t[0]);
-          }
-          
-          long curTime = System.currentTimeMillis();
-          long elapsedTime = curTime - timeSinceLast;
-          
-          for(int i = 1; i < data.size() + index; i++){
-                String dataLine = data.get(index - i);
-                String[] t = dataLine.split("\\$", 2);
-                long previousFrameTime = Integer.parseInt(t[0]);
-                long diff =  curFrameTime - previousFrameTime;
-                if(elapsedTime < diff){//can move
-                    return index - i;
-                }
-          }
-          
-          return index - 1;
-      }
+      
+      return index;
   }
 
   
@@ -684,7 +665,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   public void loadLogFile(){
       try{
-        reader = new BufferedReader(new FileReader(logFileName));
+        reader = new BufferedReader(new FileReader(filePath + logFileName));
         String s;
         while((s = reader.readLine()) != null){
             data.add(s);
@@ -695,11 +676,48 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       }
   }
   
-  public void pauseGame(){
-      isRunning = !isRunning;
-      if(isRunning){
-          timeGameLoaded = System.currentTimeMillis();
+  private float getSoundOffsetValue(){
+      
+        try{
+            reader = new BufferedReader(new FileReader("assets\\Sounds\\Recordings\\recordingsoundoffsets.txt"));
+            String s;
+            while((s = reader.readLine()) != null){
+                String[] t = s.split(",");
+                if(t[0].equals(logFileName)){
+                    recordingOffset = Float.parseFloat(t[1]);
+                    return Float.parseFloat(t[1]);
+                }
+            }
       }
+      catch(IOException e){
+          System.out.println(e);
+      }
+        
+      return 0;
+      
+  
+  }
+  
+  public void pauseGame(){
+      
+      Player p = (Player)SceneCharacterManager.getCharacterByID(0);
+      
+      if(isPaused){
+          p.pauseHumanRecording();
+      }
+      
+      if(!isPaused){
+          timeGameLoaded = System.currentTimeMillis() - currentFrameTime;
+          this.syncRecording();
+      }
+  }
+  
+  private void syncRecording(){
+      Player p = (Player)SceneCharacterManager.getCharacterByID(0);
+      
+        float f = (float)currentFrameTime;
+        p.playHumanRecording(recordingOffset + (float)(f/1000));
+  
   }
   
   public void doPlayBack(int frameNumber){
@@ -713,37 +731,34 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
          //   currentReadLine++;
         }  
         else{
-
             
             String[] linedata = s.split("\\$"); 
                
             if(!charactersLoaded){
+                Player p = (Player)SceneCharacterManager.getCharacterByID(0);
+                float f = this.getSoundOffsetValue();
+                p.playHumanNode("Sounds/Recordings/" + recordingFileName, f);
                 timeGameLoaded = System.currentTimeMillis();
                 charactersLoaded = true;
-            }
-            
-            System.out.println(timeGameLoaded);
-            
+            }           
             
             if(linedata[1].startsWith("B")){//first data is ball position
                String vec = linedata[1].substring(1, linedata[1].length());
                ball.setBallPosition(NetworkMessagingProcessor.stringToVector(vec));
                this.setCharacterInfo(linedata, 2);
-          }
+           }
             else if(linedata[1].startsWith("U")){//data is uttrerance
                 this.playUtterance(linedata);
             }
         }
       }
-      
   }
   
   private void playUtterance(String[] linedata){
       int charID = Integer.parseInt(linedata[2]);
       String utterance = linedata[3];
       BasketballCharacter bc = (BasketballCharacter)SceneCharacterManager.getCharacterByID(charID);
-      bc.playUtterance(utterance);
-              
+      bc.playUtterance(utterance);       
     }
   
   private void setCharacterInfo(String[] data, int startIndex){
@@ -784,10 +799,11 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           String t = bc.getLegAnimationName(walkingState);
           float animTime = Float.parseFloat(data[startIndex + 6]);
           bc.setAnimationFrame(2, t, animTime); 
-          if(id == 0){
-              System.out.println(data[0]);
-              System.out.println(System.currentTimeMillis() - Integer.parseInt(data[0]));
-          }
+          
+//          if(id == 0){
+//              System.out.println(data[0]);
+//              System.out.println(System.currentTimeMillis() - Integer.parseInt(data[0]));
+//          }
           
                     
           if(type.contains("P") && bc.getCameraInitialised()){
@@ -1028,7 +1044,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
           else if(characterType.startsWith("P")){ //player type
               Player p = characterCreator.addPlayerCharacter(id, modelType, startPos, 0.48f);
               characterArray.add(p);
-              p.playHumanNode("Sounds/Recordings/" + recordingFileName, 22.6f);
           }
           else if(characterType.startsWith("N")){  //NUP type
               NonUserPlayer nup = characterCreator.addNonUserPlayerCharacter(id, modelType, startPos, 0.48f);
@@ -1074,13 +1089,18 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
       
       BitmapText frameText = new BitmapText(guiFont, false);
       frameText.setSize(guiFont.getCharSet().getRenderedSize());
-      frameText.setText(currentReadLine + "");
+      frameText.setText(this.getTimeString());
       frameText.setLocalTranslation(settings.getWidth() - frameText.getLineWidth(), settings.getHeight() * 0.9f, 0);
       frameText.setColor(ColorRGBA.Red);
-      frameText.setName("frame");
+      frameText.setName("time");
       frameText.setBox(new Rectangle(0, 0, frameText.getLineWidth(), frameText.getLineHeight()));
       frameText.setAlignment(BitmapFont.Align.Center);
       guiNode.attachChild(frameText);
+  }
+  
+  private String getTimeString(){      
+      float f = (float)currentFrameTime;
+      return Conversions.secondsConversionString(f/1000);
   }
   
   private void createLogFile(){
