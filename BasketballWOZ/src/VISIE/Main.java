@@ -64,8 +64,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import org.lwjgl.opengl.Display;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
-import com.sun.org.apache.xml.internal.dtm.ref.DTMDefaultBaseIterators;
 import de.lessvoid.nifty.Nifty;
 import java.util.ArrayList;
 import java.net.InetAddress;
