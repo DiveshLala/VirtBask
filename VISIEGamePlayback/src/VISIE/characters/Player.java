@@ -5,12 +5,9 @@
 
 package VISIE.characters;
 import Basketball.Ball;
-import Basketball.JointProject;
-import Basketball.PlayerGesture;
 import VISIE.models.AnimatedModel;
 import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;
-import VISIE.gesturerecognition.GestureRecognition;
 import VISIE.scenemanager.SceneCharacterManager;
 import VISIE.scenemanager.SceneCreator;
 import com.jme3.animation.LoopMode;
@@ -50,12 +47,10 @@ public class Player extends BasketballCharacter{
 //    private int playerID;
     private Vector3f targetPosition;
  //   private AnimatedModel playerModel;
-    private GestureRecognition gestRec;
     private Spatial targetPointer;
     private boolean engagedInJP; 
     private float mutualGazeAngle = 30;
     private float perceivedFieldOfVision = 55;
-    private PlayerGesture playerGesture;
     private AudioNode playerSoundNode;
 
     public Player(CharacterControl p, float rad, int i, AnimatedModel model){
@@ -70,10 +65,6 @@ public class Player extends BasketballCharacter{
     
     public AnimatedModel getModel(){
         return characterModel;
-    }
-    
-    public void initializePlayerGesture(Ball b){
-        playerGesture = new PlayerGesture(this, characterModel, b);
     }
     
     public void initializeGestureRecognition(){
@@ -91,11 +82,7 @@ public class Player extends BasketballCharacter{
         Node n = (Node)mainNode.getUserObject();
         return n.getParent();
     }
-    
-    public boolean recognizesGestures(){
-        return (gestRec != null);
-    }
-    
+        
     public Vector3f getHandPosition(int hand){
         if(hand == 0){
             return characterModel.getWorldCoordinateOfJoint("left hand");
@@ -215,9 +202,6 @@ public class Player extends BasketballCharacter{
   //      System.out.println(playerFacingDirection);
     }
     
-    public void setPointing(){
-       targetPointer.setLocalTranslation(gestRec.getPointTargetWorld());
-    }
     
     public void setHeadRotationRadians(float dir){
        float degrees = (float)Math.toDegrees(dir);
@@ -243,10 +227,7 @@ public class Player extends BasketballCharacter{
         characterModel.playAnimation(channel, animationName, speed, l); 
     }
      
-     public void playKinectGesture(String animationName){
-         playerGesture.setKinectGesture(animationName);
-     }
-          
+
      public void shootBall(){
          if(this.hasPossession){
             this.playAnimation(1, "shootAction", 1, LoopMode.DontLoop);
@@ -259,10 +240,6 @@ public class Player extends BasketballCharacter{
      
      public String getCurrentGesture(int channel){
          return characterModel.getCurrentAnimation(channel);              
-     }
-     
-     public String getCurrentKinectGesture(){
-         return playerGesture.getKinectGesture();
      }
      
      public void setPlayerTarget(Vector3f target){

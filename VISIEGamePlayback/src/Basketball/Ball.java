@@ -90,7 +90,6 @@ public class Ball {
                         bc.setActionState(0);
                         if(bc.getCharacterType().equals("BasketballAgent")){
                             BasketballAgent ba = (BasketballAgent)bc;
-                            ba.setBehaviorState(0);
                             System.out.println("agent " + ba.getID() + " captured ball");
                         }
                         System.out.println(playerInPossession + " is now in possession");   

@@ -8,7 +8,6 @@ import VISIE.characters.BasketballAgent;
 import VISIE.mathfunctions.Conversions;
 import VISIE.characters.Character;
 import com.jme3.math.Vector3f;
-import VISIE.JointProjectXMLProcessor;
 /**
  *
  * @author DiveshLala
@@ -53,10 +52,6 @@ public class AgentPerception {
         return f < rangeOfVision;                   
     }
     
-    public boolean isPerceptionLimitReached(String jpName, String movementName){
-        float[] data = JointProjectXMLProcessor.getMovementLimit(jpName, movementName, 0); 
-        return (parentCharacter.getCurrentMovementProgress((int)data[1])) >= data[0];
-    }
     
     public boolean isFacingEachOther(Character c, float thresholdAngle){
         float viewAngle = c.getFacingDirection();

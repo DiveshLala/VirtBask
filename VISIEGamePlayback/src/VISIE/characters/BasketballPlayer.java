@@ -6,7 +6,6 @@ package VISIE.characters;
 import VISIE.models.AnimatedModel;
 import VISIE.mathfunctions.CollisionMath;
 import VISIE.mathfunctions.Conversions;
-import VISIE.gesturerecognition.GestureRecognition;
 import com.jme3.animation.LoopMode;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;

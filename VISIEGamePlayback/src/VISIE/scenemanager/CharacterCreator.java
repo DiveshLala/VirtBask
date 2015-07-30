@@ -128,7 +128,6 @@ public class CharacterCreator{
         ba.setSoundNodes();
         bulletAppState.getPhysicsSpace().add(character);
         root.attachChild(n); 
-        ba.initialiseTarget();
   //      ba.setSoundNodes();
         return ba;
     }

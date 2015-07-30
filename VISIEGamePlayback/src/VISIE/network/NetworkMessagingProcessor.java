@@ -4,7 +4,6 @@
  */
 package VISIE.network;
 import VISIE.scenemanager.SceneCharacterManager;
-import VISIE.network.KinectClient;
 import VISIE.characters.NonUserPlayer;
 import VISIE.characters.Character;
 import VISIE.characters.Player;
@@ -69,21 +68,6 @@ public class NetworkMessagingProcessor {
     }
     
     
-    public static void parseKinectJointMessage(Player p){
-        
-          String s = KinectClient.getKinectData();
-          ArrayList<String> vectorStrings = new ArrayList<String>();
-          String[] bob = s.split("!");
-          for(int i = 0; i < bob.length; i++){
-              if(bob[i].length() > 0){
-                    vectorStrings.add(bob[i]);
-              }
-          }
-          
-        if(!vectorStrings.isEmpty()){
-              p.setKinectAnimation(vectorStrings);
-         }
-    }
     
     public static void parseClientJointData(String jointString){
       

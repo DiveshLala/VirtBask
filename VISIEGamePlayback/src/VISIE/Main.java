@@ -2,8 +2,6 @@
 package VISIE;
 
 import Basketball.Ball;
-import VISIE.AgentLogic.MainLogicThread;
-import VISIE.navigation.UserNavigation;
 import VISIE.recording.Log;
 import VISIE.mathfunctions.Conversions;
 import VISIE.scenemanager.*;
@@ -111,10 +109,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   float aspectRatio = 0.1f;
   
-  //network settings
-  Server TCPServer;
-  UDPBroadcastServer broadcastServer;
-  SensorClient sensorClient;
   
   private int newID = -1;
   private Vector3f newPos = null;
@@ -122,7 +116,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
  // public int IDCounter = 0;
   
-  KinectClient kinectClient;
 
   private SceneCreator sceneCreator;
   private CharacterCreator characterCreator;
@@ -130,8 +123,6 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   private ModelLoader modelLoader;
   private SceneCharacterManager sceneCharacterManager;
   private SceneObjectManager sceneObjectManager;
-  private UserNavigation userNavigation;
-  private MainLogicThread agentThread;
   
   NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay();
   private Nifty nifty;
