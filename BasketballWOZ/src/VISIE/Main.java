@@ -522,8 +522,29 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
      
      inputManager.addMapping("UtteranceDisappointment", new KeyTrigger(KeyInput.KEY_PGDN));
      inputManager.addListener(this, "UtteranceDisappointment");
+     
+     inputManager.addMapping("UtteranceYes", new KeyTrigger(KeyInput.KEY_Y));
+     inputManager.addListener(this, "UtteranceYes");
+     
+     inputManager.addMapping("UtteranceThanks", new KeyTrigger(KeyInput.KEY_G));
+     inputManager.addListener(this, "UtteranceThanks");
+     
+     inputManager.addMapping("UtteranceApology", new KeyTrigger(KeyInput.KEY_O));
+     inputManager.addListener(this, "UtteranceApology");
+     
+     inputManager.addMapping("ReadyToPass", new KeyTrigger(KeyInput.KEY_V));
+     inputManager.addListener(this, "ReadyToPass");
+     
+     inputManager.addMapping("UtteranceMark", new KeyTrigger(KeyInput.KEY_E));
+     inputManager.addListener(this, "UtteranceMark");
+     
+     inputManager.addMapping("UtteranceSteal", new KeyTrigger(KeyInput.KEY_R));
+     inputManager.addListener(this, "UtteranceSteal");
+     
+     inputManager.addMapping("UtteranceGoForward", new KeyTrigger(KeyInput.KEY_K));
+     inputManager.addListener(this, "UtteranceGoForward");
   }
-
+ 
     public void onAction(String binding, boolean value, float tpf) {
     if (binding.equals("Lefts")) {
         userNavigation.setDirectionKeys(value, 2);}
@@ -593,18 +614,20 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
              p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
          }
      }
-     else if(binding.equals("Block") && !p.isInPossession() && !value){
-                      
-            if(p.getCurrentGesture(1).toLowerCase().contains("block")){
-                 p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
-            }
-            else{
-                p.playAnimation(1, "blockLoop", 0.75f, LoopMode.DontLoop);
-            }
+     else if(binding.equals("Block") && !p.isInPossession() && !value){             
+        if(p.getCurrentGesture(1).toLowerCase().contains("block")){
+             p.playAnimation(1, "standingPose", 0.75f, LoopMode.DontLoop);
+        }
+        else{
+            p.playAnimation(1, "blockLoop", 0.75f, LoopMode.DontLoop);
+        }
      }
       else if(binding.equals("Celebration") && !p.isInPossession() && !value){     
             p.playAnimation(1, "celebration", 1f, LoopMode.DontLoop);
             this.playMyVoice("celebration");
+     }
+    else if(binding.equals("ReadyToPass") && p.isInPossession() && !value){     
+            this.playMyVoice("readytopass");
      }
      else if(binding.equals("UtteranceAffirmation") && !value){  
          this.playMyVoice("affirmation");
@@ -624,6 +647,24 @@ public class Main extends SimpleApplication implements ActionListener, PhysicsCo
      }
     else if(binding.equals("UtteranceDisappointment") && !value){  
          this.playMyVoice("disappointment");
+     }
+     else if(binding.equals("UtteranceYes") && !value){  
+         this.playMyVoice("yes");
+     }
+    else if(binding.equals("UtteranceThanks") && !value){  
+         this.playMyVoice("thanks");
+     }
+    else if(binding.equals("UtteranceApology") && !value){  
+         this.playMyVoice("apology");
+     }
+    else if(binding.equals("UtteranceMark") && !value){  
+         this.playMyVoice("mark");
+     }
+    else if(binding.equals("UtteranceSteal") && !value){  
+         this.playMyVoice("nicesteal");
+     }
+    else if(binding.equals("UtteranceGoForward") && !value){  
+         this.playMyVoice("goforward");
      }
   }
     
