@@ -136,7 +136,7 @@ public class Main extends SimpleApplication implements ActionListener, AnalogLis
   
   private int logTime = 0;
   private String filePath = "C:\\Users\\Divesh\\Desktop\\speech corpus data\\";
-  private String logFileName = "Game1.txt";
+  private String logFileName = "Game6.txt";
   private String recordingFileName = logFileName.replace(".txt", "Recording.ogg");
   private float recordingOffset;
   private File writePFile;

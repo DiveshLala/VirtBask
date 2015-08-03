@@ -1,1 +1,6 @@
 Game1.txt,24.7
+Game2.txt,22.3
+Game3.txt,328
+Game4.txt,23.5
+Game5.txt,21.5
+Game6.txt,26.9
